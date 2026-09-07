@@ -21,23 +21,36 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .title-area h1 {
             color: #ec4899;
             font-size: 24px;
             font-weight: bold;
+            margin-bottom: 2px;
         }
         .title-area p {
             color: #a1a1aa;
-            font-size: 13px;
-            margin-top: 2px;
+            font-size: 12px;
+        }
+        .top-icons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
         }
         .top-card {
             background-color: #18181b;
             border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
         }
         .input-group {
             display: flex;
@@ -46,12 +59,13 @@
             border-radius: 12px;
             padding: 6px 12px;
             align-items: center;
+            margin-bottom: 14px;
         }
         .input-group input {
             background: transparent;
             border: none;
             color: #ffffff;
-            font-size: 14px;
+            font-size: 13px;
             outline: none;
             width: 100%;
         }
@@ -62,15 +76,31 @@
             background-color: #ec4899;
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 6px 16px;
             border-radius: 8px;
             font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+        .action-sub-btn {
+            background: transparent;
+            border: none;
+            color: #d4d4d8;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             cursor: pointer;
         }
         .status-box {
             background-color: #18181b;
             border-radius: 16px;
-            padding: 16px;
+            padding: 14px;
             margin-bottom: 20px;
         }
         .status-header {
@@ -81,38 +111,41 @@
         }
         .status-title {
             color: #ec4899;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
+        }
+        .status-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 11px;
+            color: #a1a1aa;
         }
         .status-desc {
             color: #a1a1aa;
-            font-size: 12px;
+            font-size: 11px;
         }
         .platforms-title {
-            font-size: 14px;
-            color: #d4d4d8;
-            margin-bottom: 12px;
+            font-size: 13px;
+            color: #a1a1aa;
+            margin-bottom: 10px;
         }
         .platforms-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
         }
         .platform-btn {
             background-color: #18181b;
             border: none;
             border-radius: 12px;
-            padding: 12px;
+            padding: 10px 8px;
             color: white;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 14px;
+            gap: 6px;
+            font-size: 12px;
             cursor: pointer;
-            text-align: left;
-        }
-        .platform-btn:active {
-            background-color: #27272a;
         }
     </style>
 </head>
@@ -123,6 +156,11 @@
             <h1>Luna</h1>
             <p>Media Player & Google Girişi</p>
         </div>
+        <div class="top-icons">
+            <button class="icon-btn" title="Axtarış">🔍</button>
+            <button class="icon-btn" title="Ayarlar">⚙️</button>
+            <button class="icon-btn" title="Yenilə">🔄</button>
+        </div>
     </div>
 
     <div class="top-card">
@@ -130,24 +168,32 @@
             <input type="text" placeholder="Spotify / Media linki yapışdırın...">
             <button>Aç</button>
         </div>
+        <div class="action-row">
+            <button class="action-sub-btn">🌐 Google-a Get</button>
+            <button class="action-sub-btn">📁 New Folder</button>
+        </div>
     </div>
 
     <div class="status-box">
         <div class="status-header">
             <span class="status-title">🎵 Musiqi & Video Pleyeri</span>
-            <span style="color: #22c55e; font-size: 12px; font-weight: 600;">Hazır</span>
+            <div class="status-right">
+                <span>🔄 Yenilə</span>
+                <span>📥 Yüklə</span>
+                <span style="color: #22c55e; font-weight: 600;">Hazır</span>
+            </div>
         </div>
         <p class="status-desc">Link daxil edərək musiqini dinləyə və yükləyə bilərsiniz.</p>
     </div>
 
     <div class="platforms-title">Dəstəklənən Platformalar</div>
     <div class="platforms-grid">
-        <button class="platform-btn">🎧 Spotify</button>
-        <button class="platform-btn">📌 Pinterest</button>
-        <button class="platform-btn">💙 Facebook</button>
-        <button class="platform-btn">📷 Instagram</button>
-        <button class="platform-btn">🧵 Threads</button>
-        <button class="platform-btn">✖️ Twitter (X)</button>
+        <button class="platform-btn"><span style="color: #22c55e;">🎧</span> Spotify</button>
+        <button class="platform-btn"><span style="color: #ef4444;">📌</span> Pinterest</button>
+        <button class="platform-btn"><span style="color: #3b82f6;">💙</span> Facebook</button>
+        <button class="platform-btn"><span style="color: #ec4899;">📷</span> Instagram</button>
+        <button class="platform-btn"><span style="color: #60a5fa;">🧵</span> Threads</button>
+        <button class="platform-btn"><span style="color: #f3f4f6;">✖️</span> Twitter (X)</button>
     </div>
 
 </body>
