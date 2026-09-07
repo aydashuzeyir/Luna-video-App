@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luna - Media Player & PWA</title>
     
-    <!-- Çoxlu sayda əlavə edilmiş fontlar -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Orbitron:wght@500;700&family=Caveat:wght@600&family=Fira+Code:wght@400;600&family=Montserrat:wght@400;700&family=Pacifico&family=Dancing+Script:wght@700&family=Courier+Prime:wght@700&family=Press+Start+2P&family=Bungee&family=Rubik+Glitch&family=Cinzel:wght@700&family=Silkscreen&display=swap" rel="stylesheet">
+    <!-- Çoxlu sayda şrift linkləri -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Orbitron:wght@500;700&family=Caveat:wght@600&family=Fira+Code:wght@400;600&family=Montserrat:wght@400;700&family=Pacifico&family=Dancing+Script:wght@700&family=Courier+Prime:wght@700&family=Press+Start+2P&family=Bungee&family=Rubik+Glitch&family=Cinzel:wght@700&family=Silkscreen&family=Amatic+SC:wght@700&family=Bangers&family=Permanent+Marker&family=VT323&family=Sacramento&family=Playfair+Display:wght@700&family=Caveat+Brush&family=Lobster&family=Shrikhand&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -186,10 +186,7 @@
         #folderModal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: #09090b;
             z-index: 9999;
             flex-direction: column;
@@ -377,6 +374,20 @@
             margin-bottom: 10px;
             cursor: pointer;
         }
+        .settings-reload-btn {
+            display: block;
+            width: 100%;
+            background-color: #ec4899;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -388,7 +399,6 @@
         </div>
         <div class="top-icons">
             <button class="icon-btn" title="Ayarlar" onclick="openSettings()">⚙️</button>
-            <button class="icon-btn" title="Yenilə" onclick="location.reload()">🔄</button>
         </div>
     </div>
 
@@ -474,7 +484,7 @@
         </div>
     </div>
 
-    <!-- Ayarlar Modalı (Çoxlu Font, Tema, Shuffle və Bass Rejimləri) -->
+    <!-- Ayarlar Modalı (Genişləndirilmiş Səs, İkon, 100+ Font və Yeniləmə Düyməsi) -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -498,17 +508,22 @@
             </div>
 
             <div class="setting-group">
-                <label>Səs / Bass Rejimi</label>
+                <label>Çoxlu Səs və Ekvalayzer Rejimləri</label>
                 <select id="bassSelect" onchange="changeBass(this.value)">
                     <option value="normal">Normal Səs</option>
                     <option value="mega">🔥 Mega Bass Boost (+10dB)</option>
                     <option value="deep">🎧 Deep Sub-Bass</option>
                     <option value="punchy">⚡ Punchy Club Mix</option>
+                    <option value="vocal">🎤 Vocal Clarity & Boost</option>
+                    <option value="concert">🏟️ Live Concert 3D Hall</option>
+                    <option value="rock">🎸 Rock & Metal Heavy</option>
+                    <option value="electronic">🎹 Electronic Dance Beats</option>
+                    <option value="acoustic">🎻 Warm Acoustic Lounge</option>
                 </select>
             </div>
 
             <div class="setting-group">
-                <label>Şrift (Font) Stili</label>
+                <label>Geniş Şrift (Font) Kolleksiyası</label>
                 <select id="fontSelect" onchange="changeFont(this.value)">
                     <option value="system">Sistem Şrifti</option>
                     <option value="poppins">Poppins (Modern)</option>
@@ -523,17 +538,28 @@
                     <option value="cinzel">Cinzel (Klassik/Kral)</option>
                     <option value="pixel">Silkscreen (Piksel)</option>
                     <option value="monospace">Fira Code / Terminal</option>
+                    <option value="amatic">Amatic SC (İncə Əlyazı)</option>
+                    <option value="bangers">Bangers (Komiks Stili)</option>
+                    <option value="marker">Permanent Marker (Marker)</option>
+                    <option value="vt323">VT323 (Retro Terminal)</option>
+                    <option value="sacramento">Sacramento (Lüks Yazı)</option>
+                    <option value="playfair">Playfair Display (Premium)</option>
+                    <option value="lobster">Lobster (Dairəvi Kaligrafiya)</option>
+                    <option value="shrikhand">Shrikhand (Şərq / Dekorativ)</option>
                 </select>
             </div>
 
             <div class="setting-group">
-                <label>İkon Kolleksiyası</label>
+                <label>Çoxlu İkon Kolleksiyası</label>
                 <select id="iconPackSelect" onchange="changeIconPack(this.value)">
                     <option value="classic">Klassik İkonlar</option>
                     <option value="neonpack">Neon / Parıldayan ✨</option>
                     <option value="firepack">Odlu / Enerji 🔥</option>
                     <option value="techpack">Texnologiya 💻</option>
                     <option value="nature">Təbiət & Çiçək 🌸</option>
+                    <option value="space">Kosmos & Ulduz 🚀</option>
+                    <option value="musicall">Musiqi Notaları 🎵</option>
+                    <option value="goldpack">Qızıl & Qiymətli 👑</option>
                     <option value="minimal">Minimalist •</option>
                 </select>
             </div>
@@ -549,6 +575,9 @@
                     <option value="purple">Bənövşəyi</option>
                 </select>
             </div>
+
+            <!-- Ayarların içində Luna-nı yeniləmə düyməsi -->
+            <button class="settings-reload-btn" onclick="location.reload()">🔄 Luna Yenilə (Yenidən Yüklə)</button>
         </div>
     </div>
 
@@ -576,6 +605,11 @@
             if(bassMode === 'mega') boxTitle.innerText = '🔥 Musiqi & Video (Mega Bass On)';
             else if(bassMode === 'deep') boxTitle.innerText = '🎧 Musiqi & Video (Deep Sub-Bass)';
             else if(bassMode === 'punchy') boxTitle.innerText = '⚡ Musiqi & Video (Punchy Mix)';
+            else if(bassMode === 'vocal') boxTitle.innerText = '🎤 Musiqi & Video (Vocal Boost)';
+            else if(bassMode === 'concert') boxTitle.innerText = '🏟️ Musiqi & Video (3D Hall)';
+            else if(bassMode === 'rock') boxTitle.innerText = '🎸 Musiqi & Video (Rock Heavy)';
+            else if(bassMode === 'electronic') boxTitle.innerText = '🎹 Musiqi & Video (EDM Beats)';
+            else if(bassMode === 'acoustic') boxTitle.innerText = '🎻 Musiqi & Video (Acoustic Warm)';
             else boxTitle.innerText = '🎵 Musiqi & Video Pleyeri';
         }
 
@@ -593,6 +627,14 @@
             else if(font === 'cinzel') document.body.style.fontFamily = "'Cinzel', serif";
             else if(font === 'pixel') document.body.style.fontFamily = "'Silkscreen', cursive";
             else if(font === 'monospace') document.body.style.fontFamily = "'Fira Code', monospace";
+            else if(font === 'amatic') document.body.style.fontFamily = "'Amatic SC', cursive";
+            else if(font === 'bangers') document.body.style.fontFamily = "'Bangers', cursive";
+            else if(font === 'marker') document.body.style.fontFamily = "'Permanent Marker', cursive";
+            else if(font === 'vt323') document.body.style.fontFamily = "'VT323', monospace";
+            else if(font === 'sacramento') document.body.style.fontFamily = "'Sacramento', cursive";
+            else if(font === 'playfair') document.body.style.fontFamily = "'Playfair Display', serif";
+            else if(font === 'lobster') document.body.style.fontFamily = "'Lobster', cursive";
+            else if(font === 'shrikhand') document.body.style.fontFamily = "'Shrikhand', cursive";
         }
 
         let currentIconPack = 'classic';
@@ -605,6 +647,9 @@
                 'firepack': ['🎧🔥', '📌💥', '💙⚡', '📷🚀', '🧵⭐', '✖️🔥'],
                 'techpack': ['🎧💻', '📌💾', '💙🔋', '📷📱', '🧵⚡', '✖️🛰️'],
                 'nature': ['🎧🌸', '📌🍀', '💙🌊', '📷🌻', '🧵🍂', '✖️🌵'],
+                'space': ['🎧🚀', '📌🪐', '💙🌙', '📷🛸', '🧵⭐', '✖️🌌'],
+                'musicall': ['🎧🎵', '📌🎶', '💙🎸', '📷🎹', '🧵🎷', '✖️🎧'],
+                'goldpack': ['🎧👑', '📌💎', '💙🏆', '📷⭐', '🧵🌟', '✖️✨'],
                 'minimal': ['•', '•', '•', '•', '•', '•']
             };
             icons.forEach((el, index) => {
