@@ -683,6 +683,24 @@
     </div>
 
     <script>
+        function startPlayingLink() {
+    const val = document.getElementById('mediaLink').value.trim();
+    if(!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
+    document.getElementById('mediaLink').value = '';
+
+    let isVideo = val.includes('youtube.com') || val.includes('youtu.be') || val.match(/\.(mp4|webm|ogg|mov)$/i);
+    let mediaName = "YouTube / Media Linki";
+    
+    if(!uploadsList.some(item => item.fullLink === val)) {
+        uploadsList.unshift({ name: mediaName, fullLink: val });
+        foldersList[0].count++;
+        renderFolders();
+        updateUI();
+    }
+
+    playFile(val, mediaName, isVideo);
+}
+
         function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
         function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
         function openSoundModal() { document.getElementById('soundModal').style.display = 'flex'; }
