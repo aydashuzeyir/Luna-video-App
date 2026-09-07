@@ -21,6 +21,7 @@
             background-color: #09090b;
             color: #ffffff;
             padding: 16px;
+            transition: background 0.3s, color 0.3s;
         }
         .header {
             display: flex;
@@ -154,7 +155,7 @@
             cursor: pointer;
         }
 
-        /* Ana səhifədə qovluq düyməsi */
+        /* Ana səhifədə qovluq kartı */
         .folder-card {
             background-color: #18181b;
             border-radius: 16px;
@@ -183,7 +184,7 @@
             color: #a1a1aa;
         }
 
-        /* Qovluq İçi Tam Ekran Səhifəsi (Əsas hissə) */
+        /* Qovluq İçi Tam Ekran Səhifəsi */
         #folderModal {
             display: none;
             position: fixed;
@@ -256,7 +257,7 @@
             font-size: 14px;
         }
 
-        /* Format Seçim Modalı */
+        /* Ümumi Modallar (Ayarlar və Format) */
         .modal {
             display: none;
             position: fixed;
@@ -293,6 +294,25 @@
             font-size: 18px;
             cursor: pointer;
         }
+        .setting-group {
+            margin-bottom: 12px;
+        }
+        .setting-group label {
+            font-size: 12px;
+            color: #a1a1aa;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .setting-group select {
+            width: 100%;
+            background: #27272a;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            outline: none;
+            font-size: 13px;
+        }
         .format-btn {
             display: block;
             width: 100%;
@@ -317,13 +337,16 @@
             <p>Media Player</p>
         </div>
         <div class="top-icons">
-            <button class="icon-btn" onclick="location.reload()">🔄</button>
+            <button class="icon-btn" title="Ayarlar" onclick="openSettings()">⚙️</button>
+            <button class="icon-btn" title="Yenilə" onclick="location.reload()">🔄</button>
         </div>
     </div>
 
     <div class="top-card">
         <div class="input-group">
-            <input type="text" id="mediaLink" placeholder="Media linki yapışdırın...">
+            <!-- Lupa simvolu ilə axtarış sahəsi -->
+            <span style="font-size: 15px;">🔍</span>
+            <input type="text" id="mediaLink" placeholder="Media linki yapışdırın (Lupa ilə axtar)...">
             <button onclick="checkAndOpenFormat()">Aç</button>
         </div>
         <div class="action-row">
@@ -353,7 +376,7 @@
         <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #f3f4f6;">✖️</span> Twitter</button>
     </div>
 
-    <!-- Ana səhifədə toxunula bilən Qovluq Kartı -->
+    <!-- Ana səhifədə qovluq kartı -->
     <div class="folder-card" onclick="openFolder()">
         <div class="folder-info">
             <span class="folder-icon">📁</span>
@@ -365,7 +388,7 @@
         <span style="color: #71717a; font-size: 16px;">➔</span>
     </div>
 
-    <!-- Qovluğun İçi (Tam Ekran Açılan Səhifə) -->
+    <!-- Qovluğun İçi (Tam Ekran Səhifəsi) -->
     <div id="folderModal">
         <div class="folder-modal-header">
             <h2>📁 New Folder İçi</h2>
@@ -389,20 +412,58 @@
         </div>
     </div>
 
+    <!-- Ayarlar Modalı -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Tənzimləmələr</span>
+                <button class="close-btn" onclick="closeSettings()">✕</button>
+            </div>
+            <div class="setting-group">
+                <label>Tema Seçimi</label>
+                <select id="themeSelect" onchange="changeTheme(this.value)">
+                    <option value="dark">Tənha Qara (Default)</option>
+                    <option value="midnight">Göyçə / Midnight</option>
+                    <option value="pinkish">Çəhrayı Vibe</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label>Şrift (Font) Stili</label>
+                <select id="fontSelect" onchange="changeFont(this.value)">
+                    <option value="system">Sistem Şrifti</option>
+                    <option value="monospace">Kod (Monospace)</option>
+                    <option value="serif">Klassik (Serif)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Ayarlar modalı funksiyaları
+        function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
+        function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
+        
+        function changeTheme(theme) {
+            if(theme === 'dark') document.body.style.backgroundColor = '#09090b';
+            else if(theme === 'midnight') document.body.style.backgroundColor = '#0f172a';
+            else if(theme === 'pinkish') document.body.style.backgroundColor = '#1f101a';
+        }
+        function changeFont(font) {
+            if(font === 'system') document.body.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            else if(font === 'monospace') document.body.style.fontFamily = 'monospace';
+            else if(font === 'serif') document.body.style.fontFamily = 'serif';
+        }
+
         let downloadedFiles = [];
 
-        // Qovluğu açmaq üçün əsas funksiya
+        // Qovluq funksiyaları
         function openFolder() {
-            const modal = document.getElementById('folderModal');
-            modal.style.display = 'flex';
+            document.getElementById('folderModal').style.display = 'flex';
             updateFolderUI();
         }
 
-        // Qovluqdan geri qayıtmaq üçün funksiya
         function closeFolder() {
-            const modal = document.getElementById('folderModal');
-            modal.style.display = 'none';
+            document.getElementById('folderModal').style.display = 'none';
         }
 
         function checkAndOpenFormat() {
