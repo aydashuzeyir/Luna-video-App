@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luna - Media Player & PWA</title>
     
+    <!-- Geniş Google Fonts Kolleksiyası -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Orbitron:wght@500;700&family=Caveat:wght@600&family=Fira+Code:wght@400;600&family=Montserrat:wght@400;700&family=Pacifico&family=Dancing+Script:wght@700&family=Courier+Prime:wght@700&family=Press+Start+2P&family=Bungee&family=Rubik+Glitch&family=Cinzel:wght@700&family=Silkscreen&family=Amatic+SC:wght@700&family=Bangers&family=Permanent+Marker&family=VT323&family=Sacramento&family=Playfair+Display:wght@700&family=Caveat+Brush&family=Lobster&family=Shrikhand&display=swap" rel="stylesheet">
     
     <style>
@@ -284,7 +285,7 @@
             font-size: 14px;
         }
 
-        /* MİNİ PLEYER PANELİ (Aşağıda sabit) */
+        /* MİNİ PLEYER PANELİ */
         #persistentMiniPlayer {
             display: none;
             position: fixed;
@@ -346,7 +347,7 @@
             justify-content: center;
         }
 
-        /* TAM EKRAN PLEYER MODALI */
+        /* TAM EKRAN PLEYER */
         #fullPlayerModal {
             display: none;
             position: fixed;
@@ -372,44 +373,49 @@
         }
         .album-art-container {
             width: 100%;
-            max-height: 320px;
+            max-height: 250px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 20px 0;
+            margin: 10px 0;
         }
         .album-art {
-            width: 280px;
-            height: 280px;
-            border-radius: 24px;
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
             background: #312e81;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            font-size: 60px;
+            font-size: 50px;
             border: 2px solid rgba(255,255,255,0.1);
         }
         .song-meta-info {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            padding: 0 10px;
         }
         .full-song-title {
-            font-size: 22px;
+            font-size: 16px;
             font-weight: bold;
             color: #ffffff;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            max-height: 50px;
+            overflow-y: auto;
         }
         .full-song-artist {
-            font-size: 14px;
+            font-size: 13px;
             color: #c7d2fe;
         }
         .full-player-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             padding: 0 10px;
         }
         .ctrl-sub-btn, .ctrl-main-btn {
@@ -423,18 +429,18 @@
             opacity: 0.8;
         }
         .ctrl-main-btn {
-            width: 64px;
-            height: 64px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.25);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
+            font-size: 22px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .progress-container {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .full-seeker {
             width: 100%;
@@ -462,8 +468,22 @@
             text-align: center;
             font-size: 11px;
             color: #c7d2fe;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             letter-spacing: 1px;
+        }
+        .download-btn-area {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .direct-download-btn {
+            background-color: #ec4899;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         /* Digər Modallar */
@@ -554,7 +574,7 @@
         <div class="input-group">
             <span style="font-size: 15px;">🔍</span>
             <input type="text" id="mediaLink" placeholder="Media linki yapışdırın...">
-            <button onclick="checkAndOpenFormat()">Aç</button>
+            <button onclick="checkAndOpenFormat()">Yüklə</button>
         </div>
         <div class="action-row">
             <button class="action-sub-btn" onclick="window.open('https://www.google.com', '_blank')">🌐 Google</button>
@@ -578,7 +598,7 @@
             <span class="status-title" id="boxTitle">🎵 Musiqi & Video Pleyeri</span>
             <span style="color: #22c55e; font-weight: 600; font-size: 11px;">Hazır</span>
         </div>
-        <p style="color: #a1a1aa; font-size: 11px;">Mahnıya basaraq tam ekran pleyeri aça bilərsiniz.</p>
+        <p style="color: #a1a1aa; font-size: 11px;">Link daxil edib yüklədiyiniz an tam ekran pleyerdə tam formada açılacaq.</p>
     </div>
 
     <div class="platforms-title">Dəstəklənən Platformalar</div>
@@ -643,6 +663,10 @@
         </div>
 
         <div>
+            <div class="download-btn-area">
+                <button class="direct-download-btn" id="directDownloadLink" onclick="downloadCurrentFile()">📥 Telefona Yüklə</button>
+            </div>
+
             <div class="full-player-controls">
                 <button class="ctrl-sub-btn">🔀</button>
                 <button class="ctrl-sub-btn" onclick="skipTime(-10)">⏪</button>
@@ -659,7 +683,7 @@
                 </div>
             </div>
 
-            <div class="audio-specs">M4A • 128 kb/s • 44.1 kHz</div>
+            <div class="audio-specs" id="audioSpecsText">M4A • 128 kb/s • 44.1 kHz</div>
         </div>
     </div>
 
@@ -690,13 +714,43 @@
                 <label>Tema Seçimi</label>
                 <select id="themeSelect" onchange="changeTheme(this.value)">
                     <option value="purple">🔮 Royal Bənövşəyi</option>
-                    <option value="dark">Tənha Qara</option>
+                    <option value="dark">🖤 Tənha Qara</option>
                     <option value="midnight">🌙 Midnight Blue</option>
                     <option value="pinkish">🌸 Çəhrayı Vibe</option>
                     <option value="neon">⚡ Neon Matrix</option>
                     <option value="sunset">🔥 Sunset Qırmızı</option>
                     <option value="emerald">🟢 Emerald Yaşıl</option>
                     <option value="cyberpunk">🔊 Cyberpunk Bass</option>
+                    <option value="gold">✨ Qızılı Lüks</option>
+                    <option value="ocean">🌊 Drin Okean</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label>Şrift Seçimi (Font Family)</label>
+                <select id="fontSelect" onchange="changeFont(this.value)">
+                    <option value="system-ui">Standard Sistem Şrifti</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                    <option value="'Orbitron', sans-serif">Orbitron (Sci-Fi)</option>
+                    <option value="'Caveat', cursive">Caveat (Əlyazı)</option>
+                    <option value="'Fira Code', monospace">Fira Code (Kod)</option>
+                    <option value="'Montserrat', sans-serif">Montserrat</option>
+                    <option value="'Pacifico', cursive">Pacifico</option>
+                    <option value="'Dancing Script', cursive">Dancing Script</option>
+                    <option value="'Courier Prime', monospace">Courier Prime</option>
+                    <option value="'Press Start 2P', cursive">Press Start 2P (Retro)</option>
+                    <option value="'Bungee', cursive">Bungee</option>
+                    <option value="'Rubik Glitch', cursive">Rubik Glitch</option>
+                    <option value="'Cinzel', serif">Cinzel</option>
+                    <option value="'Silkscreen', cursive">Silkscreen</option>
+                    <option value="'Amatic SC', cursive">Amatic SC</option>
+                    <option value="'Bangers', cursive">Bangers</option>
+                    <option value="'Permanent Marker', cursive">Permanent Marker</option>
+                    <option value="'VT323', monospace">VT323</option>
+                    <option value="'Sacramento', cursive">Sacramento</option>
+                    <option value="'Playfair Display', serif">Playfair Display</option>
+                    <option value="'Lobster', cursive">Lobster</option>
+                    <option value="'Shrikhand', cursive">Shrikhand</option>
                 </select>
             </div>
         </div>
@@ -713,42 +767,38 @@
             const fullPlayer = document.getElementById('fullPlayerModal');
             const miniPlayer = document.getElementById('persistentMiniPlayer');
             
-            if(theme === 'purple') {
-                fullPlayer.style.backgroundColor = '#1e1b4b';
-                document.body.style.backgroundColor = '#09090b';
-                miniPlayer.style.backgroundColor = '#18181b';
-            } else if(theme === 'dark') {
-                fullPlayer.style.backgroundColor = '#09090b';
-                document.body.style.backgroundColor = '#09090b';
-                miniPlayer.style.backgroundColor = '#18181b';
-            } else if(theme === 'midnight') {
-                fullPlayer.style.backgroundColor = '#0f172a';
-                document.body.style.backgroundColor = '#0f172a';
-                miniPlayer.style.backgroundColor = '#1e293b';
-            } else if(theme === 'pinkish') {
-                fullPlayer.style.backgroundColor = '#2d1525';
-                document.body.style.backgroundColor = '#1f101a';
-                miniPlayer.style.backgroundColor = '#2d1525';
-            } else if(theme === 'neon') {
-                fullPlayer.style.backgroundColor = '#052e16';
-                document.body.style.backgroundColor = '#050505';
-                miniPlayer.style.backgroundColor = '#111111';
-            } else if(theme === 'sunset') {
-                fullPlayer.style.backgroundColor = '#261010';
-                document.body.style.backgroundColor = '#180909';
-                miniPlayer.style.backgroundColor = '#261010';
-            } else if(theme === 'emerald') {
-                fullPlayer.style.backgroundColor = '#064e3b';
-                document.body.style.backgroundColor = '#022c22';
-                miniPlayer.style.backgroundColor = '#064e3b';
-            } else if(theme === 'cyberpunk') {
-                fullPlayer.style.backgroundColor = '#2b0433';
-                document.body.style.backgroundColor = '#18021c';
-                miniPlayer.style.backgroundColor = '#2b0433';
+            const themes = {
+                'purple': {full: '#1e1b4b', body: '#09090b', mini: '#18181b'},
+                'dark': {full: '#09090b', body: '#09090b', mini: '#18181b'},
+                'midnight': {full: '#0f172a', body: '#0f172a', mini: '#1e293b'},
+                'pinkish': {full: '#2d1525', body: '#1f101a', mini: '#2d1525'},
+                'neon': {full: '#052e16', body: '#050505', mini: '#111111'},
+                'sunset': {full: '#261010', body: '#180909', mini: '#261010'},
+                'emerald': {full: '#064e3b', body: '#022c22', mini: '#064e3b'},
+                'cyberpunk': {full: '#2b0433', body: '#18021c', mini: '#2b0433'},
+                'gold': {full: '#382e0d', body: '#1a1405', mini: '#292209'},
+                'ocean': {full: '#0c3b5e', body: '#041624', mini: '#082840'}
+            };
+
+            if(themes[theme]) {
+                fullPlayer.style.backgroundColor = themes[theme].full;
+                document.body.style.backgroundColor = themes[theme].body;
+                miniPlayer.style.backgroundColor = themes[theme].mini;
             }
         }
 
+        function changeFont(fontFamily) {
+            document.body.style.fontFamily = fontFamily;
+            const elements = document.querySelectorAll('input, button, h1, h2, h3, p, span');
+            elements.forEach(el => {
+                if(el.tagName !== 'SPAN' || !el.classList.contains('p-icon')) {
+                    el.style.fontFamily = fontFamily;
+                }
+            });
+        }
+
         let downloadedFiles = [];
+        let currentActiveLink = '';
         const globalAudio = document.getElementById('globalAudio');
 
         function openFolder() { document.getElementById('folderModal').style.display = 'flex'; updateUI(); }
@@ -767,14 +817,14 @@
             const val = document.getElementById('mediaLink').value.trim();
             document.getElementById('formatModal').style.display = 'none';
             document.getElementById('mediaLink').value = '';
-            let fileName = val.length > 20 ? val.substring(0, 20) + '...' : val;
             
-            downloadedFiles.push({ name: fileName, format: formatType, fullLink: val });
+            downloadedFiles.push({ name: val, format: formatType, fullLink: val });
             updateUI();
-            playFile(val, fileName);
+            playFile(val, val, formatType);
         }
 
-        function playFile(fullLink, name) {
+        function playFile(fullLink, name, format = 'MP3') {
+            currentActiveLink = fullLink;
             globalAudio.src = fullLink;
             globalAudio.play().catch(e => console.log("Avtomatik oxutma məhdudiyyəti:", e));
             
@@ -783,8 +833,20 @@
             document.getElementById('fullSongTitle').innerText = name;
             document.getElementById('miniPlayBtn').innerText = '⏸️';
             document.getElementById('fullPlayBtn').innerText = '⏸️';
+            document.getElementById('audioSpecsText').innerText = `${format} • 128 kb/s • 44.1 kHz`;
             
             openFullPlayer();
+        }
+
+        function downloadCurrentFile() {
+            if(!currentActiveLink) return;
+            const a = document.createElement('a');
+            a.href = currentActiveLink;
+            a.download = 'media_file';
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
         function seekAudio(value) {
@@ -848,7 +910,7 @@
 
             let folderHtml = '';
             downloadedFiles.forEach((file, index) => {
-                folderHtml += `<li class="folder-file-item" onclick="playFile('${file.fullLink}', '${file.name}')">
+                folderHtml += `<li class="folder-file-item" onclick="playFile('${file.fullLink}', '${file.name}', '${file.format}')">
                             <span>${index + 1}. ${file.name}</span>
                             <span class="file-badge">${file.format}</span>
                          </li>`;
@@ -858,7 +920,7 @@
             let recentHtml = '';
             let reversedFiles = [...downloadedFiles].reverse();
             reversedFiles.forEach((file) => {
-                recentHtml += `<li class="recent-item" onclick="playFile('${file.fullLink}', '${file.name}')">
+                recentHtml += `<li class="recent-item" onclick="playFile('${file.fullLink}', '${file.name}', '${file.format}')">
                             <span>🎵 ${file.name}</span>
                             <span style="font-size: 10px; color: #ec4899; font-weight: bold;">${file.format}</span>
                          </li>`;
