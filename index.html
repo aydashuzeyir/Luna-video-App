@@ -132,7 +132,6 @@
     </div>
 
     <script>
-        // IndexedDB Bazası
         let db;
         const dbName = "LunaOfflineDB";
         const storeName = "mediaFiles";
@@ -150,13 +149,11 @@
             }
         };
 
-        // Nümunə səs faylını yükləyib yaddaşa atan funksiya
         function addDemoFile() {
             document.getElementById('mediaUrlInput').value = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
             downloadAndStoreMedia();
         }
 
-        // Linki və ya faylı yükləyib IndexedDB-yə qeyd etmək
         async function downloadAndStoreMedia() {
             let url = document.getElementById('mediaUrlInput').value.trim();
             if (!url) {
@@ -174,7 +171,6 @@
             progressPercent.textContent = '0%';
 
             try {
-                // Yüklənmə simulyasiyası / real fetch
                 progressText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Fayl endirilir...`;
                 
                 let blobData;
@@ -182,7 +178,6 @@
                     let response = await fetch(url);
                     blobData = await response.blob();
                 } catch (err) {
-                    // Əgər internet yoxdursa və ya CORS bloku olarsa, standart səs faylı götürür ki, xəta verməsin
                     let fallbackRes = await fetch('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
                     blobData = await fallbackRes.blob();
                 }
@@ -196,7 +191,6 @@
                     if (progress >= 100) {
                         clearInterval(interval);
                         
-                        // Bazaya yazırıq
                         let transaction = db.transaction([storeName], "readwrite");
                         let store = transaction.objectStore(storeName);
                         let newItem = {
@@ -222,7 +216,6 @@
             }
         }
 
-        // Yaddaşdakı faylları ekrana çıxarmaq
         function loadStoredMedia() {
             if (!db) return;
             let transaction = db.transaction([storeName], "readonly");
@@ -257,7 +250,6 @@
             };
         }
 
-        // Yaddaşdan oxutmaq (İnternetə ehtiyac yoxdur!)
         function playMedia(id) {
             let transaction = db.transaction([storeName], "readonly");
             let store = transaction.objectStore(storeName);
@@ -276,7 +268,6 @@
             };
         }
 
-        // Faylı silmək
         function deleteMedia(id) {
             let transaction = db.transaction([storeName], "readwrite");
             let store = transaction.objectStore(storeName);
@@ -296,9 +287,7 @@
             document.getElementById('playerContainer').innerHTML = '';
         }
 
-        function switchTab(type) {
-            // Gələcəkdə əlavə tablar üçün
-        }
+        function switchTab(type) {}
     </script>
 </body>
 </html>
