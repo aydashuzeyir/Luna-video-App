@@ -106,6 +106,9 @@
             border-radius: var(--radius);
             padding: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .input-group {
@@ -116,7 +119,6 @@
             border-radius: 14px;
             padding: 6px 6px 6px 14px;
             gap: 10px;
-            margin-bottom: 12px;
             transition: 0.2s;
         }
 
@@ -143,16 +145,33 @@
             color: var(--text-sub);
         }
 
+        /* Buttons Row */
+        .btn-row {
+            display: flex;
+            gap: 8px;
+        }
+
         .action-btn {
+            flex: 1;
+            background: var(--surface-hover);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .action-btn.primary-action {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s;
             box-shadow: 0 4px 12px var(--primary-glow);
         }
 
@@ -261,7 +280,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 250px;
+            max-height: 280px;
             overflow-y: auto;
         }
 
@@ -276,57 +295,72 @@
             align-items: center;
         }
 
-        .history-item {
+        .media-card-item {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            background: rgba(0,0,0,0.2);
-            padding: 10px 12px;
-            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
             border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 8px;
             gap: 10px;
+            transition: 0.2s;
         }
 
-        .history-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            overflow: hidden;
+        .media-card-item:hover {
+            border-color: var(--primary);
+        }
+
+        .media-thumb {
+            width: 70px;
+            height: 45px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #1e293b;
+        }
+
+        .media-details {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
         }
 
-        .history-info i {
-            color: var(--primary);
-            font-size: 14px;
-        }
-
-        .history-url {
+        .media-title {
             font-size: 12px;
+            font-weight: 600;
             color: var(--text-main);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .download-action-btn {
-            background: var(--primary-glow);
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 6px 10px;
+        .media-url-sub {
+            font-size: 10px;
+            color: var(--text-sub);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .play-action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
             transition: 0.2s;
-            white-space: nowrap;
+            flex-shrink: 0;
         }
 
-        .download-action-btn:hover {
-            background: var(--primary);
-            color: white;
+        .play-action-btn:hover {
+            transform: scale(1.05);
         }
 
         .empty-text {
@@ -334,6 +368,25 @@
             color: var(--text-sub);
             text-align: center;
             padding: 15px 0;
+        }
+
+        /* Player Box */
+        .player-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .player-frame {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            background: #000;
+            border: none;
         }
 
         /* Platforms Grid */
@@ -502,15 +555,22 @@
             </div>
         </header>
 
-        <!-- Main Input Card -->
+        <!-- Main Input Card with Two Separate Buttons -->
         <div class="search-card">
             <div class="input-group">
                 <i class="fa-solid fa-link"></i>
-                <input type="text" id="mediaUrlInput" placeholder="Media linki yapışdırın...">
-                <button class="action-btn" onclick="processLink()">Saxla</button>
+                <input type="text" id="mediaUrlInput" placeholder="YouTube linki yapışdırın...">
+            </div>
+            <div class="btn-row">
+                <button class="action-btn" onclick="saveLink()">
+                    <i class="fa-solid fa-bookmark" style="color: #fbbf24;"></i> Saxla
+                </button>
+                <button class="action-btn primary-action" onclick="downloadLink()">
+                    <i class="fa-solid fa-cloud-arrow-down"></i> Yüklə
+                </button>
             </div>
             <div class="quick-links">
-                <span class="quick-tag" onclick="setInput('https://google.com')"><i class="fa-solid fa-globe" style="color: #60a5fa;"></i> Google</span>
+                <span class="quick-tag" onclick="setInput('https://www.youtube.com/watch?v=dQw4w9WgXcQ')"><i class="fa-brands fa-youtube" style="color: #ef4444;"></i> Nümunə YouTube</span>
                 <span class="quick-tag" onclick="alert('Yeni qovluq yaradıldı!')"><i class="fa-solid fa-folder-plus" style="color: #fbbf24;"></i> New Folder</span>
             </div>
         </div>
@@ -525,7 +585,7 @@
                     <i class="fa-solid fa-circle" style="font-size: 6px;"></i> Təhlükəsiz Rejim
                 </div>
             </div>
-            <div class="status-desc">Linklər xarici tətbiqlərə və ya Files qovluğuna keçmədən yalnız daxildə işləyir.</div>
+            <div class="status-desc">"Saxla" düyməsi siyahıya əlavə edir, "Yüklə" düyməsi isə birbaşa pleyerdə tam açır.</div>
         </div>
 
         <!-- Navigation Tabs -->
@@ -549,6 +609,15 @@
             </div>
         </div>
 
+        <!-- Video Player Container -->
+        <div class="player-container" id="playerContainer">
+            <div class="section-header-title">
+                <span>Daxili İzləmə Pleyeri</span>
+                <span style="font-size: 10px; cursor: pointer; color: var(--primary);" onclick="closePlayer()">Bağla</span>
+            </div>
+            <iframe id="videoPlayer" class="player-frame" src="" allowfullscreen></iframe>
+        </div>
+
         <!-- Platforms Grid -->
         <div class="section-label">Dəstəklənən Platformalar</div>
         <div class="platforms-grid">
@@ -566,7 +635,7 @@
                 <i class="fa-solid fa-folder"></i>
                 <div class="folder-info">
                     <div class="name">New Folder</div>
-                    <div class="count">0 fayl mövcuddur</div>
+                    <div class="count"><span id="fileCount">0</span> fayl mövcuddur</div>
                 </div>
             </div>
             <i class="fa-solid fa-chevron-right"></i>
@@ -616,22 +685,22 @@
                     <option value="fa-star">Ulduz (Star)</option>
                 </select>
             </div>
-
-            <div class="setting-field">
-                <label>Səs Ekvalayzeri</label>
-                <select onchange="alert('Səs rejimi tətbiq edildi!')">
-                    <option value="normal">Balanslı / Normal</option>
-                    <option value="bass">Ultra Bass Gücləndirici</option>
-                    <option value="vocal">Vokal Aydınlığı</option>
-                    <option value="concert">3D Konsert Zalı</option>
-                </select>
-            </div>
         </div>
     </div>
 
     <script>
         let historyLinks = JSON.parse(localStorage.getItem('luna_history')) || [];
         let currentTab = 'later';
+
+        function updateFileCount() {
+            document.getElementById('fileCount').textContent = historyLinks.length;
+        }
+
+        function extractYouTubeId(url) {
+            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            let match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
 
         function renderList() {
             const listContainer = document.getElementById('itemsList');
@@ -641,34 +710,83 @@
 
             if (historyLinks.length === 0) {
                 listContainer.innerHTML = '<div class="empty-text">Hələ heç bir element yoxdur</div>';
+                updateFileCount();
                 return;
             }
 
             listContainer.innerHTML = '';
             historyLinks.forEach((item, index) => {
+                const videoId = extractYouTubeId(item);
+                let thumbUrl = 'https://via.placeholder.com/70x45?text=Media';
+                let titleText = item;
+
+                if (videoId) {
+                    thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                    titleText = `YouTube Video (${videoId})`;
+                }
+
                 const div = document.createElement('div');
-                div.className = 'history-item';
+                div.className = 'media-card-item';
                 div.innerHTML = `
-                    <div class="history-info">
-                        <i class="fa-solid fa-link"></i>
-                        <span class="history-url" title="${item}">${item}</span>
+                    <img src="${thumbUrl}" class="media-thumb" alt="Thumb">
+                    <div class="media-details">
+                        <span class="media-title">${titleText}</span>
+                        <span class="media-url-sub">${item}</span>
                     </div>
-                    <button class="download-action-btn" onclick="internalSave('${item}')">
-                        <i class="fa-solid fa-download"></i> Daha sonra izlə
+                    <button class="play-action-btn" onclick="playMedia('${item}')" title="İzlə / Oxut">
+                        <i class="fa-solid fa-play"></i>
                     </button>
                 `;
                 listContainer.appendChild(div);
             });
+            updateFileCount();
         }
 
-        function processLink() {
+        // Saxla düyməsinin funksiyası: Yalnız siyahıya/tarixçəyə əlavə edir
+        function saveLink() {
             const val = document.getElementById('mediaUrlInput').value.trim();
             if(!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
             
             historyLinks.unshift(val);
             localStorage.setItem('luna_history', JSON.stringify(historyLinks));
             document.getElementById('mediaUrlInput').value = '';
+            
+            switchTab('later');
             renderList();
+            alert('Link tarixçəyə uğurla saxlanıldı!');
+        }
+
+        // Yüklə düyməsinin funksiyası: Siyahıya əlavə edir, yükləmələr bölməsinə keçir və pleyerdə tam açır
+        function downloadLink() {
+            const val = document.getElementById('mediaUrlInput').value.trim();
+            if(!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
+            
+            historyLinks.unshift(val);
+            localStorage.setItem('luna_history', JSON.stringify(historyLinks));
+            document.getElementById('mediaUrlInput').value = '';
+            
+            switchTab('downloads');
+            renderList();
+            playMedia(val);
+        }
+
+        function playMedia(url) {
+            const videoId = extractYouTubeId(url);
+            const playerContainer = document.getElementById('playerContainer');
+            const videoPlayer = document.getElementById('videoPlayer');
+
+            if (videoId) {
+                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                playerContainer.style.display = 'flex';
+                playerContainer.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert('Bu link daxili pleyerdə açılmır, lakin siyahıda qorunur.');
+            }
+        }
+
+        function closePlayer() {
+            document.getElementById('playerContainer').style.display = 'none';
+            document.getElementById('videoPlayer').src = '';
         }
 
         function setInput(url) {
@@ -689,11 +807,8 @@
         function clearHistory() {
             historyLinks = [];
             localStorage.removeItem('luna_history');
+            closePlayer();
             renderList();
-        }
-
-        function internalSave(url) {
-            // Bildirissiz daxili yaddaşda saxlanılır
         }
 
         function openSettings() {
