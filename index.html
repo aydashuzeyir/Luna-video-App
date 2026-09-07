@@ -533,7 +533,98 @@
         function openGoogleSearch() {
             let val = document.getElementById('mediaUrlInput').value.trim();
             window.open(val ? 'https://www.google.com/search?q=' + encodeURIComponent(val) : 'https://www.google.com', '_blank');
+        }        function processMedia(action) {
+            let input = document.getElementById('mediaUrlInput');
+            let val = input.value.trim();
+            if (!val) {
+                alert("Zəhmət olmasa YouTube linki daxil edin!");
+                return;
+            }
+
+            if (action === 'play') {
+                historyData.unshift({ title: val, query: val });
+                localStorage.setItem('luna_hist', JSON.stringify(historyData));
+                updateCounters();
+                playQuery(val);
+                input.value = '';
+            } else if (action === 'download') {
+                let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                let match = val.match(regExp);
+                let videoId = (match && match[2].length === 11) ? match[2] : null;
+
+                if (!videoId) {
+                    alert("Zəhmət olmasa düzgün YouTube linki daxil edin.");
+                    return;
+                }
+
+                let fileObj = {
+                    title: "YouTube Video (" + videoId + ")",
+                    query: val,
+                    videoId: videoId,
+                    type: 'video/youtube',
+                    size: 'Tam Video',
+                    date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                };
+
+                let tx = db.transaction("downloads", "readwrite");
+                let store = tx.objectStore("downloads");
+                store.add(fileObj);
+
+                tx.oncomplete = function() {
+                    updateDownloadCountFromDB();
+                    alert("Video uğurla offline yaddaşa əlavə olundu!");
+                    input.value = '';
+                };
+            }
         }
+
+        function playQuery(query, videoId = null) {
+            closeModal();
+            let player = document.getElementById('playerBox');
+            let container = document.getElementById('mediaContainerTarget');
+            player.style.display = 'flex';
+            container.innerHTML = '';
+
+            if (videoId) {
+                let iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                iframe.setAttribute('allowfullscreen', 'true');
+                container.appendChild(iframe);
+                return;
+            }
+
+            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            let match = query.match(regExp);
+
+            if (match && match[2].length === 11) {
+                let iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                iframe.setAttribute('allowfullscreen', 'true');
+                container.appendChild(iframe);
+            } else {
+                let iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}&autoplay=1`;
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                iframe.setAttribute('allowfullscreen', 'true');
+                container.appendChild(iframe);
+            }
+        }
+
+        function playFromDB(id) {
+            closeModal();
+            let tx = db.transaction("downloads", "readonly");
+            let store = tx.objectStore("downloads");
+            let req = store.get(id);
+            req.onsuccess = function() {
+                let record = req.result;
+                if (record) {
+                    playQuery(record.query, record.videoId);
+                }
+            };
+        }
+
     </script>
 </body>
 </html>
