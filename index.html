@@ -3,246 +3,408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luna - Offline Media Hub</title>
+    <title>Luna - Ultimate Media & Sound Center</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #07080a;
-            --surface: #12141c;
-            --surface-hover: #1b1e29;
+            --bg: #0b0c10;
+            --surface: #141620;
+            --surface-hover: #1c1f2e;
             --primary: #f43f5e;
-            --primary-glow: rgba(244, 63, 94, 0.25);
+            --primary-gradient: linear-gradient(135deg, #f43f5e, #a855f7);
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
             --border: rgba(255, 255, 255, 0.06);
             --radius: 20px;
+            --font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 20px 12px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 16px 12px; }
         .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; }
 
+        /* Header */
         header { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
-        .brand h1 { font-size: 24px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-        .brand span { font-size: 11px; color: var(--text-sub); font-weight: 400; display: block; }
-        .icon-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .brand-box { display: flex; align-items: center; gap: 10px; }
+        .brand-logo { color: var(--primary); font-size: 24px; }
+        .brand-info h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.1; }
+        .brand-info span { font-size: 11px; color: var(--text-sub); font-weight: 400; }
+        
+        .header-actions { display: flex; gap: 6px; }
+        .top-icon-btn { background: none; border: none; color: var(--text-main); font-size: 15px; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .top-icon-btn:active { background: var(--surface-hover); }
 
-        .search-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .input-group { display: flex; align-items: center; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 14px; padding: 6px 12px; gap: 10px; }
+        /* Search & Input Card */
+        .search-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .input-group { display: flex; align-items: center; background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border); border-radius: 14px; padding: 6px 12px; gap: 10px; }
         .input-group input { flex: 1; background: none; border: none; outline: none; color: var(--text-main); font-size: 13px; padding: 8px 0; }
         .input-group input::placeholder { color: var(--text-sub); }
 
-        .btn-row { display: flex; gap: 8px; }
-        .action-btn { flex: 1; background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 12px; border-radius: 12px; font-weight: 600; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
-        .action-btn.primary-action { background: var(--primary); color: white; border: none; box-shadow: 0 4px 12px var(--primary-glow); }
+        .btn-row { display: flex; gap: 10px; }
+        .action-btn { flex: 1; background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 12px; border-radius: 14px; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+        .action-btn.primary { background: var(--primary-gradient); color: white; border: none; box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3); }
+        .action-btn.outline { border: 1px dashed rgba(255,255,255,0.2); background: transparent; }
 
-        /* Yüklənmə Statusu */
-        .download-progress-card { background: var(--surface); border: 1px solid var(--primary); border-radius: 16px; padding: 14px 16px; display: none; flex-direction: column; gap: 8px; }
-        .progress-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; }
-        .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.3); border-radius: 3px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.1s linear; }
+        .card-footer-links { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; padding: 0 4px; }
+        .card-footer-links span { cursor: pointer; display: flex; align-items: center; gap: 8px; }
 
-        /* Pleyer */
-        .player-card { background: var(--surface); border: 1px solid #22c55e; border-radius: 16px; padding: 14px 16px; display: none; flex-direction: column; gap: 10px; }
-        .player-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: #22c55e; }
-        audio { width: 100%; border-radius: 8px; outline: none; margin-top: 5px; }
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.2s; }
+        .stat-card:active { transform: scale(0.97); background: var(--surface-hover); }
+        .stat-icon-box { width: 38px; height: 38px; border-radius: 12px; background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .stat-info h4 { font-size: 12px; font-weight: 600; color: var(--text-main); }
+        .stat-info span { font-size: 10px; color: var(--text-sub); }
 
-        /* Tabs */
-        .tabs-row { display: flex; gap: 10px; }
-        .tab-item { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px; color: var(--text-sub); font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .tab-item.active { background: var(--primary-glow); border-color: var(--primary); color: var(--primary); }
-
-        /* Siyahı */
-        .content-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto; }
-        .section-header { font-size: 12px; font-weight: 600; color: var(--text-sub); text-transform: uppercase; display: flex; justify-content: space-between; }
+        /* Qovluqlarım Bölməsi */
+        .section-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+        .add-folder-btn { color: var(--primary); cursor: pointer; font-size: 12px; font-weight: 600; text-transform: none; display: flex; align-items: center; gap: 4px; }
         
-        .media-item { display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 10px; gap: 10px; }
-        .media-info { flex: 1; overflow: hidden; }
-        .media-title { font-size: 12px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .media-sub { font-size: 10px; color: var(--text-sub); }
+        .folders-container { display: flex; flex-direction: column; gap: 8px; }
+        .folder-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; }
+        .folder-box:active { background: var(--surface-hover); }
+        .folder-left { display: flex; align-items: center; gap: 12px; }
+        .folder-icon { font-size: 20px; color: #fbbf24; }
+        .folder-info h3 { font-size: 13px; font-weight: 600; color: var(--text-main); }
+        .folder-info p { font-size: 10px; color: var(--text-sub); margin-top: 2px; }
+
+        /* Sosial Şəbəkələr Bölməsi */
+        .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .social-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; text-decoration: none; color: var(--text-main); font-size: 11px; font-weight: 500; transition: 0.2s; }
+        .social-btn:active { background: var(--surface-hover); transform: scale(0.96); }
+        .social-btn i { font-size: 16px; }
+
+        /* Modal Pəncərələr */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 100; }
+        .modal-card { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 380px; border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 14px; max-height: 80vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: 700; }
         
-        .item-btns { display: flex; gap: 6px; }
-        .icon-action { background: var(--primary); color: white; border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-        .icon-action.delete { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-        .empty-text { font-size: 12px; color: var(--text-sub); text-align: center; padding: 20px; }
+        .list-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 10px 12px; border-radius: 10px; font-size: 12px; margin-bottom: 6px; }
+        .list-item button { background: var(--primary); color: white; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 10px; }
+
+        /* Ayarlar paneli */
+        .setting-group { display: flex; flex-direction: column; gap: 6px; }
+        .setting-group label { font-size: 12px; font-weight: 600; color: var(--text-sub); }
+        .setting-select, .setting-btn-row { display: flex; gap: 8px; }
+        .setting-select select { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: var(--text-main); padding: 8px; border-radius: 10px; outline: none; font-size: 12px; }
+        .theme-circle { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+        .theme-circle.active { border-color: white; }
+
+        /* Player Box */
+        .player-box { background: var(--surface); border: 1px solid #22c55e; border-radius: 16px; padding: 12px; display: none; flex-direction: column; gap: 8px; }
+        audio { width: 100%; height: 35px; outline: none; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
+        <!-- Header -->
         <header>
-            <div class="brand">
-                <h1><i class="fa-solid fa-bolt"></i> Luna</h1>
-                <span>İnternetsiz Media Hub</span>
+            <div class="brand-box">
+                <i class="fa-solid fa-moon brand-logo"></i>
+                <div class="brand-info">
+                    <h1>Luna</h1>
+                    <span>Ultimate Media & Sound Center</span>
+                </div>
             </div>
-            <button class="icon-btn" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
+            <div class="header-actions">
+                <button class="top-icon-btn" onclick="location.reload()" title="Yenilə"><i class="fa-solid fa-rotate-right"></i></button>
+                <button class="top-icon-btn" onclick="openSettings()" title="Ayarlar"><i class="fa-solid fa-gear"></i></button>
+            </div>
         </header>
 
-        <!-- Input Card -->
+        <!-- Search / Input Card -->
         <div class="search-card">
             <div class="input-group">
                 <i class="fa-solid fa-link" style="color: var(--text-sub);"></i>
-                <input type="text" id="mediaUrlInput" placeholder="Musiqi/Video linki daxil edin...">
+                <input type="text" id="mediaUrlInput" placeholder="YouTube linki və ya səs ünvanı...">
             </div>
             <div class="btn-row">
-                <button class="action-btn" onclick="addDemoFile()"><i class="fa-solid fa-file-arrow-down" style="color: #38bdf8;"></i> Nümunə Yüklə</button>
-                <button class="action-btn primary-action" onclick="downloadAndStoreMedia()"><i class="fa-solid fa-download"></i> Yüklə və Saxla</button>
+                <button class="action-btn primary" onclick="processMedia('play')">
+                    <i class="fa-solid fa-play"></i> Dinlə / İzlə
+                </button>
+                <button class="action-btn outline" onclick="processMedia('download')">
+                    <i class="fa-solid fa-cloud-arrow-down" style="color: #38bdf8;"></i> Fayl Yüklə
+                </button>
+            </div>
+            <div class="card-footer-links">
+                <span onclick="openGoogleSearch()"><i class="fa-brands fa-google" style="color: #ea4335;"></i> Google</span>
+                <span onclick="openModal('history')"><i class="fa-solid fa-folder-open" style="color: #fbbf24;"></i> Siyahım</span>
             </div>
         </div>
 
-        <!-- Download Progress -->
-        <div class="download-progress-card" id="progressCard">
-            <div class="progress-info">
-                <span id="progressText"><i class="fa-solid fa-spinner fa-spin"></i> Yüklənir...</span>
-                <span id="progressPercent">0%</span>
+        <!-- 4 Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card" onclick="openModal('history')">
+                <div class="stat-icon-box" style="color: #38bdf8;"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <div class="stat-info">
+                    <h4>Tarixçə</h4>
+                    <span id="historyCount">0 qeyd</span>
+                </div>
             </div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="progressFill"></div>
+            <div class="stat-card" onclick="openModal('pending')">
+                <div class="stat-icon-box" style="color: #fbbf24;"><i class="fa-solid fa-hourglass-half"></i></div>
+                <div class="stat-info">
+                    <h4>Gözlənilən</h4>
+                    <span id="pendingCount">0 qeyd</span>
+                </div>
+            </div>
+            <div class="stat-card" onclick="openModal('watchlater')">
+                <div class="stat-icon-box" style="color: #f43f5e;"><i class="fa-solid fa-clock"></i></div>
+                <div class="stat-info">
+                    <h4>Sonra İzlə</h4>
+                    <span id="watchLaterCount">0 qeyd</span>
+                </div>
+            </div>
+            <div class="stat-card" onclick="openModal('downloads')">
+                <div class="stat-icon-box" style="color: #34d399;"><i class="fa-solid fa-download"></i></div>
+                <div class="stat-info">
+                    <h4>Yüklənənlər</h4>
+                    <span id="downloadCount">0 fayl</span>
+                </div>
             </div>
         </div>
 
-        <!-- Media Player -->
-        <div class="player-card" id="playerCard">
-            <div class="player-header">
-                <span><i class="fa-solid fa-headphones"></i> Offline İfa Olunur</span>
-                <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="closePlayer()"></i>
+        <!-- Player Box -->
+        <div class="player-box" id="playerBox">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: #22c55e; font-weight: 600;">
+                <span><i class="fa-solid fa-headphones"></i> Canlı Dinləmə</span>
+                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closePlayer()"></i>
             </div>
-            <div id="playerContainer"></div>
+            <audio id="audioPlayer" controls autoplay></audio>
         </div>
 
-        <!-- Tabs -->
-        <div class="tabs-row">
-            <div class="tab-item active">
-                <i class="fa-solid fa-box-archive" style="color: #34d399;"></i> Yaddaşdakılar (Offline)
-            </div>
+        <!-- Qovluqlarım Bölməsi -->
+        <div class="section-header">
+            <span>Qovluqlarım</span>
+            <span class="add-folder-btn" onclick="createNewFolder()"><i class="fa-solid fa-folder-plus"></i> Yeni Qovluq</span>
         </div>
+        <div class="folders-container" id="foldersListContainer"></div>
 
-        <!-- List -->
-        <div class="content-section">
-            <div class="section-header">
-                <span>Yaddaşa Yazılanlar</span>
-                <span style="cursor: pointer; color: var(--primary);" onclick="clearAllData()">Hamısını təmizlə</span>
+        <!-- Sosial Şəbəkələr Bölməsi -->
+        <div class="section-header">Sosial Şəbəkələr</div>
+        <div class="social-grid">
+            <a href="https://www.youtube.com" target="_blank" class="social-btn"><i class="fa-brands fa-youtube" style="color: #ef4444;"></i> YouTube</a>
+            <a href="https://music.youtube.com" target="_blank" class="social-btn"><i class="fa-solid fa-music" style="color: #ef4444;"></i> YT Music</a>
+            <a href="https://open.spotify.com" target="_blank" class="social-btn"><i class="fa-brands fa-spotify" style="color: #22c55e;"></i> Spotify</a>
+            <a href="https://music.yandex.ru" target="_blank" class="social-btn"><i class="fa-solid fa-radio" style="color: #eab308;"></i> Yandex Music</a>
+            <a href="https://www.instagram.com" target="_blank" class="social-btn"><i class="fa-brands fa-instagram" style="color: #ec4899;"></i> Instagram</a>
+            <a href="https://www.facebook.com" target="_blank" class="social-btn"><i class="fa-brands fa-facebook" style="color: #3b82f6;"></i> Facebook</a>
+            <a href="https://twitter.com" target="_blank" class="social-btn"><i class="fa-brands fa-twitter" style="color: #0ea5e9;"></i> Twitter / X</a>
+            <a href="https://www.threads.net" target="_blank" class="social-btn"><i class="fa-brands fa-threads"></i> Threads</a>
+            <a href="https://www.pinterest.com" target="_blank" class="social-btn"><i class="fa-brands fa-pinterest" style="color: #dc2626;"></i> Pinterest</a>
+        </div>
+    </div>
+
+    <!-- Universal Modal Pəncərəsi -->
+    <div class="modal-overlay" id="universalModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span id="modalTitle">Siyahı</span>
+                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeModal()"></i>
             </div>
-            <div id="mediaListContainer">
-                <div class="empty-text">Hələ heç bir media yüklənməyib</div>
+            <div id="modalContentList"></div>
+        </div>
+    </div>
+
+    <!-- Ayarlar Paneli Modalı -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span>Tənzimləmələr</span>
+                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeSettings()"></i>
+            </div>
+            
+            <div class="setting-group">
+                <label>Şrift Seçimi (Fontlar)</label>
+                <div class="setting-select">
+                    <select id="fontSelector" onchange="changeFont(this.value)">
+                        <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
+                        <option value="'Inter', sans-serif">Inter</option>
+                        <option value="'Poppins', sans-serif">Poppins</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label>Temalar</label>
+                <div class="setting-btn-row">
+                    <div class="theme-circle active" style="background: #0b0c10;" onclick="changeTheme('#0b0c10', '#141620')"></div>
+                    <div class="theme-circle" style="background: #0f172a;" onclick="changeTheme('#0f172a', '#1e293b')"></div>
+                    <div class="theme-circle" style="background: #18181b;" onclick="changeTheme('#18181b', '#27272a')"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        let mediaStorage = JSON.parse(localStorage.getItem('luna_media_list') || '[]');
+        let historyData = JSON.parse(localStorage.getItem('luna_hist') || '[]');
+        let downloadData = JSON.parse(localStorage.getItem('luna_down') || '[]');
+        let pendingData = JSON.parse(localStorage.getItem('luna_pend') || '[]');
+        let watchLaterData = JSON.parse(localStorage.getItem('luna_watch') || '[]');
+        let foldersData = JSON.parse(localStorage.getItem('luna_folders') || '[{"name": "Əsas Qovluq", "desc": "Ümumi fayllar"}]');
 
         window.onload = function() {
-            renderMediaList();
+            updateCounters();
+            renderFolders();
+            let savedFont = localStorage.getItem('luna_font');
+            if(savedFont) {
+                document.documentElement.style.setProperty('--font-family', savedFont);
+                document.getElementById('fontSelector').value = savedFont;
+            }
         };
 
-        function addDemoFile() {
-            document.getElementById('mediaUrlInput').value = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-            downloadAndStoreMedia();
+        function updateCounters() {
+            document.getElementById('historyCount').textContent = historyData.length + " qeyd";
+            document.getElementById('pendingCount').textContent = pendingData.length + " qeyd";
+            document.getElementById('watchLaterCount').textContent = watchLaterData.length + " qeyd";
+            document.getElementById('downloadCount').textContent = downloadData.length + " fayl";
         }
 
-        function downloadAndStoreMedia() {
-            let inputField = document.getElementById('mediaUrlInput');
-            let url = inputField.value.trim();
-
-            // Əgər xana boşdursa, avtomatik nümunə linki təyin et ki, düymə işləsin
-            if (!url) {
-                url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+        function createNewFolder() {
+            let folderName = prompt("Yeni qovluğun adını daxil edin:");
+            if (folderName && folderName.trim() !== "") {
+                foldersData.push({ name: folderName.trim(), desc: "Şəxsi fayllar" });
+                localStorage.setItem('luna_folders', JSON.stringify(foldersData));
+                renderFolders();
             }
-
-            const progressCard = document.getElementById('progressCard');
-            const progressFill = document.getElementById('progressFill');
-            const progressText = document.getElementById('progressText');
-            const progressPercent = document.getElementById('progressPercent');
-
-            progressCard.style.display = 'flex';
-            progressFill.style.width = '0%';
-            progressPercent.textContent = '0%';
-
-            progressText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Fayl endirilir...`;
-            
-            let progress = 0;
-            let interval = setInterval(() => {
-                progress += 30;
-                progressFill.style.width = progress + '%';
-                progressPercent.textContent = progress + '%';
-
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    
-                    let newItem = {
-                        id: Date.now(),
-                        title: "Offline Musiqi - Track " + (mediaStorage.length + 1),
-                        audioUrl: url,
-                        date: new Date().toLocaleDateString()
-                    };
-
-                    mediaStorage.push(newItem);
-                    localStorage.setItem('luna_media_list', JSON.stringify(mediaStorage));
-
-                    progressText.innerHTML = `<i class="fa-solid fa-check" style="color: #34d399;"></i> Uğurla yaddaşa yazıldı!`;
-                    inputField.value = '';
-                    renderMediaList();
-                    
-                    setTimeout(() => { 
-                        progressCard.style.display = 'none'; 
-                    }, 1000);
-                }
-            }, 80);
         }
 
-        function renderMediaList() {
-            let container = document.getElementById('mediaListContainer');
-
-            if (mediaStorage.length === 0) {
-                container.innerHTML = `<div class="empty-text">Hələ heç bir media yüklənməyib</div>`;
-                return;
-            }
-
+        function renderFolders() {
+            let container = document.getElementById('foldersListContainer');
             container.innerHTML = '';
-            mediaStorage.forEach((item) => {
+            foldersData.forEach((folder) => {
                 let div = document.createElement('div');
-                div.className = 'media-item';
+                div.className = 'folder-box';
                 div.innerHTML = `
-                    <div class="media-info">
-                        <div class="media-title">${item.title}</div>
-                        <div class="media-sub">Yükləndi: ${item.date} (Offline Hazırdır)</div>
+                    <div class="folder-left">
+                        <i class="fa-solid fa-folder-closed folder-icon"></i>
+                        <div class="folder-info">
+                            <h3>${folder.name}</h3>
+                            <p>${folder.desc}</p>
+                        </div>
                     </div>
-                    <div class="item-btns">
-                        <button class="icon-action" onclick="playMedia('${item.audioUrl}')" title="Oxut"><i class="fa-solid fa-play"></i></button>
-                        <button class="icon-action delete" onclick="deleteMedia(${item.id})" title="Sil"><i class="fa-solid fa-trash"></i></button>
-                    </div>
+                    <i class="fa-solid fa-chevron-right" style="font-size:12px; color:var(--text-sub);"></i>
                 `;
                 container.appendChild(div);
             });
         }
 
-        function playMedia(audioUrl) {
-            let playerCard = document.getElementById('playerCard');
-            let playerContainer = document.getElementById('playerContainer');
+        function processMedia(action) {
+            let input = document.getElementById('mediaUrlInput');
+            let val = input.value.trim();
+            if (!val) {
+                val = "Media Elementi #" + (historyData.length + 1);
+            }
 
-            playerCard.style.display = 'flex';
-            playerContainer.innerHTML = `<audio controls autoplay src="${audioUrl}"></audio>`;
+            let sampleAudio = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+
+            if (action === 'play') {
+                historyData.unshift({ title: val, url: sampleAudio });
+                localStorage.setItem('luna_hist', JSON.stringify(historyData));
+                
+                watchLaterData.unshift({ title: val, url: sampleAudio });
+                localStorage.setItem('luna_watch', JSON.stringify(watchLaterData));
+
+                updateCounters();
+
+                let player = document.getElementById('playerBox');
+                let audio = document.getElementById('audioPlayer');
+                player.style.display = 'flex';
+                audio.src = sampleAudio;
+                input.value = '';
+            } else if (action === 'download') {
+                downloadData.unshift({ title: val, url: sampleAudio });
+                localStorage.setItem('luna_down', JSON.stringify(downloadData));
+                updateCounters();
+                alert("Uğurla yüklənənlərə əlavə olundu!");
+                input.value = '';
+            }
         }
 
-        function deleteMedia(id) {
-            mediaStorage = mediaStorage.filter(item => item.id !== id);
-            localStorage.setItem('luna_media_list', JSON.stringify(mediaStorage));
-            renderMediaList();
+        function openModal(type) {
+            let modal = document.getElementById('universalModal');
+            let title = document.getElementById('modalTitle');
+            let content = document.getElementById('modalContentList');
+            
+            modal.style.display = 'flex';
+            let data = [];
+            
+            if (type === 'history') {
+                title.textContent = "Tarixçə";
+                data = historyData;
+            } else if (type === 'downloads') {
+                title.textContent = "Yüklənmiş Fayllar";
+                data = downloadData;
+            } else if (type === 'pending') {
+                title.textContent = "Gözlənilən Fayllar";
+                data = pendingData;
+            } else if (type === 'watchlater') {
+                title.textContent = "Sonra İzlə Siyahısı";
+                data = watchLaterData;
+            }
+
+            if (data.length === 0) {
+                content.innerHTML = `<div style="text-align:center; color: var(--text-sub); padding: 20px; font-size:12px;">Heç bir məlumat yoxdur</div>`;
+                return;
+            }
+
+            content.innerHTML = '';
+            data.forEach((item) => {
+                let div = document.createElement('div');
+                div.className = 'list-item';
+                div.innerHTML = `
+                    <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:200px;">${item.title}</span>
+                    <button onclick="playItem('${item.url}')">Dinlə</button>
+                `;
+                content.appendChild(div);
+            });
         }
 
-        function clearAllData() {
-            mediaStorage = [];
-            localStorage.removeItem('luna_media_list');
-            renderMediaList();
-            closePlayer();
+        function closeModal() {
+            document.getElementById('universalModal').style.display = 'none';
+        }
+
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+
+        function changeFont(fontVal) {
+            document.documentElement.style.setProperty('--font-family', fontVal);
+            localStorage.setItem('luna_font', fontVal);
+        }
+
+        function changeTheme(bgColor, surfaceColor) {
+            document.documentElement.style.setProperty('--bg', bgColor);
+            document.documentElement.style.setProperty('--surface', surfaceColor);
+        }
+
+        function playItem(url) {
+            closeModal();
+            let player = document.getElementById('playerBox');
+            let audio = document.getElementById('audioPlayer');
+            player.style.display = 'flex';
+            audio.src = url;
         }
 
         function closePlayer() {
-            document.getElementById('playerCard').style.display = 'none';
-            document.getElementById('playerContainer').innerHTML = '';
+            document.getElementById('playerBox').style.display = 'none';
+            document.getElementById('audioPlayer').pause();
+        }
+
+        function openGoogleSearch() {
+            let val = document.getElementById('mediaUrlInput').value.trim();
+            if(val) {
+                window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank');
+            } else {
+                window.open('https://www.google.com', '_blank');
+            }
         }
     </script>
 </body>
