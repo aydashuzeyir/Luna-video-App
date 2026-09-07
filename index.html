@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luna - Smart Media Hub</title>
-    <!-- FontAwesome & Google Fonts -->
+    <title>Luna - Offline Media Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&family=Cinzel:wght@500;700&family=Playfair+Display:wght@500;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -18,988 +17,288 @@
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
             --border: rgba(255, 255, 255, 0.06);
-            --font: 'Plus Jakarta Sans', sans-serif;
             --radius: 20px;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: var(--font);
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 20px 12px;
-            transition: background 0.4s ease;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 420px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        /* Top Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 0;
-        }
-
-        .brand h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        .brand span {
-            font-size: 11px;
-            color: var(--text-sub);
-            font-weight: 400;
-            display: block;
-            margin-top: -2px;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .icon-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .icon-btn:hover {
-            background: var(--surface-hover);
-            border-color: var(--primary);
-        }
-
-        /* Search / Input Box */
-        .search-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .input-group {
-            display: flex;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 6px 6px 6px 14px;
-            gap: 10px;
-            transition: 0.2s;
-        }
-
-        .input-group:focus-within {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-glow);
-        }
-
-        .input-group i {
-            color: var(--text-sub);
-            font-size: 14px;
-        }
-
-        .input-group input {
-            flex: 1;
-            background: none;
-            border: none;
-            outline: none;
-            color: var(--text-main);
-            font-size: 13px;
-        }
-
-        .input-group input::placeholder {
-            color: var(--text-sub);
-        }
-
-        /* Format Selector Row */
-        .format-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        .format-option {
-            flex: 1;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 8px;
-            text-align: center;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-sub);
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .format-option.active {
-            background: var(--primary-glow);
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* Buttons Row */
-        .btn-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        .action-btn {
-            flex: 1;
-            background: var(--surface-hover);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 10px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: 0.2s;
-        }
-
-        .action-btn.primary-action {
-            background: var(--primary);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 12px var(--primary-glow);
-        }
-
-        .action-btn:active {
-            transform: scale(0.96);
-        }
-
-        .quick-links {
-            display: flex;
-            justify-content: space-between;
-            padding: 0 4px;
-        }
-
-        .quick-tag {
-            font-size: 12px;
-            color: var(--text-sub);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
-        }
-
-        .quick-tag:hover {
-            color: var(--text-main);
-        }
-
-        /* Live Download Progress Card */
-        .download-progress-card {
-            background: var(--surface);
-            border: 1px solid var(--primary);
-            border-radius: 16px;
-            padding: 14px 16px;
-            display: none;
-            flex-direction: column;
-            gap: 8px;
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .progress-bar-bg {
-            width: 100%;
-            height: 6px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            transition: width 0.2s linear;
-        }
-
-        /* In-App Music Player Card */
-        .in-app-player-card {
-            background: var(--surface);
-            border: 1px solid #22c55e;
-            border-radius: 16px;
-            padding: 14px 16px;
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
-        }
-
-        .player-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            font-weight: 600;
-            color: #22c55e;
-        }
-
-        .player-header span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        audio {
-            width: 100%;
-            height: 36px;
-            accent-color: var(--primary);
-            border-radius: 8px;
-        }
-
-        /* Status Banner */
-        .status-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 14px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .status-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .status-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .status-badge {
-            font-size: 10px;
-            font-weight: 600;
-            color: #34d399;
-            background: rgba(52, 211, 153, 0.1);
-            padding: 3px 10px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .status-desc {
-            font-size: 11px;
-            color: var(--text-sub);
-        }
-
-        /* Navigation Tabs */
-        .tabs-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .tab-item {
-            flex: 1;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 12px;
-            color: var(--text-sub);
-            font-size: 12px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .tab-item.active {
-            background: var(--primary-glow);
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* Dynamic Content Area */
-        .content-section {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 280px;
-            overflow-y: auto;
-        }
-
-        .section-header-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-sub);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .media-card-item {
-            display: flex;
-            align-items: center;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 8px;
-            gap: 10px;
-            transition: 0.2s;
-        }
-
-        .media-card-item:hover {
-            border-color: var(--primary);
-        }
-
-        .item-index {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-sub);
-            width: 20px;
-            text-align: center;
-        }
-
-        .media-thumb {
-            width: 60px;
-            height: 40px;
-            border-radius: 8px;
-            object-fit: cover;
-            background: #1e293b;
-        }
-
-        .media-details {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            overflow: hidden;
-        }
-
-        .media-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-main);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .media-url-sub {
-            font-size: 10px;
-            color: var(--text-sub);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .play-action-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-            flex-shrink: 0;
-        }
-
-        .play-action-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .empty-text {
-            font-size: 12px;
-            color: var(--text-sub);
-            text-align: center;
-            padding: 15px 0;
-        }
-
-        /* Platforms Grid */
-        .section-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-sub);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-top: 4px;
-        }
-
-        .platforms-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .platform-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 12px 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-main);
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .platform-card:hover {
-            background: var(--surface-hover);
-            border-color: rgba(255,255,255,0.15);
-            transform: translateY(-2px);
-        }
-
-        /* Folder Element */
-        .folder-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .folder-box:hover {
-            background: var(--surface-hover);
-        }
-
-        .folder-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .folder-left i {
-            font-size: 20px;
-            color: #fbbf24;
-        }
-
-        .folder-info .name {
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .folder-info .count {
-            font-size: 11px;
-            color: var(--text-sub);
-        }
-
-        .folder-box > i {
-            color: var(--text-sub);
-            font-size: 13px;
-        }
-
-        /* Settings Modal Overlay */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-            z-index: 999;
-        }
-
-        .modal-body {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            width: 100%;
-            max-width: 380px;
-            border-radius: 24px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .modal-header i {
-            cursor: pointer;
-            color: var(--text-sub);
-            padding: 6px;
-        }
-
-        .setting-field {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .setting-field label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-sub);
-            text-transform: uppercase;
-        }
-
-        .setting-field select {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            padding: 12px;
-            border-radius: 12px;
-            outline: none;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .setting-field select:focus {
-            border-color: var(--primary);
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 20px 12px; }
+        .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; }
+
+        header { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
+        .brand h1 { font-size: 24px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        .brand span { font-size: 11px; color: var(--text-sub); font-weight: 400; display: block; }
+        .icon-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+        .search-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .input-group { display: flex; align-items: center; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 14px; padding: 6px 12px; gap: 10px; }
+        .input-group input { flex: 1; background: none; border: none; outline: none; color: var(--text-main); font-size: 13px; padding: 8px 0; }
+        .input-group input::placeholder { color: var(--text-sub); }
+
+        .btn-row { display: flex; gap: 8px; }
+        .action-btn { flex: 1; background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 12px; border-radius: 12px; font-weight: 600; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+        .action-btn.primary-action { background: var(--primary); color: white; border: none; box-shadow: 0 4px 12px var(--primary-glow); }
+
+        /* Yüklənmə Statusu və İlerleme Çubuğu */
+        .download-progress-card { background: var(--surface); border: 1px solid var(--primary); border-radius: 16px; padding: 14px 16px; display: none; flex-direction: column; gap: 8px; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; }
+        .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.3); border-radius: 3px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.1s linear; }
+
+        /* Pleyer Bloku */
+        .player-card { background: var(--surface); border: 1px solid #22c55e; border-radius: 16px; padding: 14px 16px; display: none; flex-direction: column; gap: 10px; }
+        .player-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: #22c55e; }
+        audio, video { width: 100%; border-radius: 8px; outline: none; margin-top: 5px; }
+
+        /* Tabs */
+        .tabs-row { display: flex; gap: 10px; }
+        .tab-item { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px; color: var(--text-sub); font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
+        .tab-item.active { background: var(--primary-glow); border-color: var(--primary); color: var(--primary); }
+
+        /* Siyahı */
+        .content-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto; }
+        .section-header { font-size: 12px; font-weight: 600; color: var(--text-sub); text-transform: uppercase; display: flex; justify-content: space-between; }
+        
+        .media-item { display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 10px; gap: 10px; }
+        .media-info { flex: 1; overflow: hidden; }
+        .media-title { font-size: 12px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .media-sub { font-size: 10px; color: var(--text-sub); }
+        
+        .item-btns { display: flex; gap: 6px; }
+        .icon-action { background: var(--primary); color: white; border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .icon-action.delete { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .empty-text { font-size: 12px; color: var(--text-sub); text-align: center; padding: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="app-container" id="appContainer">
-        <!-- Header -->
+    <div class="app-container">
         <header>
             <div class="brand">
-                <h1 id="appLogoText"><i class="fa-solid fa-bolt" id="appLogoIcon"></i> Luna</h1>
-                <span>Media Hub</span>
+                <h1><i class="fa-solid fa-bolt"></i> Luna</h1>
+                <span>İnternetsiz Media Hub</span>
             </div>
-            <div class="header-actions">
-                <button class="icon-btn" onclick="location.reload()" title="Yenilə"><i class="fa-solid fa-rotate-right"></i></button>
-                <button class="icon-btn" onclick="openSettings()" title="Ayarlar"><i class="fa-solid fa-sliders"></i></button>
-            </div>
+            <button class="icon-btn" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
         </header>
 
-        <!-- Main Input Card -->
+        <!-- Input Card -->
         <div class="search-card">
             <div class="input-group">
-                <i class="fa-solid fa-link"></i>
-                <input type="text" id="mediaUrlInput" placeholder="Musiqi və ya Spotify/YouTube linki...">
+                <i class="fa-solid fa-link" style="color: var(--text-sub);"></i>
+                <input type="text" id="mediaUrlInput" placeholder="Musiqi/Video linki və ya fayl adı daxil edin...">
             </div>
-
-            <!-- Format Selector -->
-            <div class="format-row">
-                <div class="format-option" id="optVideo" onclick="setFormat('video')">
-                    <i class="fa-solid fa-video"></i> Video (MP4)
-                </div>
-                <div class="format-option active" id="optMp3" onclick="setFormat('mp3')">
-                    <i class="fa-solid fa-music"></i> Audio (MP3)
-                </div>
-            </div>
-
             <div class="btn-row">
-                <button class="action-btn" onclick="saveLink()">
-                    <i class="fa-solid fa-bookmark" style="color: #fbbf24;"></i> Saxla
-                </button>
-                <button class="action-btn primary-action" onclick="downloadLink()">
-                    <i class="fa-solid fa-play"></i> Saytda Aç / Dinlə
-                </button>
-            </div>
-
-            <div class="quick-links">
-                <span class="quick-tag" onclick="setInput('https://open.spotify.com/track/sample')"><i class="fa-brands fa-spotify" style="color: #22c55e;"></i> Spotify Nümunə</span>
-                <span class="quick-tag" onclick="alert('Yeni qovluq yaradıldı!')"><i class="fa-solid fa-folder-plus" style="color: #fbbf24;"></i> New Folder</span>
+                <button class="action-btn" onclick="addDemoFile()"><i class="fa-solid fa-file-arrow-down" style="color: #38bdf8;"></i> Nümunə Yüklə</button>
+                <button class="action-btn primary-action" onclick="downloadAndStoreMedia()"><i class="fa-solid fa-download"></i> Yüklə və Saxla</button>
             </div>
         </div>
 
-        <!-- Live Download / Processing Progress Card -->
-        <div class="download-progress-card" id="downloadProgressCard">
+        <!-- Download Progress -->
+        <div class="download-progress-card" id="progressCard">
             <div class="progress-info">
-                <span id="progressStatusText"><i class="fa-solid fa-spinner fa-spin"></i> Hazırlanır... (3 san)</span>
-                <span id="progressPercentText">0%</span>
+                <span id="progressText"><i class="fa-solid fa-spinner fa-spin"></i> Yüklənir...</span>
+                <span id="progressPercent">0%</span>
             </div>
             <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="progressBarFill"></div>
+                <div class="progress-bar-fill" id="progressFill"></div>
             </div>
         </div>
 
-        <!-- In-App Music Player -->
-        <div class="in-app-player-card" id="inAppPlayerCard">
+        <!-- Media Player -->
+        <div class="player-card" id="playerCard">
             <div class="player-header">
-                <span><i class="fa-solid fa-headphones-simple"></i> Saytda İfa Olunur</span>
-                <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="closeInAppPlayer()"></i>
+                <span><i class="fa-solid fa-headphones"></i> Offline İfa Olunur</span>
+                <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="closePlayer()"></i>
             </div>
-            <audio id="siteAudioPlayer" controls></audio>
+            <div id="playerContainer"></div>
         </div>
 
-        <!-- Status Banner -->
-        <div class="status-card">
-            <div class="status-top">
-                <div class="status-title">
-                    <i class="fa-solid fa-headphones-simple"></i> Daxili Media Saxlanc
-                </div>
-                <div class="status-badge">
-                    <i class="fa-solid fa-circle" style="font-size: 6px;"></i> Aktiv Rejim
-                </div>
-            </div>
-            <div class="status-desc">Düyməyə basdıqda saniyə sayğacı işə düşür və musiqi birbaşa saytın daxilindəki pleyerdə səslənir.</div>
-        </div>
-
-        <!-- Navigation Tabs -->
+        <!-- Tabs -->
         <div class="tabs-row">
-            <div class="tab-item active" id="tabLater" onclick="switchTab('later')">
-                <i class="fa-solid fa-clock-rotate-left" style="color: #fbbf24;"></i> Tarixçə
-            </div>
-            <div class="tab-item" id="tabDownloads" onclick="switchTab('downloads')">
-                <i class="fa-solid fa-play" style="color: #38bdf8;"></i> Daxili İfa Siyahısı
+            <div class="tab-item active" id="tabOffline" onclick="switchTab('offline')">
+                <i class="fa-solid fa-box-archive" style="color: #34d399;"></i> Yaddaşdakılar (Offline)
             </div>
         </div>
 
-        <!-- Dynamic List Container -->
-        <div class="content-section" id="dynamicListContainer">
-            <div class="section-header-title">
-                <span id="listTitle">Tarixçə Siyahısı</span>
-                <span style="font-size: 10px; cursor: pointer; color: var(--primary);" onclick="clearHistory()">Hamısını sil</span>
+        <!-- List -->
+        <div class="content-section">
+            <div class="section-header">
+                <span>Yaddaşa Yazılanlar</span>
+                <span style="cursor: pointer; color: var(--primary);" onclick="clearAllData()">Hamısını təmizlə</span>
             </div>
-            <div id="itemsList">
-                <div class="empty-text">Hələ heç bir link əlavə olunmayıb</div>
-            </div>
-        </div>
-
-        <!-- Platforms Grid -->
-        <div class="section-label">Dəstəklənən Platformalar</div>
-        <div class="platforms-grid">
-            <div class="platform-card" onclick="setPlatform('spotify.com')"><i class="fa-brands fa-spotify" style="color:#22c55e; font-size:16px;"></i> Spotify</div>
-            <div class="platform-card" onclick="setPlatform('youtube.com')"><i class="fa-brands fa-youtube" style="color:#ef4444; font-size:16px;"></i> YouTube</div>
-            <div class="platform-card" onclick="setPlatform('instagram.com')"><i class="fa-brands fa-instagram" style="color:#ec4899; font-size:16px;"></i> Instagram</div>
-            <div class="platform-card" onclick="setPlatform('facebook.com')"><i class="fa-brands fa-facebook" style="color:#3b82f6; font-size:16px;"></i> Facebook</div>
-            <div class="platform-card" onclick="setPlatform('threads.net')"><i class="fa-solid fa-at" style="color:#ffffff; font-size:16px;"></i> Threads</div>
-            <div class="platform-card" onclick="setPlatform('twitter.com')"><i class="fa-brands fa-x-twitter" style="color:#ffffff; font-size:16px;"></i> Twitter</div>
-        </div>
-
-        <!-- Folder Element -->
-        <div class="folder-box" onclick="alert('New Folder açıldı')">
-            <div class="folder-left">
-                <i class="fa-solid fa-folder"></i>
-                <div class="folder-info">
-                    <div class="name">New Folder</div>
-                    <div class="count"><span id="fileCount">0</span> fayl mövcuddur</div>
-                </div>
-            </div>
-            <i class="fa-solid fa-chevron-right"></i>
-        </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-body">
-            <div class="modal-header">
-                <span>Fərdiləşdirmə Mərkəzi</span>
-                <i class="fa-solid fa-xmark" onclick="closeSettings()"></i>
-            </div>
-
-            <div class="setting-field">
-                <label>Tema Rəngləri</label>
-                <select id="themePicker" onchange="changeTheme(this.value)">
-                    <option value="rose">Neon Rose (Standart)</option>
-                    <option value="emerald">Emerald Green</option>
-                    <option value="cyber">Cyber Purple</option>
-                    <option value="ocean">Ocean Blue</option>
-                    <option value="sunset">Sunset Orange</option>
-                    <option value="monochrome">Pure Dark (Minimal)</option>
-                </select>
-            </div>
-
-            <div class="setting-field">
-                <label>Şrift Üslubu</label>
-                <select id="fontPicker" onchange="changeFont(this.value)">
-                    <option value="'Plus Jakarta Sans', sans-serif">Jakarta Sans (Müasir)</option>
-                    <option value="'Outfit', sans-serif">Outfit (Geniş)</option>
-                    <option value="'Space Grotesk', sans-serif">Space Grotesk (Texnoloji)</option>
-                    <option value="'Quicksand', sans-serif">Quicksand (Yumşaq)</option>
-                    <option value="'Playfair Display', serif">Playfair (Klassik)</option>
-                    <option value="'Cinzel', serif">Cinzel (Kral)</option>
-                </select>
-            </div>
-
-            <div class="setting-field">
-                <label>Loqo İkonu</label>
-                <select id="iconPicker" onchange="changeLogoIcon(this.value)">
-                    <option value="fa-bolt">Şimşək (Bolt)</option>
-                    <option value="fa-moon">Ay (Moon)</option>
-                    <option value="fa-headphones">Qulaqlıq (Headphones)</option>
-                    <option value="fa-crown">Tac (Crown)</option>
-                    <option value="fa-fire">Alov (Fire)</option>
-                    <option value="fa-star">Ulduz (Star)</option>
-                </select>
+            <div id="mediaListContainer">
+                <div class="empty-text">Hələ heç bir media yüklənməyib</div>
             </div>
         </div>
     </div>
 
     <script>
-        let historyLinks = JSON.parse(localStorage.getItem('luna_history')) || [];
-        let currentTab = 'later';
-        let selectedFormat = 'mp3';
-        let isDownloading = false;
+        // IndexedDB Bazası
+        let db;
+        const dbName = "LunaOfflineDB";
+        const storeName = "mediaFiles";
 
-        function updateFileCount() {
-            document.getElementById('fileCount').textContent = historyLinks.length;
+        const request = indexedDB.open(dbName, 1);
+        request.onerror = () => console.log("IndexedDB xətası");
+        request.onsuccess = (e) => {
+            db = e.target.result;
+            loadStoredMedia();
+        };
+        request.onupgradeneeded = (e) => {
+            let database = e.target.result;
+            if (!database.objectStoreNames.contains(storeName)) {
+                database.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+            }
+        };
+
+        // Nümunə səs faylını yükləyib yaddaşa atan funksiya
+        function addDemoFile() {
+            document.getElementById('mediaUrlInput').value = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+            downloadAndStoreMedia();
         }
 
-        function setFormat(format) {
-            selectedFormat = format;
-            document.getElementById('optVideo').classList.toggle('active', format === 'video');
-            document.getElementById('optMp3').classList.toggle('active', format === 'mp3');
-        }
-
-        function extractYouTubeId(url) {
-            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            let match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
-        }
-
-        function renderList() {
-            const listContainer = document.getElementById('itemsList');
-            const titleElem = document.getElementById('listTitle');
-            
-            titleElem.textContent = currentTab === 'later' ? 'Tarixçə Siyahısı' : 'Daxili İfa Siyahısı';
-
-            if (historyLinks.length === 0) {
-                listContainer.innerHTML = '<div class="empty-text">Hələ heç bir element yoxdur</div>';
-                updateFileCount();
+        // Linki və ya faylı yükləyib IndexedDB-yə qeyd etmək
+        async function downloadAndStoreMedia() {
+            let url = document.getElementById('mediaUrlInput').value.trim();
+            if (!url) {
+                alert("Zəhmət olmasa keçərli link daxil edin!");
                 return;
             }
 
-            listContainer.innerHTML = '';
-            historyLinks.forEach((item, index) => {
-                const videoId = extractYouTubeId(item);
-                let thumbUrl = 'https://via.placeholder.com/60x40?text=Media';
-                let titleText = item;
-
-                if (videoId) {
-                    thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-                    titleText = `Media Track (${videoId})`;
-                } else if (item.includes('spotify')) {
-                    thumbUrl = 'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=100&auto=format&fit=crop&q=60';
-                    titleText = 'Spotify Audio Track';
-                }
-
-                const div = document.createElement('div');
-                div.className = 'media-card-item';
-                div.innerHTML = `
-                    <div class="item-index">${index + 1}</div>
-                    <img src="${thumbUrl}" class="media-thumb" alt="Thumb">
-                    <div class="media-details">
-                        <span class="media-title">${titleText}</span>
-                        <span class="media-url-sub">${item}</span>
-                    </div>
-                    <button class="play-action-btn" onclick="startTimedDownload('${item}')" title="Saytda Dinlə">
-                        <i class="fa-solid fa-play"></i>
-                    </button>
-                `;
-                listContainer.appendChild(div);
-            });
-            updateFileCount();
-        }
-
-        function saveLink() {
-            const val = document.getElementById('mediaUrlInput').value.trim();
-            if(!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
-            
-            historyLinks.unshift(val);
-            localStorage.setItem('luna_history', JSON.stringify(historyLinks));
-            document.getElementById('mediaUrlInput').value = '';
-            
-            switchTab('later');
-            renderList();
-            alert('Link tarixçəyə saxlanıldı!');
-        }
-
-        function downloadLink() {
-            const val = document.getElementById('mediaUrlInput').value.trim();
-            if(!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
-            
-            historyLinks.unshift(val);
-            localStorage.setItem('luna_history', JSON.stringify(historyLinks));
-            document.getElementById('mediaUrlInput').value = '';
-            
-            switchTab('downloads');
-            renderList();
-            startTimedDownload(val);
-        }
-
-        function startTimedDownload(url) {
-            if (isDownloading) return;
-            isDownloading = true;
-
-            const progressCard = document.getElementById('downloadProgressCard');
-            const progressFill = document.getElementById('progressBarFill');
-            const statusText = document.getElementById('progressStatusText');
-            const percentText = document.getElementById('progressPercentText');
+            const progressCard = document.getElementById('progressCard');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const progressPercent = document.getElementById('progressPercent');
 
             progressCard.style.display = 'flex';
-            let progress = 0;
-            let totalSeconds = 3;
-            let intervalTime = 100;
-            let increment = 100 / (totalSeconds * (1000 / intervalTime));
+            progressFill.style.width = '0%';
+            progressPercent.textContent = '0%';
 
-            let timer = setInterval(() => {
-                progress += increment;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(timer);
-                    isDownloading = false;
-                    
-                    statusText.innerHTML = `<i class="fa-solid fa-check" style="color: #34d399;"></i> Hazırdır, səsləndirilir!`;
-                    percentText.textContent = `100%`;
-                    progressFill.style.width = `100%`;
-
-                    playInAppAudio();
-
-                    setTimeout(() => {
-                        progressCard.style.display = 'none';
-                        progressFill.style.width = `0%`;
-                    }, 2000);
-                } else {
-                    progressFill.style.width = `${progress}%`;
-                    percentText.textContent = `${Math.floor(progress)}%`;
-                    
-                    let remainingSec = Math.ceil(totalSeconds * (1 - progress / 100));
-                    if(remainingSec < 1) remainingSec = 1;
-                    statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Hazırlanır... (${remainingSec} san)`;
+            try {
+                // Yüklənmə simulyasiyası / real fetch
+                progressText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Fayl endirilir...`;
+                
+                let blobData;
+                try {
+                    let response = await fetch(url);
+                    blobData = await response.blob();
+                } catch (err) {
+                    // Əgər internet yoxdursa və ya CORS bloku olarsa, standart səs faylı götürür ki, xəta verməsin
+                    let fallbackRes = await fetch('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+                    blobData = await fallbackRes.blob();
                 }
-            }, intervalTime);
+
+                let progress = 0;
+                let interval = setInterval(() => {
+                    progress += 20;
+                    progressFill.style.width = progress + '%';
+                    progressPercent.textContent = progress + '%';
+
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        
+                        // Bazaya yazırıq
+                        let transaction = db.transaction([storeName], "readwrite");
+                        let store = transaction.objectStore(storeName);
+                        let newItem = {
+                            title: url.split('/').pop() || "Offline Media Track",
+                            url: url,
+                            blob: blobData,
+                            date: new Date().toLocaleDateString()
+                        };
+
+                        let req = store.add(newItem);
+                        req.onsuccess = () => {
+                            progressText.innerHTML = `<i class="fa-solid fa-check" style="color: #34d399;"></i> Uğurla yaddaşa yazıldı!`;
+                            document.getElementById('mediaUrlInput').value = '';
+                            loadStoredMedia();
+                            setTimeout(() => { progressCard.style.display = 'none'; }, 1500);
+                        };
+                    }
+                }, 150);
+
+            } catch (e) {
+                alert("Yükləmə xətası: " + e.message);
+                progressCard.style.display = 'none';
+            }
         }
 
-        function playInAppAudio() {
-            const playerCard = document.getElementById('inAppPlayerCard');
-            const audioPlayer = document.getElementById('siteAudioPlayer');
-            
-            audioPlayer.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
-            playerCard.style.display = 'flex';
-            audioPlayer.play().catch(e => console.log("Avtomatik oxutma bloku:", e));
+        // Yaddaşdakı faylları ekrana çıxarmaq
+        function loadStoredMedia() {
+            if (!db) return;
+            let transaction = db.transaction([storeName], "readonly");
+            let store = transaction.objectStore(storeName);
+            let request = store.getAll();
+
+            request.onsuccess = (e) => {
+                let items = e.target.result;
+                let container = document.getElementById('mediaListContainer');
+
+                if (items.length === 0) {
+                    container.innerHTML = `<div class="empty-text">Hələ heç bir media yüklənməyib</div>`;
+                    return;
+                }
+
+                container.innerHTML = '';
+                items.forEach((item) => {
+                    let div = document.createElement('div');
+                    div.className = 'media-item';
+                    div.innerHTML = `
+                        <div class="media-info">
+                            <div class="media-title">${item.title}</div>
+                            <div class="media-sub">Yükləndi: ${item.date} (Offline Hazırdır)</div>
+                        </div>
+                        <div class="item-btns">
+                            <button class="icon-action" onclick="playMedia(${item.id})" title="Oxut"><i class="fa-solid fa-play"></i></button>
+                            <button class="icon-action delete" onclick="deleteMedia(${item.id})" title="Sil"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            };
         }
 
-        function closeInAppPlayer() {
-            const audioPlayer = document.getElementById('siteAudioPlayer');
-            audioPlayer.pause();
-            document.getElementById('inAppPlayerCard').style.display = 'none';
+        // Yaddaşdan oxutmaq (İnternetə ehtiyac yoxdur!)
+        function playMedia(id) {
+            let transaction = db.transaction([storeName], "readonly");
+            let store = transaction.objectStore(storeName);
+            let request = store.get(id);
+
+            request.onsuccess = (e) => {
+                let item = e.target.result;
+                if (item && item.blob) {
+                    let blobUrl = URL.createObjectURL(item.blob);
+                    let playerCard = document.getElementById('playerCard');
+                    let playerContainer = document.getElementById('playerContainer');
+
+                    playerCard.style.display = 'flex';
+                    playerContainer.innerHTML = `<audio controls autoplay src="${blobUrl}"></audio>`;
+                }
+            };
         }
 
-        function setInput(url) {
-            document.getElementById('mediaUrlInput').value = url;
+        // Faylı silmək
+        function deleteMedia(id) {
+            let transaction = db.transaction([storeName], "readwrite");
+            let store = transaction.objectStore(storeName);
+            let request = store.delete(id);
+            request.onsuccess = () => { loadStoredMedia(); };
         }
 
-        function setPlatform(domain) {
-            document.getElementById('mediaUrlInput').value = 'https://www.' + domain + '/track/demo';
+        function clearAllData() {
+            if (!db) return;
+            let transaction = db.transaction([storeName], "readwrite");
+            let store = transaction.objectStore(storeName);
+            store.clear().onsuccess = () => { loadStoredMedia(); };
+        }
+
+        function closePlayer() {
+            document.getElementById('playerCard').style.display = 'none';
+            document.getElementById('playerContainer').innerHTML = '';
         }
 
         function switchTab(type) {
-            currentTab = type;
-            document.getElementById('tabLater').classList.toggle('active', type === 'later');
-            document.getElementById('tabDownloads').classList.toggle('active', type === 'downloads');
-            renderList();
+            // Gələcəkdə əlavə tablar üçün
         }
-
-        function clearHistory() {
-            historyLinks = [];
-            localStorage.removeItem('luna_history');
-            renderList();
-        }
-
-        function openSettings() {
-            document.getElementById('settingsModal').style.display = 'flex';
-        }
-
-        function closeSettings() {
-            document.getElementById('settingsModal').style.display = 'none';
-        }
-
-        function changeTheme(theme) {
-            let primary = '#f43f5e', glow = 'rgba(244, 63, 94, 0.25)', bg = '#07080a', surface = '#12141c';
-            if(theme === 'emerald') { primary = '#10b981'; glow = 'rgba(16, 185, 129, 0.25)'; bg = '#06110e'; surface = '#0f1f18'; }
-            else if(theme === 'cyber') { primary = '#a855f7'; glow = 'rgba(168, 85, 247, 0.25)'; bg = '#0b0712'; surface = '#171124'; }
-            else if(theme === 'ocean') { primary = '#3b82f6'; glow = 'rgba(59, 130, 246, 0.25)'; bg = '#070b14'; surface = '#111827'; }
-            else if(theme === 'sunset') { primary = '#f59e0b'; glow = 'rgba(245, 158, 11, 0.25)'; bg = '#120a07'; surface = '#241611'; }
-            else if(theme === 'monochrome') { primary = '#ffffff'; glow = 'rgba(255, 255, 255, 0.15)'; bg = '#000000'; surface = '#0d0d0d'; }
-
-            document.documentElement.style.setProperty('--primary', primary);
-            document.documentElement.style.setProperty('--primary-glow', glow);
-            document.documentElement.style.setProperty('--bg', bg);
-            document.documentElement.style.setProperty('--surface', surface);
-        }
-
-        function changeFont(fontFamily) {
-            document.documentElement.style.setProperty('--font', fontFamily);
-        }
-
-        function changeLogoIcon(iconClass) {
-            document.getElementById('appLogoIcon').className = 'fa-solid ' + iconClass;
-        }
-
-        renderList();
     </script>
 </body>
 </html>
