@@ -3,1000 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luna - Ultimate Media & Sound Center</title>
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Orbitron:wght@500;700&family=Cairo:wght@400;700&family=Pacifico&family=Press+Start+2P&family=Roboto+Mono:wght@400;700&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome İkonlar -->
+    <title>Luna - Media Player</title>
+    <!-- FontAwesome & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary-color: #ec4899;
-            --bg-color: #09090b;
-            --card-bg: #18181b;
-            --input-bg: #27272a;
-            --font-family: 'Poppins', sans-serif;
-            --font-color: #ffffff;
-            --subtext-color: #a1a1aa;
+            --bg-color: #0b0c10;
+            --card-bg: #14161f;
+            --accent-pink: #ec4899;
+            --text-color: #ffffff;
+            --text-muted: #9ca3af;
         }
 
-        * {
-            box-sizing: border-box;
+        body {
             margin: 0;
             padding: 0;
-            font-family: var(--font-family);
-            color: var(--font-color);
-        }
-        body {
             background-color: var(--bg-color);
-            padding: 16px;
-            padding-bottom: 95px;
-            transition: background 0.3s, color 0.3s;
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-bottom: 30px;
         }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             margin-bottom: 16px;
         }
-        .title-area h1 {
-            color: var(--primary-color);
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 2px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .logo-box h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-pink);
+            margin: 0;
         }
-        .title-area p {
-            color: var(--subtext-color);
-            font-size: 12px;
+        .logo-box span {
+            font-size: 11px;
+            color: var(--text-muted);
         }
-        .top-icons {
+        .header-icons {
             display: flex;
             gap: 12px;
-            align-items: center;
         }
-        .icon-btn {
-            background: transparent;
-            border: none;
-            font-size: 18px;
+        .header-icons i {
+            font-size: 16px;
             cursor: pointer;
-            padding: 4px;
-            transition: transform 0.2s;
-        }
-        .icon-btn:hover { transform: scale(1.15); }
-
-        .top-card {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 12px;
-            border: 1px solid var(--input-bg);
-        }
-        .input-group {
-            display: flex;
-            gap: 8px;
-            background-color: var(--input-bg);
+            color: var(--text-color);
+            background: var(--card-bg);
+            padding: 10px;
             border-radius: 12px;
-            padding: 6px 12px;
+        }
+
+        /* Input Card Box */
+        .main-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .input-row {
+            display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            gap: 10px;
         }
-        .input-group i {
-            color: #38bdf8;
-            font-size: 15px;
-        }
-        .input-group input {
+        .input-row i { color: var(--text-muted); font-size: 14px; }
+        .input-row input {
             background: transparent;
             border: none;
-            color: var(--font-color);
-            font-size: 13px;
             outline: none;
+            color: var(--text-color);
+            font-size: 13px;
             width: 100%;
+            font-family: 'Poppins', sans-serif;
         }
-        .input-group input::placeholder {
-            color: var(--subtext-color);
-        }
-        .btn-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        .main-action-btn {
-            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+        .open-btn {
+            background-color: var(--accent-pink);
             color: white;
             border: none;
-            padding: 10px 12px;
-            border-radius: 8px;
+            padding: 8px 20px;
+            border-radius: 10px;
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
         }
-        .upload-btn-custom {
-            background: var(--input-bg);
-            color: #22c55e;
-            border: 1px dashed #22c55e;
-            padding: 10px 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: 0.2s;
-        }
-        .upload-btn-custom:hover { background: #143d22; }
-        
-        .action-row {
+
+        .shortcuts-row {
             display: flex;
             justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
             padding: 0 4px;
         }
-        .action-sub-btn {
-            background: transparent;
-            border: none;
-            color: var(--subtext-color);
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-        }
+        .shortcuts-row span { cursor: pointer; display: flex; align-items: center; gap: 6px; }
 
-        .hub-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-        .hub-card {
+        /* Media Player Status Card */
+        .player-status-card {
             background-color: var(--card-bg);
-            border: 1px solid var(--input-bg);
-            border-radius: 14px;
-            padding: 12px 6px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .hub-card:hover { border-color: var(--primary-color); transform: translateY(-2px); }
-        .hub-card span { font-size: 11px; font-weight: 600; display: block; margin-top: 4px; }
-        .hub-card small { font-size: 9px; color: var(--subtext-color); }
-
-        .section-title {
-            font-size: 13px;
-            color: var(--subtext-color);
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .new-folder-action {
-            color: var(--primary-color);
-            background: none;
-            border: none;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .folders-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+            border-radius: 16px;
+            padding: 14px 16px;
             margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
-        .folder-box {
-            background-color: var(--card-bg);
-            border: 1px solid var(--input-bg);
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .folder-box:hover { border-color: var(--primary-color); }
-        .folder-box i { font-size: 22px; color: #f59e0b; }
-        .folder-info h4 { font-size: 12px; font-weight: 600; }
-        .folder-info small { font-size: 10px; color: var(--subtext-color); }
-
-        #mediaCenterModal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-color);
-            z-index: 9999;
-            flex-direction: column;
-            padding: 16px;
-        }
-        .modal-top-bar {
+        .player-info-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--input-bg);
+            margin-bottom: 6px;
         }
-        .modal-top-bar h2 { color: var(--primary-color); font-size: 16px; display: flex; gap: 8px; align-items: center; }
-        
-        .media-tabs {
+        .player-title {
             display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #f472b6;
+        }
+        .player-status-badge {
+            display: flex;
+            align-items: center;
             gap: 6px;
-            margin-bottom: 14px;
-            background: var(--card-bg);
-            padding: 4px;
-            border-radius: 10px;
-            border: 1px solid var(--input-bg);
+            font-size: 11px;
+            color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+            padding: 3px 8px;
+            border-radius: 20px;
+        }
+        .player-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Nav Tabs (Daha sonra izlə & Yükləmələr) */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
         }
         .tab-btn {
             flex: 1;
-            background: transparent;
-            border: none;
-            padding: 8px;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--subtext-color);
-            border-radius: 8px;
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 12px 10px;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
             cursor: pointer;
-            text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            transition: 0.2s;
         }
         .tab-btn.active {
-            background: var(--primary-color);
-            color: white;
+            background: rgba(236, 72, 153, 0.15);
+            color: var(--accent-pink);
+            border-color: rgba(236, 72, 153, 0.3);
         }
 
-        .tab-content {
-            display: none;
-            flex-grow: 1;
-            overflow-y: auto;
-            list-style: none;
+        /* Platforms Section */
+        .section-title {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
         }
-        .tab-content.active {
-            display: block;
-        }
-        .media-item-row {
-            background-color: var(--card-bg);
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid var(--input-bg);
-            cursor: pointer;
-        }
-        .media-item-info {
-            display: flex;
-            align-items: center;
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            overflow: hidden;
+            margin-bottom: 16px;
         }
-        .media-item-info span {
+        .platform-btn {
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: 14px;
+            padding: 12px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-color);
             font-size: 12px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 180px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: 0.2s;
         }
-        .badge {
-            background-color: var(--input-bg);
-            color: #38bdf8;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: bold;
-        }
-        .empty-text {
-            color: var(--subtext-color);
-            text-align: center;
-            margin-top: 40px;
-            font-size: 12px;
-        }
+        .platform-btn:hover { background: rgba(255,255,255,0.06); }
+        .platform-btn i { font-size: 15px; }
 
-        #persistentMiniPlayer {
-            display: none;
-            position: fixed;
-            bottom: 0; left: 0; width: 100%;
-            background: var(--card-bg);
-            border-top: 1px solid var(--input-bg);
-            padding: 10px 16px;
-            z-index: 999;
+        /* Folder Card */
+        .folder-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            margin-bottom: 12px;
+        }
+        .folder-left {
+            display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
         }
-        .mini-info { flex-grow: 1; overflow: hidden; cursor: pointer; }
-        .mini-title {
-            font-size: 12px;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .mini-slider {
-            width: 100%;
-            appearance: none;
-            height: 4px;
-            background: var(--input-bg);
-            border-radius: 2px;
-            outline: none;
-            cursor: pointer;
-        }
-        .mini-slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 10px; height: 10px;
-            border-radius: 50%;
-            background: var(--primary-color);
-        }
-        .mini-btn {
-            background: var(--input-bg);
-            color: #f43f5e;
-            border: none;
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #fullPlayerModal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg-color);
-            z-index: 20000;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 24px 20px;
-        }
-        .full-top-bar { display: flex; justify-content: space-between; align-items: center; }
-        .full-close-btn { background: none; border: none; color: #a855f7; font-size: 22px; cursor: pointer; }
-        
-        .album-art-container { width: 100%; display: flex; justify-content: center; align-items: center; margin: 10px 0; }
-        .album-art {
-            width: 100%; max-width: 300px; height: 180px; border-radius: 16px; background: var(--card-bg);
-            display: flex; justify-content: center; align-items: center; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid var(--input-bg);
-        }
-        .album-art iframe { width: 100%; height: 100%; border: none; pointer-events: none; }
-
-        .song-meta-info { text-align: center; margin-bottom: 10px; padding: 0 10px; }
-        .full-song-title { font-size: 14px; font-weight: bold; margin-bottom: 4px; word-break: break-all; color: #38bdf8; }
-        .full-song-artist { font-size: 12px; color: var(--subtext-color); }
-        
-        .full-player-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 10px; }
-        .ctrl-sub-btn, .ctrl-main-btn { background: transparent; border: none; cursor: pointer; }
-        .ctrl-sub-btn { font-size: 18px; color: #38bdf8; }
-        .ctrl-main-btn {
-            width: 50px; height: 50px; border-radius: 50%; background: var(--input-bg);
-            display: flex; justify-content: center; align-items: center; font-size: 18px; color: #22c55e;
-        }
-        .progress-container { margin-bottom: 10px; }
-        .full-seeker {
-            width: 100%; appearance: none; height: 5px; background: var(--input-bg);
-            border-radius: 3px; outline: none; margin-bottom: 8px; cursor: pointer;
-        }
-        .full-seeker::-webkit-slider-thumb { appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--primary-color); }
-        .time-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--subtext-color); }
-        .audio-specs { text-align: center; font-size: 11px; color: var(--subtext-color); margin-bottom: 5px; letter-spacing: 1px; }
-
-        .extra-action-row {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-        .watch-later-btn {
-            background: var(--input-bg);
-            color: #eab308;
-            border: 1px solid #3f3f46;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
-        }
-        .watch-later-btn:hover { background: #3f3f46; }
-
-        .download-link-btn {
-            background: var(--input-bg);
-            color: #22c55e;
-            border: 1px solid #22c55e;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
-        }
-        .download-link-btn:hover { background: #143d22; }
-
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000;
-        }
-        .modal-content {
-            background: var(--card-bg); padding: 20px; border-radius: 16px; width: 90%;
-            max-width: 360px; border: 1px solid var(--input-bg); max-height: 85vh; overflow-y: auto;
-        }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: var(--primary-color); font-weight: bold; font-size: 15px; }
-        .close-btn { background: none; border: none; color: var(--font-color); font-size: 18px; cursor: pointer; }
-        .setting-group { margin-bottom: 14px; }
-        .setting-group label { font-size: 12px; color: var(--subtext-color); display: block; margin-bottom: 5px; }
-        .setting-group select, .setting-group input[type="text"] {
-            width: 100%; background: var(--input-bg); color: var(--font-color); border: none; padding: 8px; border-radius: 8px; outline: none; font-size: 13px;
-        }
-        .format-btn {
-            display: block; width: 100%; background-color: var(--input-bg); color: var(--font-color);
-            border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; text-align: left; margin-bottom: 10px; cursor: pointer;
-        }
+        .folder-left i { font-size: 22px; color: #fbbf24; }
+        .folder-info .f-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+        .folder-info .f-count { font-size: 11px; color: var(--text-muted); }
+        .folder-card > i { color: var(--text-muted); font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="title-area">
-            <h1><i id="appLogoIcon" class="fa-solid fa-moon" style="color: #f43f5e;"></i> <span id="appNameText">Luna</span></h1>
-            <p>Ultimate Media & Sound Center</p>
-        </div>
-        <div class="top-icons">
-            <button class="icon-btn" title="Yenilə" onclick="playSoundEffect('pop'); location.reload()"><i class="fa-solid fa-rotate" style="color: #38bdf8;"></i></button>
-            <button class="icon-btn" title="Bol Səslər & Effektlər" onclick="playSoundEffect('chime'); openSoundModal()"><i class="fa-solid fa-volume-high" style="color: #22c55e;"></i></button>
-            <button class="icon-btn" title="Ayarlar" onclick="playSoundEffect('click'); openSettings()"><i class="fa-solid fa-gear" style="color: #a855f7;"></i></button>
-        </div>
-    </div>
-
-    <div class="top-card">
-        <div class="input-group">
-            <i class="fa-solid fa-link"></i>
-            <input type="text" id="mediaLink" placeholder="YouTube linki və ya səs ünvanı...">
-        </div>
-        <div class="btn-row">
-            <button class="main-action-btn" onclick="playSoundEffect('pop'); startPlayingLink()"><i class="fa-solid fa-play"></i> Dinlə / İzlə</button>
-            <button class="upload-btn-custom" onclick="document.getElementById('fileUploadInput').click()"><i class="fa-solid fa-cloud-arrow-up"></i> Fayl Yüklə</button>
-            <input type="file" id="fileUploadInput" style="display: none;" accept="audio/*,video/*" onchange="handleFileUpload(event)">
-        </div>
-        <div class="action-row">
-            <button class="action-sub-btn" onclick="playSoundEffect('click'); window.open('https://www.google.com', '_blank')"><i class="fa-brands fa-google" style="color: #ea4335;"></i> Google</button>
-            <button class="action-sub-btn" onclick="playSoundEffect('click'); openMediaCenter('history')"><i class="fa-solid fa-folder-open" style="color: #f97316;"></i> Siyahım</button>
-        </div>
-    </div>
-
-    <div class="hub-grid">
-        <div class="hub-card" onclick="playSoundEffect('click'); openMediaCenter('history')">
-            <i class="fa-solid fa-clock-rotate-left" style="font-size: 18px; color: #38bdf8; display: block;"></i>
-            <span>Tarixçə</span>
-            <small id="hubHistoryCount">0 qeyd</small>
-        </div>
-        <div class="hub-card" onclick="playSoundEffect('click'); openMediaCenter('watchlater')">
-            <i class="fa-solid fa-clock" style="font-size: 18px; color: #eab308; display: block;"></i>
-            <span>Gözlənilən</span>
-            <small id="hubWatchLaterCount">0 qeyd</small>
-        </div>
-        <div class="hub-card" onclick="playSoundEffect('click'); openMediaCenter('uploads')">
-            <i class="fa-solid fa-file-arrow-up" style="font-size: 18px; color: #22c55e; display: block;"></i>
-            <span>Yüklənənlər</span>
-            <small id="hubUploadsCount">0 fayl</small>
-        </div>
-    </div>
-
-    <div class="section-title">
-        <span><i class="fa-solid fa-folder-tree" style="color: #f59e0b;"></i> Qovluqlarım</span>
-        <button class="new-folder-action" onclick="playSoundEffect('pop'); openNewFolderModal()"><i class="fa-solid fa-plus"></i> Yeni Qovluq</button>
-    </div>
-    <div class="folders-grid" id="foldersContainer">
-        <div class="folder-box" onclick="playSoundEffect('click'); openMediaCenter('uploads')">
-            <i class="fa-solid fa-folder"></i>
-            <div class="folder-info">
-                <h4>Əsas Qovluq</h4>
-                <small>Ümumi fayllar</small>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-box">
+                <h1>Luna</h1>
+                <span>Media Player</span>
             </div>
-        </div>
-    </div>
-
-    <div id="mediaCenterModal">
-        <div class="modal-top-bar">
-            <h2><i class="fa-solid fa-layer-group" style="color: #a855f7;"></i> Media Mərkəzi</h2>
-            <button style="background: transparent; border: none; cursor: pointer;" onclick="playSoundEffect('click'); closeMediaCenter()"><i class="fa-solid fa-xmark" style="color: #ef4444; font-size: 18px;"></i></button>
-        </div>
-        
-        <div class="media-tabs">
-            <button class="tab-btn active" onclick="switchTab('history', this)"><i class="fa-solid fa-clock-rotate-left" style="color: #38bdf8;"></i> Tarixçə</button>
-            <button class="tab-btn" onclick="switchTab('watchlater', this)"><i class="fa-solid fa-clock" style="color: #eab308;"></i> Daha sonra</button>
-            <button class="tab-btn" onclick="switchTab('uploads', this)"><i class="fa-solid fa-cloud-arrow-up" style="color: #22c55e;"></i> Yüklənənlər</button>
-        </div>
-
-        <ul id="tabHistory" class="tab-content active">
-            <div class="empty-text">Tarixçə boşdur.</div>
-        </ul>
-        <ul id="tabWatchLater" class="tab-content">
-            <div class="empty-text">"Daha sonra izlə" siyahısı boşdur.</div>
-        </ul>
-        <ul id="tabUploads" class="tab-content">
-            <div class="empty-text">Yüklənmiş fayl yoxdur.</div>
-        </ul>
-    </div>
-
-    <div id="newFolderModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span><i class="fa-solid fa-folder-plus" style="color: #f59e0b;"></i> Yeni Qovluq Yarat</span>
-                <button class="close-btn" onclick="playSoundEffect('click'); closeNewFolderModal()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="setting-group">
-                <label>Qovluq Adı</label>
-                <input type="text" id="newFolderNameInput" placeholder="Məsələn: Mahnılarım, Filmlər...">
-            </div>
-            <button class="main-action-btn" style="width: 100%; margin-top: 10px;" onclick="playSoundEffect('bell'); createNewFolder()">Yarat</button>
-        </div>
-    </div>
-
-    <div id="persistentMiniPlayer">
-        <div class="mini-info" onclick="playSoundEffect('click'); openFullPlayer()">
-            <div class="mini-title" id="miniSongTitle"><i class="fa-solid fa-compact-disc" style="color: #a855f7;"></i> Fayl adı</div>
-            <input type="range" id="miniSeeker" class="mini-slider" value="0" max="100" step="1">
-        </div>
-        <div style="display: flex; gap: 8px; align-items: center;">
-            <button class="mini-btn" id="miniPlayBtn" onclick="playSoundEffect('click'); togglePlayPause()"><i class="fa-solid fa-pause"></i></button>
-        </div>
-    </div>
-
-    <div id="fullPlayerModal">
-        <div class="full-top-bar">
-            <button class="full-close-btn" onclick="playSoundEffect('click'); closeFullPlayer()"><i class="fa-solid fa-chevron-down"></i></button>
-            <span style="font-size: 13px; font-weight: 600; letter-spacing: 1px;"><i class="fa-solid fa-headphones" style="color: #ec4899;"></i> PLEYER</span>
-            <button class="full-close-btn" onclick="playSoundEffect('click'); openSettings()"><i class="fa-solid fa-gear"></i></button>
-        </div>
-
-        <div class="album-art-container">
-            <div class="album-art" id="playerArtContainer">
-                <i class="fa-solid fa-music" style="font-size: 40px; color: #38bdf8;"></i>
+            <div class="header-icons">
+                <i class="fa-solid fa-rotate" onclick="location.reload()"></i>
+                <i class="fa-solid fa-gear" onclick="alert('Ayarlar paneli')"></i>
             </div>
         </div>
 
-        <div class="song-meta-info">
-            <div class="full-song-title" id="fullSongTitle">Mahnı adı</div>
-            <div class="full-song-artist" id="fullSongArtist">Luna Media Engine</div>
-        </div>
-
-        <div class="extra-action-row">
-            <button class="watch-later-btn" onclick="playSoundEffect('bell'); addToWatchLaterFromPlayer()"><i class="fa-solid fa-clock"></i> Daha sonra izlə</button>
-            <button class="download-link-btn" onclick="playSoundEffect('bell'); downloadCurrentMedia()"><i class="fa-solid fa-download"></i> Yüklə (Saxla)</button>
-        </div>
-
-        <div>
-            <div class="full-player-controls">
-                <button class="ctrl-sub-btn" onclick="playSoundEffect('click')"><i class="fa-solid fa-shuffle"></i></button>
-                <button class="ctrl-sub-btn" onclick="playSoundEffect('click'); skipTime(-10)"><i class="fa-solid fa-backward-step"></i></button>
-                <button class="ctrl-main-btn" id="fullPlayBtn" onclick="playSoundEffect('click'); togglePlayPause()"><i class="fa-solid fa-pause"></i></button>
-                <button class="ctrl-sub-btn" onclick="playSoundEffect('click'); skipTime(10)"><i class="fa-solid fa-forward-step"></i></button>
-                <button class="ctrl-sub-btn" onclick="playSoundEffect('click')"><i class="fa-solid fa-repeat"></i></button>
+        <!-- Main Search Card -->
+        <div class="main-card">
+            <div class="input-row">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="mediaLink" placeholder="Media linki yapışdırın...">
+                <button class="open-btn" onclick="startPlayingLink()">Aç</button>
             </div>
+            <div class="shortcuts-row">
+                <span onclick="setLink('https://google.com')"><i class="fa-solid fa-globe" style="color:#3b82f6;"></i> Google</span>
+                <span onclick="alert('Yeni qovluq yarat')"><i class="fa-solid fa-folder" style="color:#fbbf24;"></i> New Folder</span>
+            </div>
+        </div>
 
-            <div class="progress-container">
-                <input type="range" id="fullSeeker" class="full-seeker" value="0" max="100" step="1">
-                <div class="time-row">
-                    <span id="currentTimeText">00:00</span>
-                    <span id="durationText">00:00</span>
+        <!-- Player Status Card -->
+        <div class="player-status-card">
+            <div class="player-info-top">
+                <div class="player-title">
+                    <i class="fa-solid fa-music"></i> Musiqi & Video Pleyeri
+                </div>
+                <div class="player-status-badge">
+                    <i class="fa-solid fa-circle-check" style="font-size: 9px;"></i> Yüklə Hazır
                 </div>
             </div>
-
-            <div class="audio-specs" id="audioSpecsText">Online Stream • 320 kb/s</div>
+            <p class="player-desc">Link daxil edərək tətbiq daxilinə saxlaya bilərsiniz.</p>
         </div>
-    </div>
 
-    <audio id="globalAudio" style="display: none;"></audio>
-
-    <div id="soundModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span><i class="fa-solid fa-volume-high" style="color: #22c55e;"></i> Bol Səslər & Effektlər</span>
-                <button class="close-btn" onclick="playSoundEffect('click'); closeSoundModal()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <button class="format-btn" onclick="playSoundEffect('bell')"><i class="fa-solid fa-bell" style="color: #eab308; margin-right: 8px;"></i> Zəng Səsi (Bell)</button>
-            <button class="format-btn" onclick="playSoundEffect('laser')"><i class="fa-solid fa-bolt" style="color: #38bdf8; margin-right: 8px;"></i> Lazer Efekti</button>
-            <button class="format-btn" onclick="playSoundEffect('pop')"><i class="fa-solid fa-circle-dot" style="color: #f43f5e; margin-right: 8px;"></i> Pop Efekti</button>
-            <button class="format-btn" onclick="playSoundEffect('chime')"><i class="fa-solid fa-wand-magic-sparkles" style="color: #a855f7; margin-right: 8px;"></i> Sehrli Çime</button>
+        <!-- New Tabs: Daha sonra izlə & Yükləmələr -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab(this, 'later')">
+                <i class="fa-solid fa-clock" style="color: #fbbf24;"></i> Daha sonra izlə
+            </button>
+            <button class="tab-btn" onclick="switchTab(this, 'downloads')">
+                <i class="fa-solid fa-download" style="color: #38bdf8;"></i> Yükləmələr
+            </button>
         </div>
-    </div>
 
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span><i class="fa-solid fa-palette" style="color: #ec4899;"></i> İkon, Tema və Şriftlər</span>
-                <button class="close-btn" onclick="playSoundEffect('click'); closeSettings()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <div class="setting-group">
-                <label><i class="fa-solid fa-icons" style="color: #38bdf8;"></i> Tətbiq İkonu</label>
-                <select id="appIconSelect" onchange="changeAppIcon(this.value)">
-                    <option value="fa-moon">🌙 Ay (Moon)</option>
-                    <option value="fa-headphones">🎧 Qulaqlıq (Headphones)</option>
-                    <option value="fa-compact-disc">💿 Disk (CD)</option>
-                    <option value="fa-fire">🔥 Od / Trend (Fire)</option>
-                    <option value="fa-bolt">⚡ Şimşək (Bolt)</option>
-                    <option value="fa-crown">👑 Tac (Crown)</option>
-                    <option value="fa-rocket">🚀 Raket (Rocket)</option>
-                    <option value="fa-skull">💀 Baş sümüyü (Skull)</option>
-                    <option value="fa-heart">💖 Ürək (Heart)</option>
-                    <option value="fa-star">⭐ Ulduz (Star)</option>
-                </select>
-            </div>
+        <!-- Supported Platforms -->
+        <div class="section-title">Dəstəklənən Platformalar</div>
+        <div class="platforms-grid">
+            <button class="platform-btn" onclick="setPlatform('spotify.com')"><i class="fa-brands fa-spotify" style="color:#22c55e;"></i> Spotify</button>
+            <button class="platform-btn" onclick="setPlatform('pinterest.com')"><i class="fa-brands fa-pinterest" style="color:#ef4444;"></i> Pinterest</button>
+            <button class="platform-btn" onclick="setPlatform('facebook.com')"><i class="fa-brands fa-facebook" style="color:#3b82f6;"></i> Facebook</button>
+            <button class="platform-btn" onclick="setPlatform('instagram.com')"><i class="fa-brands fa-instagram" style="color:#ec4899;"></i> Instagram</button>
+            <button class="platform-btn" onclick="setPlatform('threads.net')"><i class="fa-solid fa-at" style="color:#ffffff;"></i> Threads</button>
+            <button class="platform-btn" onclick="setPlatform('twitter.com')"><i class="fa-brands fa-x-twitter" style="color:#ffffff;"></i> Twitter</button>
+        </div>
 
-            <div class="setting-group">
-                <label><i class="fa-solid fa-brush" style="color: #22c55e;"></i> Rəng Teması</label>
-                <select id="themeSelect" onchange="changeTheme(this.value)">
-                    <option value="pink">💖 Neon Çəhrayı (Default)</option>
-                    <option value="blue">💙 Göy Okean (Ocean)</option>
-                    <option value="purple">💜 Sehrli Bənövşəyi (Magic)</option>
-                    <option value="green">💚 Matris Yaşıl (Matrix)</option>
-                    <option value="gold">💛 Qızıl Lüks (Gold)</option>
-                    <option value="red">❤️ Qırmızı Alov (Fire Red)</option>
-                    <option value="dark">🖤 Tam Qara / Minimal (Dark)</option>
-                </select>
+        <!-- Folder List Item -->
+        <div class="folder-card" onclick="alert('New Folder açıldı')">
+            <div class="folder-left">
+                <i class="fa-solid fa-folder"></i>
+                <div class="folder-info">
+                    <div class="f-title">New Folder</div>
+                    <div class="f-count">0 fayl mövcuddur</div>
+                </div>
             </div>
-
-            <div class="setting-group">
-                <label><i class="fa-solid fa-font" style="color: #eab308;"></i> Şrift (Font) Stili</label>
-                <select id="fontSelect" onchange="changeFont(this.value)">
-                    <option value="'Poppins', sans-serif">Poppins (Standart)</option>
-                    <option value="'Orbitron', sans-serif">Orbitron (Robotik / Sci-Fi)</option>
-                    <option value="'Cairo', sans-serif">Cairo (Müasir / Geniş)</option>
-                    <option value="'Pacifico', cursive">Pacifico (Əlyazma)</option>
-                    <option value="'Press Start 2P', cursive">Press Start 2P (Retro Oyun)</option>
-                    <option value="'Roboto Mono', monospace">Roboto Mono (Kod / Monospaced)</option>
-                    <option value="'Cinzel', serif">Cinzel (Klassik / Premium)</option>
-                </select>
-            </div>
+            <i class="fa-solid fa-chevron-right"></i>
         </div>
     </div>
 
     <script>
         function startPlayingLink() {
-    const val = document.getElementById('mediaLink').value.trim();
-    if (!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
-    document.getElementById('mediaLink').value = '';
-
-    let isSupported = val.includes('youtube.com') || val.includes('youtu.be') || 
-                      val.includes('spotify.com') || val.includes('instagram.com') || 
-                      val.includes('pinterest.com') || val.includes('facebook.com') || 
-                      val.includes('tiktok.com') || val.match(/\.(mp4|mp3|webm|ogg|mov)$/i);
-    
-    let mediaName = "Media Elementi";
-
-    if (!isSupported) {
-        alert('Bu link dəstəklənən şəbəkələrə aid deyil!');
-        return;
-    }
-    
-    if (!uploadsList.some(item => item.fullLink === val)) {
-        uploadsList.unshift({ name: mediaName, fullLink: val });
-        if(typeof foldersList !== 'undefined' && foldersList[0]) {
-            foldersList[0].count++;
-            renderFolders();
-        }
-        updateUI();
-    }
-
-    if (typeof playFile === 'function') {
-        playFile(val, mediaName, true);
-    }
-}
-
-
-    playFile(val, mediaName, isVideo);
-}
-
-        function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
-        function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
-        function openSoundModal() { document.getElementById('soundModal').style.display = 'flex'; }
-        function closeSoundModal() { document.getElementById('soundModal').style.display = 'none'; }
-        function openFullPlayer() { document.getElementById('fullPlayerModal').style.display = 'flex'; }
-        function closeFullPlayer() { document.getElementById('fullPlayerModal').style.display = 'none'; }
-        function openNewFolderModal() { document.getElementById('newFolderModal').style.display = 'flex'; }
-        function closeNewFolderModal() { document.getElementById('newFolderModal').style.display = 'none'; }
-
-        function changeAppIcon(iconClass) {
-            document.getElementById('appLogoIcon').className = `fa-solid ${iconClass}`;
-        }
-
-        function changeTheme(themeName) {
-            let primary = '#ec4899', bg = '#09090b', card = '#18181b', input = '#27272a';
-            if(themeName === 'blue') { primary = '#38bdf8'; bg = '#0b0f19'; card = '#1e293b'; input = '#334155'; }
-            else if(themeName === 'purple') { primary = '#a855f7'; bg = '#0f0715'; card = '#201033'; input = '#321a4f'; }
-            else if(themeName === 'green') { primary = '#22c55e'; bg = '#06130b'; card = '#0f2918'; input = '#183d25'; }
-            else if(themeName === 'gold') { primary = '#eab308'; bg = '#141208'; card = '#29240f'; input = '#3d3618'; }
-            else if(themeName === 'red') { primary = '#ef4444'; bg = '#140808'; card = '#2b1111'; input = '#401a1a'; }
-            else if(themeName === 'dark') { primary = '#ffffff'; bg = '#000000'; card = '#111111'; input = '#222222'; }
-
-            document.documentElement.style.setProperty('--primary-color', primary);
-            document.documentElement.style.setProperty('--bg-color', bg);
-            document.documentElement.style.setProperty('--card-bg', card);
-            document.documentElement.style.setProperty('--input-bg', input);
-        }
-
-        function changeFont(fontFamily) {
-            document.documentElement.style.setProperty('--font-family', fontFamily);
-        }
-
-        function playSoundEffect(type) {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            let now = ctx.currentTime;
-            
-            if(type === 'pop') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(300, now);
-                osc.frequency.exponentialRampToValueAtTime(600, now + 0.1);
-                gain.gain.setValueAtTime(0.4, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
-                osc.start(now); osc.stop(now + 0.1);
-            } else if(type === 'bell') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, now);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-                osc.start(now); osc.stop(now + 0.3);
-            } else if(type === 'laser') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(900, now);
-                osc.frequency.exponentialRampToValueAtTime(100, now + 0.2);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
-                osc.start(now); osc.stop(now + 0.2);
-            } else {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(500, now);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
-                osc.start(now); osc.stop(now + 0.1);
-            }
-        }
-
-        let historyList = [];
-        let watchLaterList = [];
-        let uploadsList = [];
-        let foldersList = [{ name: "Əsas Qovluq", count: 0 }];
-        let currentActiveLink = '';
-        let currentActiveName = '';
-        const globalAudio = document.getElementById('globalAudio');
-
-        function openMediaCenter(tabName) {
-            document.getElementById('mediaCenterModal').style.display = 'flex';
-            const tabs = document.querySelectorAll('.media-tabs .tab-btn');
-            if(tabName === 'history') switchTab('history', tabs[0]);
-            if(tabName === 'watchlater') switchTab('watchlater', tabs[1]);
-            if(tabName === 'uploads') switchTab('uploads', tabs[2]);
-            updateUI();
-        }
-        function closeMediaCenter() { document.getElementById('mediaCenterModal').style.display = 'none'; }
-
-        function switchTab(tabID, btnElement) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
-            if(tabID === 'history') document.getElementById('tabHistory').classList.add('active');
-            if(tabID === 'watchlater') document.getElementById('tabWatchLater').classList.add('active');
-            if(tabID === 'uploads') document.getElementById('tabUploads').classList.add('active');
-            
-            btnElement.classList.add('active');
-        }
-
-        function createNewFolder() {
-            const folderName = document.getElementById('newFolderNameInput').value.trim();
-            if(!folderName) { alert('Qovluq adı daxil edin!'); return; }
-            
-            foldersList.push({ name: folderName, count: 0 });
-            document.getElementById('newFolderNameInput').value = '';
-            closeNewFolderModal();
-            renderFolders();
-        }
-
-        function renderFolders() {
-            const container = document.getElementById('foldersContainer');
-            let html = '';
-            foldersList.forEach(folder => {
-                html += `<div class="folder-box" onclick="playSoundEffect('click'); openMediaCenter('uploads')">
-                    <i class="fa-solid fa-folder"></i>
-                    <div class="folder-info">
-                        <h4>${folder.name}</h4>
-                        <small>${folder.count} fayl</small>
-                    </div>
-                </div>`;
-            });
-            container.innerHTML = html;
-        }
-
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            const fileURL = URL.createObjectURL(file);
-            const fileName = file.name;
-
-            uploadsList.unshift({ name: fileName, fullLink: fileURL });
-            foldersList[0].count++;
-            renderFolders();
-            updateUI();
-            playFile(fileURL, fileName);
-        }
-
-        function startPlayingLink() {
             const val = document.getElementById('mediaLink').value.trim();
-            if(!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
+            if (!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
+            alert('Link qəbul olundu: ' + val);
             document.getElementById('mediaLink').value = '';
-            playFile(val, val);
         }
 
-        function extractYouTubeID(url) {
-            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            let match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
+        function setLink(url) {
+            document.getElementById('mediaLink').value = url;
         }
 
-        function addToHistory(name, fullLink) {
-            if(!historyList.some(item => item.fullLink === fullLink)) {
-                historyList.unshift({ name: name, fullLink: fullLink });
-            }
+        function setPlatform(domain) {
+            document.getElementById('mediaLink').value = 'https://www.' + domain + '/';
         }
 
-        function addToWatchLaterFromPlayer() {
-            if(!currentActiveLink) return;
-            if(!watchLaterList.some(item => item.fullLink === currentActiveLink)) {
-                watchLaterList.unshift({ name: currentActiveName, fullLink: currentActiveLink });
-                alert("Məlumat 'Daha sonra izlə' siyahısına əlavə edildi!");
-                updateUI();
+        function switchTab(element, tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            if(tabName === 'later') {
+                alert('"Daha sonra izlə" bölməsi seçildi');
             } else {
-                alert("Bu media artıq siyahıdadır.");
+                alert('"Yükləmələr" bölməsi seçildi');
             }
-        }
-
-        function downloadCurrentMedia() {
-            if(!currentActiveLink) return;
-            if(!uploadsList.some(item => item.fullLink === currentActiveLink)) {
-                uploadsList.unshift({ name: currentActiveName, fullLink: currentActiveLink });
-                foldersList[0].count++;
-                renderFolders();
-                updateUI();
-                alert("Müvəffəqiyyətlə 'Yüklənənlər' bölməsinə yadda saxlanıldı!");
-            } else {
-                alert("Bu fayl artıq yüklənənlər siyahısındadır.");
-            }
-        }
-
-        function playFile(fullLink, name) {
-            currentActiveLink = fullLink;
-            currentActiveName = name;
-            addToHistory(name, fullLink);
-            updateUI();
-
-            document.getElementById('persistentMiniPlayer').style.display = 'flex';
-            document.getElementById('miniSongTitle').innerHTML = `<i class="fa-solid fa-music" style="color: var(--primary-color);"></i> ` + name;
-            document.getElementById('fullSongTitle').innerText = name;
-
-            const artContainer = document.getElementById('playerArtContainer');
-            let ytID = extractYouTubeID(fullLink);
-
-            if(ytID) {
-                artContainer.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${ytID}?autoplay=1&enablejsapi=1" allow="autoplay"></iframe>`;
-                document.getElementById('miniPlayBtn').innerHTML = `<i class="fa-solid fa-pause"></i>`;
-                document.getElementById('fullPlayBtn').innerHTML = `<i class="fa-solid fa-pause"></i>`;
-                globalAudio.pause();
-            } else {
-                globalAudio.src = fullLink;
-                globalAudio.play().then(() => {
-                    document.getElementById('miniPlayBtn').innerHTML = `<i class="fa-solid fa-pause"></i>`;
-                    document.getElementById('fullPlayBtn').innerHTML = `<i class="fa-solid fa-pause"></i>`;
-                }).catch(e => console.log(e));
-                artContainer.innerHTML = `<i class="fa-solid fa-music" style="font-size: 40px; color: #38bdf8;"></i>`;
-            }
-            
-            openFullPlayer();
-        }
-
-        function togglePlayPause() {
-            let ytID = extractYouTubeID(currentActiveLink);
-            if(ytID) { 
-                alert("YouTube videosunu dayandırmaq üçün pleyerin üzərinə toxuna bilərsiniz."); 
-                return; 
-            }
-
-            if (!globalAudio.paused) {
-                globalAudio.pause();
-                document.getElementById('miniPlayBtn').innerHTML = `<i class="fa-solid fa-play"></i>`;
-                document.getElementById('fullPlayBtn').innerHTML = `<i class="fa-solid fa-play"></i>`;
-            } else {
-                globalAudio.play();
-                document.getElementById('miniPlayBtn').innerHTML = `<i class="fa-solid fa-pause"></i>`;
-                document.getElementById('fullPlayBtn').innerHTML = `<i class="fa-solid fa-pause"></i>`;
-            }
-        }
-
-        function skipTime(seconds) {
-            if(globalAudio && !extractYouTubeID(currentActiveLink)) { globalAudio.currentTime += seconds; }
-        }
-
-        globalAudio.addEventListener('timeupdate', () => {
-            if(globalAudio.duration) {
-                let progressPercent = (globalAudio.currentTime / globalAudio.duration) * 100;
-                document.getElementById('miniSeeker').value = progressPercent;
-                document.getElementById('fullSeeker').value = progressPercent;
-                document.getElementById('currentTimeText').innerText = formatTime(globalAudio.currentTime);
-                document.getElementById('durationText').innerText = formatTime(globalAudio.duration);
-            }
-        });
-
-        document.getElementById('fullSeeker').addEventListener('input', (e) => {
-            if(globalAudio.duration) { globalAudio.currentTime = (e.target.value / 100) * globalAudio.duration; }
-        });
-        document.getElementById('miniSeeker').addEventListener('input', (e) => {
-            if(globalAudio.duration) { globalAudio.currentTime = (e.target.value / 100) * globalAudio.duration; }
-        });
-
-        function formatTime(seconds) {
-            let mins = Math.floor(seconds / 60);
-            let secs = Math.floor(seconds % 60);
-            return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-
-        function updateUI() {
-            document.getElementById('hubHistoryCount').innerText = historyList.length + ' qeyd';
-            document.getElementById('hubWatchLaterCount').innerText = watchLaterList.length + ' qeyd';
-            document.getElementById('hubUploadsCount').innerText = uploadsList.length + ' fayl';
-
-            const histContainer = document.getElementById('tabHistory');
-            histContainer.innerHTML = historyList.length === 0 ? '<div class="empty-text">Tarixçə boşdur.</div>' : 
-                historyList.map(f => `<li class="media-item-row" onclick="playFile('${f.fullLink}', '${f.name}')">
-                    <div class="media-item-info"><i class="fa-solid fa-clock-rotate-left" style="color:#38bdf8;"></i><span>${f.name}</span></div>
-                    <span class="badge">Dinlə</span>
-                </li>`).join('');
-
-            const wlContainer = document.getElementById('tabWatchLater');
-            wlContainer.innerHTML = watchLaterList.length === 0 ? '<div class="empty-text">"Daha sonra izlə" siyahısı boşdur.</div>' : 
-                watchLaterList.map(f => `<li class="media-item-row" onclick="playFile('${f.fullLink}', '${f.name}')">
-                    <div class="media-item-info"><i class="fa-solid fa-clock" style="color:#eab308;"></i><span>${f.name}</span></div>
-                    <span class="badge" style="background:#eab308; color:black;">Aç</span>
-                </li>`).join('');
-
-            const upContainer = document.getElementById('tabUploads');
-            upContainer.innerHTML = uploadsList.length === 0 ? '<div class="empty-text">Yüklənmiş fayl yoxdur.</div>' : 
-                uploadsList.map(f => `<li class="media-item-row" onclick="playFile('${f.fullLink}', '${f.name}')">
-                    <div class="media-item-info"><i class="fa-solid fa-file-arrow-up" style="color:#22c55e;"></i><span>${f.name}</span></div>
-                    <span class="badge" style="background:#22c55e; color:black;">İzlə</span>
-                </li>`).join('');
         }
     </script>
 </body>
