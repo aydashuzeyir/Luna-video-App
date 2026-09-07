@@ -221,10 +221,10 @@
     <div class="header">
         <div class="title-area">
             <h1>Luna</h1>
-            <p>Media Player & Google Girişi</p>
+            <p>Media Player</p>
         </div>
         <div class="top-icons">
-            <button class="icon-btn" title="Axtarış">🔍</button>
+            <button class="icon-btn" title="Axtarış" onclick="alert('Axtarış bölməsi')">🔍</button>
             <button class="icon-btn" title="Ayarlar" onclick="openSettings()">⚙️</button>
             <button class="icon-btn" title="Yenilə" onclick="location.reload()">🔄</button>
         </div>
@@ -232,12 +232,12 @@
 
     <div class="top-card">
         <div class="input-group">
-            <input type="text" placeholder="Spotify / Media linki yapışdırın...">
-            <button>Aç</button>
+            <input type="text" id="mediaLink" placeholder="Media linki yapışdırın...">
+            <button onclick="processLink('open')">Aç</button>
         </div>
         <div class="action-row">
-            <button class="action-sub-btn">🌐 Google-a Get</button>
-            <button class="action-sub-btn">📁 New Folder</button>
+            <button class="action-sub-btn" onclick="goToGoogle()">🌐 Google-a Get</button>
+            <button class="action-sub-btn" onclick="alert('Yeni qovluq yaradıldı')">📁 New Folder</button>
         </div>
     </div>
 
@@ -246,7 +246,7 @@
             <span class="status-title">🎵 Musiqi & Video Pleyeri</span>
             <div class="status-right">
                 <span onclick="location.reload()" style="cursor:pointer">🔄 Yenilə</span>
-                <span style="cursor:pointer">📥 Yüklə</span>
+                <span onclick="processLink('download')" style="cursor:pointer">📥 Yüklə</span>
                 <span style="color: #22c55e; font-weight: 600;">Hazır</span>
             </div>
         </div>
@@ -255,12 +255,12 @@
 
     <div class="platforms-title">Dəstəklənən Platformalar</div>
     <div class="platforms-grid">
-        <button class="platform-btn"><span style="color: #22c55e;">🎧</span> Spotify</button>
-        <button class="platform-btn"><span style="color: #ef4444;">📌</span> Pinterest</button>
-        <button class="platform-btn"><span style="color: #3b82f6;">💙</span> Facebook</button>
-        <button class="platform-btn"><span style="color: #ec4899;">📷</span> Instagram</button>
-        <button class="platform-btn"><span style="color: #60a5fa;">🧵</span> Threads</button>
-        <button class="platform-btn"><span style="color: #f3f4f6;">✖️</span> Twitter (X)</button>
+        <button class="platform-btn" onclick="openPlatform('Spotify')"><span style="color: #22c55e;">🎧</span> Spotify</button>
+        <button class="platform-btn" onclick="openPlatform('Pinterest')"><span style="color: #ef4444;">📌</span> Pinterest</button>
+        <button class="platform-btn" onclick="openPlatform('Facebook')"><span style="color: #3b82f6;">💙</span> Facebook</button>
+        <button class="platform-btn" onclick="openPlatform('Instagram')"><span style="color: #ec4899;">📷</span> Instagram</button>
+        <button class="platform-btn" onclick="openPlatform('Threads')"><span style="color: #60a5fa;">🧵</span> Threads</button>
+        <button class="platform-btn" onclick="openPlatform('Twitter')"><span style="color: #f3f4f6;">✖️</span> Twitter (X)</button>
     </div>
 
     <!-- Ayarlar Modalı -->
@@ -312,6 +312,35 @@
                 document.body.style.fontFamily = 'monospace';
             } else if(font === 'serif') {
                 document.body.style.fontFamily = 'serif';
+            }
+        }
+
+        // Google tamamilə ayrı tabda açılır
+        function goToGoogle() {
+            window.open('https://www.google.com', '_blank');
+        }
+
+        // Platforma düymələri
+        function openPlatform(platformName) {
+            const val = document.getElementById('mediaLink').value.trim();
+            if(!val) {
+                alert('Zəhmət olmasa əvvəlcə ' + platformName + ' linkini daxil edin!');
+                return;
+            }
+            alert(platformName + ' üçün link qəbul olundu: ' + val);
+        }
+
+        // Əsas link və yükləmə əməliyyatı
+        function processLink(type) {
+            const val = document.getElementById('mediaLink').value.trim();
+            if(!val) {
+                alert('Zəhmət olmasa link daxil edin!');
+                return;
+            }
+            if(type === 'download') {
+                alert('Fayl yüklənir...');
+            } else {
+                alert('Link açıldı: ' + val);
             }
         }
     </script>
