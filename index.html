@@ -3,337 +3,730 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luna - Media Player</title>
+    <title>Luna - Smart Media Hub</title>
     <!-- FontAwesome & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&family=Cinzel:wght@500;700&family=Playfair+Display:wght@500;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #0b0c10;
-            --card-bg: #14161f;
-            --accent-pink: #ec4899;
-            --text-color: #ffffff;
-            --text-muted: #9ca3af;
+            --bg: #07080a;
+            --surface: #12141c;
+            --surface-hover: #1b1e29;
+            --primary: #f43f5e;
+            --primary-glow: rgba(244, 63, 94, 0.25);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border: rgba(255, 255, 255, 0.06);
+            --font: 'Plus Jakarta Sans', sans-serif;
+            --radius: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font);
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 12px;
+            transition: background 0.4s ease;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding-bottom: 30px;
+            gap: 16px;
         }
 
-        .container {
-            width: 100%;
-            max-width: 440px;
-            padding: 16px;
-            box-sizing: border-box;
-        }
-
-        /* Header */
-        .header {
+        /* Top Header */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-        }
-        .logo-box h1 {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--accent-pink);
-            margin: 0;
-        }
-        .logo-box span {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-        .header-icons {
-            display: flex;
-            gap: 12px;
-        }
-        .header-icons i {
-            font-size: 16px;
-            cursor: pointer;
-            color: var(--text-color);
-            background: var(--card-bg);
-            padding: 10px;
-            border-radius: 12px;
+            padding: 4px 0;
         }
 
-        /* Input Card Box */
-        .main-card {
-            background-color: var(--card-bg);
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-        }
-        .input-row {
+        .brand h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
             display: flex;
             align-items: center;
-            background: rgba(255,255,255,0.04);
-            border-radius: 12px;
-            padding: 8px 12px;
-            margin-bottom: 12px;
-            gap: 10px;
+            gap: 8px;
+            letter-spacing: -0.5px;
         }
-        .input-row i { color: var(--text-muted); font-size: 14px; }
-        .input-row input {
-            background: transparent;
+
+        .brand span {
+            font-size: 11px;
+            color: var(--text-sub);
+            font-weight: 400;
+            display: block;
+            margin-top: -2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: var(--surface-hover);
+            border-color: var(--primary);
+        }
+
+        /* Search / Input Box */
+        .search-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 6px 6px 6px 14px;
+            gap: 10px;
+            margin-bottom: 12px;
+            transition: 0.2s;
+        }
+
+        .input-group:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .input-group i {
+            color: var(--text-sub);
+            font-size: 14px;
+        }
+
+        .input-group input {
+            flex: 1;
+            background: none;
             border: none;
             outline: none;
-            color: var(--text-color);
+            color: var(--text-main);
             font-size: 13px;
-            width: 100%;
-            font-family: 'Poppins', sans-serif;
         }
-        .open-btn {
-            background-color: var(--accent-pink);
+
+        .input-group input::placeholder {
+            color: var(--text-sub);
+        }
+
+        .action-btn {
+            background: var(--primary);
             color: white;
             border: none;
-            padding: 8px 20px;
+            padding: 10px 20px;
             border-radius: 10px;
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px var(--primary-glow);
         }
 
-        .shortcuts-row {
+        .action-btn:active {
+            transform: scale(0.96);
+        }
+
+        .quick-links {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
-            color: var(--text-muted);
             padding: 0 4px;
         }
-        .shortcuts-row span { cursor: pointer; display: flex; align-items: center; gap: 6px; }
 
-        /* Media Player Status Card */
-        .player-status-card {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 14px 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-        }
-        .player-info-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-        .player-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #f472b6;
-        }
-        .player-status-badge {
+        .quick-tag {
+            font-size: 12px;
+            color: var(--text-sub);
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 11px;
-            color: #4ade80;
-            background: rgba(74, 222, 128, 0.1);
-            padding: 3px 8px;
-            border-radius: 20px;
-        }
-        .player-desc {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin: 0;
+            transition: 0.2s;
         }
 
-        /* Nav Tabs (Daha sonra izlə & Yükləmələr) */
-        .nav-tabs {
+        .quick-tag:hover {
+            color: var(--text-main);
+        }
+
+        /* Status Banner */
+        .status-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .status-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-badge {
+            font-size: 10px;
+            font-weight: 600;
+            color: #34d399;
+            background: rgba(52, 211, 153, 0.1);
+            padding: 3px 10px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-desc {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        /* Navigation Tabs */
+        .tabs-row {
             display: flex;
             gap: 10px;
-            margin-bottom: 16px;
         }
-        .tab-btn {
+
+        .tab-item {
             flex: 1;
-            background-color: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.05);
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 14px;
-            padding: 12px 10px;
-            color: var(--text-muted);
+            padding: 12px;
+            color: var(--text-sub);
             font-size: 12px;
             font-weight: 500;
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
             transition: 0.2s;
         }
-        .tab-btn.active {
-            background: rgba(236, 72, 153, 0.15);
-            color: var(--accent-pink);
-            border-color: rgba(236, 72, 153, 0.3);
+
+        .tab-item.active {
+            background: var(--primary-glow);
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
-        /* Platforms Section */
-        .section-title {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
+        /* Dynamic Content Area */
+        .content-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
         }
+
+        .section-header-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.2);
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            gap: 10px;
+        }
+
+        .history-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .history-info i {
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        .history-url {
+            font-size: 12px;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .download-action-btn {
+            background: var(--primary-glow);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .download-action-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .empty-text {
+            font-size: 12px;
+            color: var(--text-sub);
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        /* Platforms Grid */
+        .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-sub);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
         .platforms-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 16px;
         }
-        .platform-btn {
-            background-color: var(--card-bg);
-            border: none;
+
+        .platform-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 14px;
             padding: 12px 8px;
             display: flex;
             align-items: center;
             gap: 8px;
-            color: var(--text-color);
+            color: var(--text-main);
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
-            font-family: 'Poppins', sans-serif;
             transition: 0.2s;
         }
-        .platform-btn:hover { background: rgba(255,255,255,0.06); }
-        .platform-btn i { font-size: 15px; }
 
-        /* Folder Card */
-        .folder-card {
-            background-color: var(--card-bg);
+        .platform-card:hover {
+            background: var(--surface-hover);
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Folder Element */
+        .folder-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 16px;
             padding: 14px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            margin-bottom: 12px;
+            transition: 0.2s;
         }
+
+        .folder-box:hover {
+            background: var(--surface-hover);
+        }
+
         .folder-left {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        .folder-left i { font-size: 22px; color: #fbbf24; }
-        .folder-info .f-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-        .folder-info .f-count { font-size: 11px; color: var(--text-muted); }
-        .folder-card > i { color: var(--text-muted); font-size: 14px; }
+
+        .folder-left i {
+            font-size: 20px;
+            color: #fbbf24;
+        }
+
+        .folder-info .name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .folder-info .count {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        .folder-box > i {
+            color: var(--text-sub);
+            font-size: 13px;
+        }
+
+        /* Settings Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            z-index: 999;
+        }
+
+        .modal-body {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 380px;
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .modal-header i {
+            cursor: pointer;
+            color: var(--text-sub);
+            padding: 6px;
+        }
+
+        .setting-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .setting-field label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-sub);
+            text-transform: uppercase;
+        }
+
+        .setting-field select {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 12px;
+            outline: none;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .setting-field select:focus {
+            border-color: var(--primary);
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="app-container">
         <!-- Header -->
-        <div class="header">
-            <div class="logo-box">
-                <h1>Luna</h1>
-                <span>Media Player</span>
+        <header>
+            <div class="brand">
+                <h1 id="appLogoText"><i class="fa-solid fa-bolt" id="appLogoIcon"></i> Luna</h1>
+                <span>Media Hub</span>
             </div>
-            <div class="header-icons">
-                <i class="fa-solid fa-rotate" onclick="location.reload()"></i>
-                <i class="fa-solid fa-gear" onclick="alert('Ayarlar paneli')"></i>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="location.reload()" title="Yenilə"><i class="fa-solid fa-rotate-right"></i></button>
+                <button class="icon-btn" onclick="openSettings()" title="Ayarlar"><i class="fa-solid fa-sliders"></i></button>
+            </div>
+        </header>
+
+        <!-- Main Input Card -->
+        <div class="search-card">
+            <div class="input-group">
+                <i class="fa-solid fa-link"></i>
+                <input type="text" id="mediaUrlInput" placeholder="Media linki yapışdırın...">
+                <button class="action-btn" onclick="processLink()">Saxla</button>
+            </div>
+            <div class="quick-links">
+                <span class="quick-tag" onclick="setInput('https://google.com')"><i class="fa-solid fa-globe" style="color: #60a5fa;"></i> Google</span>
+                <span class="quick-tag" onclick="alert('Yeni qovluq yaradıldı!')"><i class="fa-solid fa-folder-plus" style="color: #fbbf24;"></i> New Folder</span>
             </div>
         </div>
 
-        <!-- Main Search Card -->
-        <div class="main-card">
-            <div class="input-row">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="mediaLink" placeholder="Media linki yapışdırın...">
-                <button class="open-btn" onclick="startPlayingLink()">Aç</button>
-            </div>
-            <div class="shortcuts-row">
-                <span onclick="setLink('https://google.com')"><i class="fa-solid fa-globe" style="color:#3b82f6;"></i> Google</span>
-                <span onclick="alert('Yeni qovluq yarat')"><i class="fa-solid fa-folder" style="color:#fbbf24;"></i> New Folder</span>
-            </div>
-        </div>
-
-        <!-- Player Status Card -->
-        <div class="player-status-card">
-            <div class="player-info-top">
-                <div class="player-title">
-                    <i class="fa-solid fa-music"></i> Musiqi & Video Pleyeri
+        <!-- Status Banner -->
+        <div class="status-card">
+            <div class="status-top">
+                <div class="status-title">
+                    <i class="fa-solid fa-headphones-simple"></i> Daxili Media Saxlanc
                 </div>
-                <div class="player-status-badge">
-                    <i class="fa-solid fa-circle-check" style="font-size: 9px;"></i> Yüklə Hazır
+                <div class="status-badge">
+                    <i class="fa-solid fa-circle" style="font-size: 6px;"></i> Təhlükəsiz Rejim
                 </div>
             </div>
-            <p class="player-desc">Link daxil edərək tətbiq daxilinə saxlaya bilərsiniz.</p>
+            <div class="status-desc">Linklər xarici tətbiqlərə və ya Files qovluğuna keçmədən yalnız daxildə işləyir.</div>
         </div>
 
-        <!-- New Tabs: Daha sonra izlə & Yükləmələr -->
-        <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab(this, 'later')">
-                <i class="fa-solid fa-clock" style="color: #fbbf24;"></i> Daha sonra izlə
-            </button>
-            <button class="tab-btn" onclick="switchTab(this, 'downloads')">
-                <i class="fa-solid fa-download" style="color: #38bdf8;"></i> Yükləmələr
-            </button>
+        <!-- Navigation Tabs -->
+        <div class="tabs-row">
+            <div class="tab-item active" id="tabLater" onclick="switchTab('later')">
+                <i class="fa-solid fa-clock-rotate-left" style="color: #fbbf24;"></i> Tarixçə
+            </div>
+            <div class="tab-item" id="tabDownloads" onclick="switchTab('downloads')">
+                <i class="fa-solid fa-cloud-arrow-down" style="color: #38bdf8;"></i> Daxili Yükləmələr
+            </div>
         </div>
 
-        <!-- Supported Platforms -->
-        <div class="section-title">Dəstəklənən Platformalar</div>
+        <!-- Dynamic List Container -->
+        <div class="content-section" id="dynamicListContainer">
+            <div class="section-header-title">
+                <span id="listTitle">Tarixçə Siyahısı</span>
+                <span style="font-size: 10px; cursor: pointer; color: var(--primary);" onclick="clearHistory()">Hamısını sil</span>
+            </div>
+            <div id="itemsList">
+                <div class="empty-text">Hələ heç bir link əlavə olunmayıb</div>
+            </div>
+        </div>
+
+        <!-- Platforms Grid -->
+        <div class="section-label">Dəstəklənən Platformalar</div>
         <div class="platforms-grid">
-            <button class="platform-btn" onclick="setPlatform('spotify.com')"><i class="fa-brands fa-spotify" style="color:#22c55e;"></i> Spotify</button>
-            <button class="platform-btn" onclick="setPlatform('pinterest.com')"><i class="fa-brands fa-pinterest" style="color:#ef4444;"></i> Pinterest</button>
-            <button class="platform-btn" onclick="setPlatform('facebook.com')"><i class="fa-brands fa-facebook" style="color:#3b82f6;"></i> Facebook</button>
-            <button class="platform-btn" onclick="setPlatform('instagram.com')"><i class="fa-brands fa-instagram" style="color:#ec4899;"></i> Instagram</button>
-            <button class="platform-btn" onclick="setPlatform('threads.net')"><i class="fa-solid fa-at" style="color:#ffffff;"></i> Threads</button>
-            <button class="platform-btn" onclick="setPlatform('twitter.com')"><i class="fa-brands fa-x-twitter" style="color:#ffffff;"></i> Twitter</button>
+            <div class="platform-card" onclick="setPlatform('spotify.com')"><i class="fa-brands fa-spotify" style="color:#22c55e; font-size:16px;"></i> Spotify</div>
+            <div class="platform-card" onclick="setPlatform('youtube.com')"><i class="fa-brands fa-youtube" style="color:#ef4444; font-size:16px;"></i> YouTube</div>
+            <div class="platform-card" onclick="setPlatform('instagram.com')"><i class="fa-brands fa-instagram" style="color:#ec4899; font-size:16px;"></i> Instagram</div>
+            <div class="platform-card" onclick="setPlatform('facebook.com')"><i class="fa-brands fa-facebook" style="color:#3b82f6; font-size:16px;"></i> Facebook</div>
+            <div class="platform-card" onclick="setPlatform('threads.net')"><i class="fa-solid fa-at" style="color:#ffffff; font-size:16px;"></i> Threads</div>
+            <div class="platform-card" onclick="setPlatform('twitter.com')"><i class="fa-brands fa-x-twitter" style="color:#ffffff; font-size:16px;"></i> Twitter</div>
         </div>
 
-        <!-- Folder List Item -->
-        <div class="folder-card" onclick="alert('New Folder açıldı')">
+        <!-- Folder Element -->
+        <div class="folder-box" onclick="alert('New Folder açıldı')">
             <div class="folder-left">
                 <i class="fa-solid fa-folder"></i>
                 <div class="folder-info">
-                    <div class="f-title">New Folder</div>
-                    <div class="f-count">0 fayl mövcuddur</div>
+                    <div class="name">New Folder</div>
+                    <div class="count">0 fayl mövcuddur</div>
                 </div>
             </div>
             <i class="fa-solid fa-chevron-right"></i>
         </div>
     </div>
 
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-body">
+            <div class="modal-header">
+                <span>Fərdiləşdirmə Mərkəzi</span>
+                <i class="fa-solid fa-xmark" onclick="closeSettings()"></i>
+            </div>
+
+            <div class="setting-field">
+                <label>Tema Rəngləri</label>
+                <select id="themePicker" onchange="changeTheme(this.value)">
+                    <option value="rose">Neon Rose (Standart)</option>
+                    <option value="emerald">Emerald Green</option>
+                    <option value="cyber">Cyber Purple</option>
+                    <option value="ocean">Ocean Blue</option>
+                    <option value="sunset">Sunset Orange</option>
+                    <option value="monochrome">Pure Dark (Minimal)</option>
+                </select>
+            </div>
+
+            <div class="setting-field">
+                <label>Şrift Üslubu</label>
+                <select id="fontPicker" onchange="changeFont(this.value)">
+                    <option value="'Plus Jakarta Sans', sans-serif">Jakarta Sans (Müasir)</option>
+                    <option value="'Outfit', sans-serif">Outfit (Geniş)</option>
+                    <option value="'Space Grotesk', sans-serif">Space Grotesk (Texnoloji)</option>
+                    <option value="'Quicksand', sans-serif">Quicksand (Yumşaq)</option>
+                    <option value="'Playfair Display', serif">Playfair (Klassik)</option>
+                    <option value="'Cinzel', serif">Cinzel (Kral)</option>
+                </select>
+            </div>
+
+            <div class="setting-field">
+                <label>Loqo İkonu</label>
+                <select id="iconPicker" onchange="changeLogoIcon(this.value)">
+                    <option value="fa-bolt">Şimşək (Bolt)</option>
+                    <option value="fa-moon">Ay (Moon)</option>
+                    <option value="fa-headphones">Qulaqlıq (Headphones)</option>
+                    <option value="fa-crown">Tac (Crown)</option>
+                    <option value="fa-fire">Alov (Fire)</option>
+                    <option value="fa-star">Ulduz (Star)</option>
+                </select>
+            </div>
+
+            <div class="setting-field">
+                <label>Səs Ekvalayzeri</label>
+                <select onchange="alert('Səs rejimi tətbiq edildi!')">
+                    <option value="normal">Balanslı / Normal</option>
+                    <option value="bass">Ultra Bass Gücləndirici</option>
+                    <option value="vocal">Vokal Aydınlığı</option>
+                    <option value="concert">3D Konsert Zalı</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
     <script>
-        function startPlayingLink() {
-            const val = document.getElementById('mediaLink').value.trim();
-            if (!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
-            alert('Link qəbul olundu: ' + val);
-            document.getElementById('mediaLink').value = '';
+        let historyLinks = JSON.parse(localStorage.getItem('luna_history')) || [];
+        let currentTab = 'later';
+
+        function renderList() {
+            const listContainer = document.getElementById('itemsList');
+            const titleElem = document.getElementById('listTitle');
+            
+            titleElem.textContent = currentTab === 'later' ? 'Tarixçə Siyahısı' : 'Daxili Yüklənmiş Fayllar';
+
+            if (historyLinks.length === 0) {
+                listContainer.innerHTML = '<div class="empty-text">Hələ heç bir element yoxdur</div>';
+                return;
+            }
+
+            listContainer.innerHTML = '';
+            historyLinks.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'history-item';
+                div.innerHTML = `
+                    <div class="history-info">
+                        <i class="fa-solid fa-link"></i>
+                        <span class="history-url" title="${item}">${item}</span>
+                    </div>
+                    <button class="download-action-btn" onclick="internalSave('${item}')">
+                        <i class="fa-solid fa-download"></i> Yüklə
+                    </button>
+                `;
+                listContainer.appendChild(div);
+            });
         }
 
-        function setLink(url) {
-            document.getElementById('mediaLink').value = url;
+        function processLink() {
+            const val = document.getElementById('mediaUrlInput').value.trim();
+            if(!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
+            
+            historyLinks.unshift(val);
+            localStorage.setItem('luna_history', JSON.stringify(historyLinks));
+            document.getElementById('mediaUrlInput').value = '';
+            renderList();
+        }
+
+        function setInput(url) {
+            document.getElementById('mediaUrlInput').value = url;
         }
 
         function setPlatform(domain) {
-            document.getElementById('mediaLink').value = 'https://www.' + domain + '/';
+            document.getElementById('mediaUrlInput').value = 'https://www.' + domain + '/';
         }
 
-        function switchTab(element, tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
-            if(tabName === 'later') {
-                alert('"Daha sonra izlə" bölməsi seçildi');
-            } else {
-                alert('"Yükləmələr" bölməsi seçildi');
-            }
+        function switchTab(type) {
+            currentTab = type;
+            document.getElementById('tabLater').classList.toggle('active', type === 'later');
+            document.getElementById('tabDownloads').classList.toggle('active', type === 'downloads');
+            renderList();
         }
+
+        function clearHistory() {
+            historyLinks = [];
+            localStorage.removeItem('luna_history');
+            renderList();
+        }
+
+        function internalSave(url) {
+            alert('Link daxili yaddaşda saxlanıldı.');
+        }
+
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+
+        function changeTheme(theme) {
+            let primary = '#f43f5e', glow = 'rgba(244, 63, 94, 0.25)', bg = '#07080a', surface = '#12141c';
+            if(theme === 'emerald') { primary = '#10b981'; glow = 'rgba(16, 185, 129, 0.25)'; bg = '#06110e'; surface = '#0f1f18'; }
+            else if(theme === 'cyber') { primary = '#a855f7'; glow = 'rgba(168, 85, 247, 0.25)'; bg = '#0b0712'; surface = '#171124'; }
+            else if(theme === 'ocean') { primary = '#3b82f6'; glow = 'rgba(59, 130, 246, 0.25)'; bg = '#070b14'; surface = '#111827'; }
+            else if(theme === 'sunset') { primary = '#f59e0b'; glow = 'rgba(245, 158, 11, 0.25)'; bg = '#120a07'; surface = '#241611'; }
+            else if(theme === 'monochrome') { primary = '#ffffff'; glow = 'rgba(255, 255, 255, 0.15)'; bg = '#000000'; surface = '#0d0d0d'; }
+
+            document.documentElement.style.setProperty('--primary', primary);
+            document.documentElement.style.setProperty('--primary-glow', glow);
+            document.documentElement.style.setProperty('--bg', bg);
+            document.documentElement.style.setProperty('--surface', surface);
+        }
+
+        function changeFont(fontFamily) {
+            document.documentElement.style.setProperty('--font', fontFamily);
+        }
+
+        function changeLogoIcon(iconClass) {
+            document.getElementById('appLogoIcon').className = 'fa-solid ' + iconClass;
+        }
+
+        renderList();
     </script>
 </body>
 </html>
