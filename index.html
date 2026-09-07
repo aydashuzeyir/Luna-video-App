@@ -21,7 +21,7 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 16px; }
+        body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 90px; }
         .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
@@ -62,6 +62,15 @@
         .platform-btn { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-main); cursor: pointer; text-decoration: none; transition: 0.2s; }
         .platform-btn:hover { background: var(--surface-hover); transform: translateY(-2px); }
 
+        /* Sabit Media Pleyer (Ekranın aşağısında çıxan) */
+        .floating-player { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 388px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 16px; display: none; align-items: center; justify-content: space-between; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 99; backdrop-filter: blur(10px); }
+        .player-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; padding-right: 10px; flex: 1; }
+        .player-title { font-size: 13px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .player-status { font-size: 10px; color: #10b981; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+        .player-controls { display: flex; align-items: center; gap: 10px; }
+        .player-btn { background: var(--primary); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; transition: 0.2s; }
+        .player-close { background: none; border: none; color: var(--text-sub); font-size: 16px; cursor: pointer; }
+
         /* Modal Pəncərələr */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: flex-end; z-index: 100; backdrop-filter: blur(5px); }
         .modal-card { background: var(--surface); width: 100%; max-width: 420px; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 20px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; border-top: 1px solid var(--border); }
@@ -76,14 +85,15 @@
 
         /* Yüklənənlər Siyahısı üslubu */
         .downloads-list { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; }
-        .download-item { background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .download-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; padding-right: 10px; }
+        .download-item { background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
+        .download-item:hover { background: var(--surface-hover); }
+        .download-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; padding-right: 10px; flex: 1; }
         .download-title { font-size: 13px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .download-date { font-size: 10px; color: var(--text-sub); }
         .delete-download { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 14px; padding: 6px; }
         .empty-downloads { text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0; }
 
-        /* Platforma daxili səhifə görünüşü */
+        /* Platforma Daxili Modalı */
         .platform-inner-content { display: flex; flex-direction: column; gap: 12px; }
         .platform-search-box { display: flex; gap: 8px; }
         .platform-search-box input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; padding: 10px; color: var(--text-main); outline: none; font-size: 13px; }
@@ -123,7 +133,7 @@
             <button class="action-btn primary" onclick="playCurrentSound(); playMedia()">
                 <i class="fa-solid fa-circle-play"></i> Dinlə / İzlə
             </button>
-            <button class="action-btn outline" onclick="playCurrentSound(); downloadMedia()">
+            <button class="action-btn outline" onclick="playCurrentSound(); downloadAndPlayMedia()">
                 <i class="fa-solid fa-cloud-arrow-down" style="color: var(--primary);"></i> Offline Yüklə
             </button>
         </div>
@@ -185,6 +195,18 @@
         <div class="platform-btn" onclick="playCurrentSound(); openPlatform('Pinterest', '#e60023', 'fa-pinterest')"><i class="fa-brands fa-pinterest" style="font-size: 22px; color: #e60023;"></i><span>Pinterest</span></div>
         <div class="platform-btn" onclick="playCurrentSound(); openPlatform('X (Twitter)', '#38bdf8', 'fa-x-twitter')"><i class="fa-brands fa-x-twitter" style="font-size: 22px; color: #38bdf8;"></i><span>X (Twitter)</span></div>
         <div class="platform-btn" onclick="playCurrentSound(); openPlatform('Threads', '#ffffff', 'fa-threads')"><i class="fa-brands fa-threads" style="font-size: 22px; color: #fff;"></i><span>Threads</span></div>
+    </div>
+</div>
+
+<!-- Sabit Ekran Pleyeri -->
+<div class="floating-player" id="floatingPlayer">
+    <div class="player-info">
+        <span class="player-title" id="playerTitleText">Mahnı adı</span>
+        <span class="player-status"><i class="fa-solid fa-circle-dot fa-beat" style="color: #10b981;"></i> Oxunur...</span>
+    </div>
+    <div class="player-controls">
+        <button class="player-btn" id="playerToggleBtn" onclick="togglePlayState()"><i class="fa-solid fa-pause" id="playPauseIcon"></i></button>
+        <button class="player-close" onclick="closePlayer()"><i class="fa-solid fa-xmark"></i></button>
     </div>
 </div>
 
@@ -279,6 +301,7 @@
 
 <script>
     let currentSound = 'beep';
+    let isPlaying = false;
     let downloadedItems = JSON.parse(localStorage.getItem('luna_downloads')) || [
         { title: "Önizləmə Mahnı 1", date: "08.06.2026" },
         { title: "Önizləmə Video 2", date: "08.06.2026" }
@@ -325,13 +348,10 @@
     function playMedia() {
         const val = document.getElementById('mediaUrlInput').value;
         if(!val) return;
-        const status = document.getElementById('downloadStatus');
-        status.innerHTML = `<i class="fa-solid fa-play"></i> Media başladılır: ${val}`;
-        status.style.display = 'block';
-        setTimeout(() => { status.style.display = 'none'; }, 4000);
+        startPlayer(val);
     }
 
-    function downloadMedia() {
+    function downloadAndPlayMedia() {
         const val = document.getElementById('mediaUrlInput').value;
         if(!val) return;
         
@@ -341,10 +361,38 @@
         updateDownloadCount();
 
         const status = document.getElementById('downloadStatus');
-        status.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color: #10b981;"></i> Uğurla yükləndi və yaddaşa verildi!`;
+        status.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color: #10b981;"></i> Yükləndi və oxunmağa başlandı!`;
         status.style.display = 'block';
         document.getElementById('mediaUrlInput').value = '';
-        setTimeout(() => { status.style.display = 'none'; }, 4000);
+        setTimeout(() => { status.style.display = 'none'; }, 3000);
+
+        // Birbaşa ekranda pleyeri işə sal
+        startPlayer(val);
+    }
+
+    function startPlayer(title) {
+        document.getElementById('playerTitleText').innerText = title;
+        document.getElementById('floatingPlayer').style.display = 'flex';
+        isPlaying = true;
+        document.getElementById('playPauseIcon').className = 'fa-solid fa-pause';
+    }
+
+    function togglePlayState() {
+        isPlaying = !isPlaying;
+        const icon = document.getElementById('playPauseIcon');
+        const statusText = document.querySelector('.player-status');
+        if(isPlaying) {
+            icon.className = 'fa-solid fa-pause';
+            statusText.innerHTML = `<i class="fa-solid fa-circle-dot fa-beat" style="color: #10b981;"></i> Oxunur...`;
+        } else {
+            icon.className = 'fa-solid fa-play';
+            statusText.innerHTML = `<i class="fa-solid fa-circle" style="color: #f59e0b;"></i> Dayandırıldı`;
+        }
+    }
+
+    function closePlayer() {
+        document.getElementById('floatingPlayer').style.display = 'none';
+        isPlaying = false;
     }
 
     function updateDownloadCount() {
@@ -361,11 +409,11 @@
             downloadedItems.forEach((item, index) => {
                 container.innerHTML += `
                     <div class="download-item">
-                        <div class="download-info">
+                        <div class="download-info" onclick="playCurrentSound(); closeDownloadsModal(); startPlayer('${item.scriptSafeTitle || item.title.replace(/'/g, "\\'")}')">
                             <span class="download-title">${item.title}</span>
                             <span class="download-date">${item.date}</span>
                         </div>
-                        <button class="delete-download" onclick="playCurrentSound(); deleteDownload(${index})"><i class="fa-solid fa-trash-can"></i></button>
+                        <button class="delete-download" onclick="event.stopPropagation(); playCurrentSound(); deleteDownload(${index})"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 `;
             });
@@ -403,7 +451,6 @@
 
     function openModal(type) {}
 
-    // Sosial Platforma daxili idarəetmə funksiyaları
     function openPlatform(name, color, icon) {
         document.getElementById('platformModalTitle').innerHTML = `<i class="fa-brands ${icon}" style="color: ${color};"></i> ${name} - Daxili Mərkəz`;
         document.getElementById('platformSearchInput').value = '';
