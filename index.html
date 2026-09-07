@@ -9,10 +9,6 @@
     <meta name="keywords" content="Luna, media player, pwa app, musiqi yüklə, video player, spotify downloader">
     <meta name="author" content="Luna App">
     
-    <meta property="og:title" content="Luna - Media Player">
-    <meta property="og:description" content="Media linkləri idarə edin, musiqi dinləyin və yükləyin.">
-    <meta property="og:type" content="website">
-
     <link rel="manifest" href="./manifest.json">
     <style>
         * {
@@ -25,7 +21,6 @@
             background-color: #09090b;
             color: #ffffff;
             padding: 16px;
-            transition: background 0.3s, color 0.3s;
         }
         .header {
             display: flex;
@@ -158,59 +153,110 @@
             font-size: 12px;
             cursor: pointer;
         }
-        /* New Folder Bölməsi (Tətbiq İçi Yükləmələr) */
-        .folder-section {
+
+        /* Ana səhifədə qovluq düyməsi */
+        .folder-card {
             background-color: #18181b;
             border-radius: 16px;
-            padding: 14px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border: 1px solid #27272a;
         }
-        .folder-header {
-            font-size: 13px;
+        .folder-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .folder-icon {
+            font-size: 24px;
+        }
+        .folder-details h3 {
+            font-size: 14px;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+        .folder-details p {
+            font-size: 11px;
+            color: #a1a1aa;
+        }
+
+        /* Qovluq İçi Tam Ekran Səhifəsi (Əsas hissə) */
+        #folderModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #09090b;
+            z-index: 9999;
+            flex-direction: column;
+            padding: 16px;
+        }
+        .folder-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #27272a;
+        }
+        .folder-modal-header h2 {
             color: #ec4899;
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 18px;
         }
-        .file-list {
-            list-style: none;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        .file-item {
-            background-color: #27272a;
-            padding: 8px 12px;
+        .back-btn {
+            background: #27272a;
+            color: white;
+            border: none;
+            padding: 8px 16px;
             border-radius: 8px;
-            margin-bottom: 6px;
-            font-size: 12px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .folder-file-list {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .folder-file-item {
+            background-color: #18181b;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid #27272a;
         }
-        .file-item span {
+        .folder-file-item span {
             color: #d4d4d8;
+            font-size: 13px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            max-width: 180px;
+            max-width: 220px;
         }
         .file-badge {
             background-color: #ec4899;
             color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: bold;
         }
-        .empty-folder {
+        .empty-folder-text {
             color: #71717a;
-            font-size: 12px;
             text-align: center;
-            padding: 10px;
+            margin-top: 50px;
+            font-size: 14px;
         }
 
-        /* Modallar */
+        /* Format Seçim Modalı */
         .modal {
             display: none;
             position: fixed;
@@ -247,25 +293,6 @@
             font-size: 18px;
             cursor: pointer;
         }
-        .setting-group {
-            margin-bottom: 12px;
-        }
-        .setting-group label {
-            font-size: 12px;
-            color: #a1a1aa;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .setting-group select {
-            width: 100%;
-            background: #27272a;
-            color: #fff;
-            border: none;
-            padding: 8px;
-            border-radius: 8px;
-            outline: none;
-            font-size: 13px;
-        }
         .format-btn {
             display: block;
             width: 100%;
@@ -279,10 +306,6 @@
             text-align: left;
             margin-bottom: 10px;
             cursor: pointer;
-            transition: background 0.2s;
-        }
-        .format-btn:hover {
-            background-color: #3f3f46;
         }
     </style>
 </head>
@@ -294,8 +317,7 @@
             <p>Media Player</p>
         </div>
         <div class="top-icons">
-            <button class="icon-btn" title="Ayarlar" onclick="openSettings()">⚙️</button>
-            <button class="icon-btn" title="Yenilə" onclick="location.reload()">🔄</button>
+            <button class="icon-btn" onclick="location.reload()">🔄</button>
         </div>
     </div>
 
@@ -305,8 +327,8 @@
             <button onclick="checkAndOpenFormat()">Aç</button>
         </div>
         <div class="action-row">
-            <button class="action-sub-btn" onclick="goToGoogle()">🌐 Google-a Get</button>
-            <button class="action-sub-btn" onclick="alert('New Folder aktivdir')">📁 New Folder</button>
+            <button class="action-sub-btn" onclick="window.open('https://www.google.com', '_blank')">🌐 Google</button>
+            <button class="action-sub-btn" onclick="openFolder()">📁 New Folder</button>
         </div>
     </div>
 
@@ -314,12 +336,11 @@
         <div class="status-header">
             <span class="status-title">🎵 Musiqi & Video Pleyeri</span>
             <div class="status-right">
-                <span onclick="location.reload()" style="cursor:pointer">🔄 Yenilə</span>
-                <span onclick="checkAndOpenFormat()" style="cursor:pointer">📥 Yüklə</span>
+                <span onclick="checkAndOpenFormat()" style="cursor:pointer; color:#ec4899;">📥 Yüklə</span>
                 <span style="color: #22c55e; font-weight: 600;">Hazır</span>
             </div>
         </div>
-        <p class="status-desc">Link daxil edərək format seçib tətbiq daxilinə yükləyə bilərsiniz.</p>
+        <p class="status-desc">Link daxil edərək tətbiq daxilinə saxlaya bilərsiniz.</p>
     </div>
 
     <div class="platforms-title">Dəstəklənən Platformalar</div>
@@ -329,26 +350,38 @@
         <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #3b82f6;">💙</span> Facebook</button>
         <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #ec4899;">📷</span> Instagram</button>
         <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #60a5fa;">🧵</span> Threads</button>
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #f3f4f6;">✖️</span> Twitter (X)</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #f3f4f6;">✖️</span> Twitter</button>
     </div>
 
-    <!-- New Folder Fayl Qovluğu Bölməsi -->
-    <div class="folder-section">
-        <div class="folder-header">
-            <span>📁 New Folder (Tətbiq İçi Yükləmələr)</span>
-            <span id="fileCount" style="font-size: 11px; color: #a1a1aa;">0 fayl</span>
+    <!-- Ana səhifədə toxunula bilən Qovluq Kartı -->
+    <div class="folder-card" onclick="openFolder()">
+        <div class="folder-info">
+            <span class="folder-icon">📁</span>
+            <div class="folder-details">
+                <h3>New Folder</h3>
+                <p id="mainFolderCount">0 fayl mövcuddur</p>
+            </div>
         </div>
-        <div id="fileContainer">
-            <div class="empty-folder">Hələ ki heç bir fayl yüklənməyib.</div>
+        <span style="color: #71717a; font-size: 16px;">➔</span>
+    </div>
+
+    <!-- Qovluğun İçi (Tam Ekran Açılan Səhifə) -->
+    <div id="folderModal">
+        <div class="folder-modal-header">
+            <h2>📁 New Folder İçi</h2>
+            <button class="back-btn" onclick="closeFolder()">Geri qayıt</button>
+        </div>
+        <div id="folderModalBody" class="folder-file-list">
+            <div class="empty-folder-text">Qovluq hələ ki boşdur.</div>
         </div>
     </div>
 
-    <!-- Format Seçim Pəncərəsi (MP3 / MP4) -->
+    <!-- Format Seçim Modalı -->
     <div id="formatModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span>Format Seçin</span>
-                <button class="close-btn" onclick="closeFormatModal()">✕</button>
+                <button class="close-btn" onclick="document.getElementById('formatModal').style.display='none'">✕</button>
             </div>
             <p style="color: #a1a1aa; font-size: 12px; margin-bottom: 15px;">Yükləmək istədiyiniz formatı seçin:</p>
             <button class="format-btn" onclick="triggerDownload('MP3')">1. 🎵 MP3 (Audio)</button>
@@ -356,48 +389,21 @@
         </div>
     </div>
 
-    <!-- Ayarlar Modalı -->
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Tənzimləmələr</span>
-                <button class="close-btn" onclick="closeSettings()">✕</button>
-            </div>
-            <div class="setting-group">
-                <label>Tema Seçimi</label>
-                <select id="themeSelect" onchange="changeTheme(this.value)">
-                    <option value="dark">Tənha Qara (Default)</option>
-                    <option value="midnight">Göyçə / Midnight</option>
-                    <option value="pinkish">Çəhrayı Vibe</option>
-                </select>
-            </div>
-            <div class="setting-group">
-                <label>Şrift (Font) Stili</label>
-                <select id="fontSelect" onchange="changeFont(this.value)">
-                    <option value="system">Sistem Şrifti</option>
-                    <option value="monospace">Kod (Monospace)</option>
-                    <option value="serif">Klassik (Serif)</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
     <script>
-        function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
-        function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
-        
-        function changeTheme(theme) {
-            if(theme === 'dark') document.body.style.backgroundColor = '#09090b';
-            else if(theme === 'midnight') document.body.style.backgroundColor = '#0f172a';
-            else if(theme === 'pinkish') document.body.style.backgroundColor = '#1f101a';
-        }
-        function changeFont(font) {
-            if(font === 'system') document.body.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-            else if(font === 'monospace') document.body.style.fontFamily = 'monospace';
-            else if(font === 'serif') document.body.style.fontFamily = 'serif';
+        let downloadedFiles = [];
+
+        // Qovluğu açmaq üçün əsas funksiya
+        function openFolder() {
+            const modal = document.getElementById('folderModal');
+            modal.style.display = 'flex';
+            updateFolderUI();
         }
 
-        function goToGoogle() { window.open('https://www.google.com', '_blank'); }
+        // Qovluqdan geri qayıtmaq üçün funksiya
+        function closeFolder() {
+            const modal = document.getElementById('folderModal');
+            modal.style.display = 'none';
+        }
 
         function checkAndOpenFormat() {
             const val = document.getElementById('mediaLink').value.trim();
@@ -408,45 +414,37 @@
             document.getElementById('formatModal').style.display = 'flex';
         }
 
-        function closeFormatModal() {
-            document.getElementById('formatModal').style.display = 'none';
-        }
-
-        // Yalnız tətbiq daxilində işləyən yükləmə (telefona heç nə getmir)
-        let downloadedFiles = [];
-
         function triggerDownload(formatType) {
             const val = document.getElementById('mediaLink').value.trim();
-            closeFormatModal();
+            document.getElementById('formatModal').style.display = 'none';
 
-            let fileName = val.length > 30 ? val.substring(0, 30) + '...' : val;
+            let fileName = val.length > 25 ? val.substring(0, 25) + '...' : val;
             
             downloadedFiles.push({ name: fileName, format: formatType, fullLink: val });
             updateFolderUI();
 
             document.getElementById('mediaLink').value = '';
-            alert(formatType + ' formatı uğurla "New Folder" daxilinə yığıldı!');
+            alert(formatType + ' formatı "New Folder" qovluğuna əlavə olundu!');
         }
 
         function updateFolderUI() {
-            const container = document.getElementById('fileContainer');
-            const countSpan = document.getElementById('fileCount');
+            const container = document.getElementById('folderModalBody');
+            const mainCount = document.getElementById('mainFolderCount');
             
-            countSpan.innerText = downloadedFiles.length + ' fayl';
+            mainCount.innerText = downloadedFiles.length + ' fayl mövcuddur';
 
             if(downloadedFiles.length === 0) {
-                container.innerHTML = '<div class="empty-folder">Hələ ki heç bir fayl yüklənməyib.</div>';
+                container.innerHTML = '<div class="empty-folder-text">Qovluq hələ ki boşdur.</div>';
                 return;
             }
 
-            let html = '<ul class="file-list">';
+            let html = '';
             downloadedFiles.forEach((file, index) => {
-                html += `<li class="file-item" onclick="alert('Oxunur: ${file.fullLink}')" style="cursor:pointer;">
+                html += `<li class="folder-file-item" onclick="alert('Oxunur: ${file.fullLink}')" style="cursor:pointer;">
                             <span>${index + 1}. ${file.name}</span>
                             <span class="file-badge">${file.format}</span>
                          </li>`;
             });
-            html += '</ul>';
             container.innerHTML = html;
         }
     </script>
