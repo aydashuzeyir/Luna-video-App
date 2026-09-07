@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luna - Media Player & PWA</title>
     
-    <meta name="description" content="Luna Media Player - Spotify, Pinterest, Instagram və digər platformalardan media linkləri daxil edərək musiqi dinləyin və yükləyin.">
-    <meta name="keywords" content="Luna, media player, pwa app, musiqi yüklə, video player, spotify downloader">
-    <meta name="author" content="Luna App">
+    <!-- Çoxlu sayda əlavə edilmiş fontlar -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Orbitron:wght@500;700&family=Caveat:wght@600&family=Fira+Code:wght@400;600&family=Montserrat:wght@400;700&family=Pacifico&family=Dancing+Script:wght@700&family=Courier+Prime:wght@700&family=Press+Start+2P&family=Bungee&family=Rubik+Glitch&family=Cinzel:wght@700&family=Silkscreen&display=swap" rel="stylesheet">
     
-    <link rel="manifest" href="./manifest.json">
     <style>
         * {
             box-sizing: border-box;
@@ -21,7 +19,7 @@
             background-color: #09090b;
             color: #ffffff;
             padding: 16px;
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.3s, color 0.3s, font-family 0.3s;
         }
         .header {
             display: flex;
@@ -233,6 +231,7 @@
             justify-content: space-between;
             align-items: center;
             border: 1px solid #27272a;
+            cursor: pointer;
         }
         .folder-file-item span {
             color: #d4d4d8;
@@ -240,7 +239,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            max-width: 220px;
+            max-width: 200px;
         }
         .file-badge {
             background-color: #ec4899;
@@ -257,14 +256,63 @@
             font-size: 14px;
         }
 
-        /* Ümumi Modallar */
+        /* Yükləmə / Saniyə Göstəricisi Paneli */
+        #playerModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .player-card {
+            background: #18181b;
+            border: 1px solid #27272a;
+            padding: 24px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
+        .player-card h3 {
+            color: #ec4899;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .player-card p {
+            color: #a1a1aa;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+        .progress-bar-bg {
+            background: #27272a;
+            border-radius: 10px;
+            height: 8px;
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        .progress-bar-fill {
+            background: #ec4899;
+            height: 100%;
+            width: 0%;
+            transition: width 0.2s linear;
+        }
+        .timer-text {
+            font-size: 14px;
+            font-weight: bold;
+            color: #22c55e;
+            margin-bottom: 15px;
+        }
+
+        /* Modallar */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85);
             justify-content: center;
             align-items: center;
@@ -277,6 +325,8 @@
             width: 90%;
             max-width: 320px;
             border: 1px solid #27272a;
+            max-height: 80vh;
+            overflow-y: auto;
         }
         .modal-header {
             display: flex;
@@ -333,8 +383,8 @@
 
     <div class="header">
         <div class="title-area">
-            <h1>Luna</h1>
-            <p>Media Player</p>
+            <h1 id="appTitle">Luna</h1>
+            <p id="subTitle">Media Player</p>
         </div>
         <div class="top-icons">
             <button class="icon-btn" title="Ayarlar" onclick="openSettings()">⚙️</button>
@@ -356,7 +406,7 @@
 
     <div class="status-box">
         <div class="status-header">
-            <span class="status-title">🎵 Musiqi & Video Pleyeri</span>
+            <span class="status-title" id="boxTitle">🎵 Musiqi & Video Pleyeri</span>
             <div class="status-right">
                 <span onclick="checkAndOpenFormat()" style="cursor:pointer; color:#ec4899;">📥 Yüklə</span>
                 <span style="color: #22c55e; font-weight: 600;">Hazır</span>
@@ -366,13 +416,13 @@
     </div>
 
     <div class="platforms-title">Dəstəklənən Platformalar</div>
-    <div class="platforms-grid">
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconSpotify" style="color: #22c55e;">🎧</span> Spotify</button>
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconPinterest" style="color: #ef4444;">📌</span> Pinterest</button>
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconFacebook" style="color: #3b82f6;">💙</span> Facebook</button>
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconInstagram" style="color: #ec4899;">📷</span> Instagram</button>
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconThreads" style="color: #60a5fa;">🧵</span> Threads</button>
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconTwitter" style="color: #f3f4f6;">✖️</span> Twitter</button>
+    <div class="platforms-grid" id="platformsGrid">
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span class="p-icon">🎧</span> Spotify</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span class="p-icon">📌</span> Pinterest</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span class="p-icon">💙</span> Facebook</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span class="p-icon">📷</span> Instagram</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span class="p-icon">🧵</span> Threads</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span class="p-icon">✖️</span> Twitter</button>
     </div>
 
     <!-- Ana səhifədə qovluq kartı -->
@@ -387,7 +437,7 @@
         <span style="color: #71717a; font-size: 16px;">➔</span>
     </div>
 
-    <!-- Qovluğun İçi (Tam Ekran Səhifəsi) -->
+    <!-- Qovluğun İçi -->
     <div id="folderModal">
         <div class="folder-modal-header">
             <h2>📁 New Folder İçi</h2>
@@ -395,6 +445,19 @@
         </div>
         <div id="folderModalBody" class="folder-file-list">
             <div class="empty-folder-text">Qovluq hələ ki boşdur.</div>
+        </div>
+    </div>
+
+    <!-- Yükləmə və Saniyə Göstəricisi Ekranı -->
+    <div id="playerModal">
+        <div class="player-card">
+            <h3 id="playerTitle">Fayl Hazırlanır...</h3>
+            <p id="playerSub">Yükləmə tamamlanır</p>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+            <div class="timer-text" id="timerText">Qalır: 5 saniyə</div>
+            <button class="format-btn" style="background:#27272a; margin-bottom:0;" onclick="closePlayerModal()">Bağla / Geri</button>
         </div>
     </div>
 
@@ -411,7 +474,7 @@
         </div>
     </div>
 
-    <!-- Genişləndirilmiş Ayarlar Modalı -->
+    <!-- Ayarlar Modalı (Çoxlu Font, Tema, Shuffle və Bass Rejimləri) -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -420,11 +483,27 @@
             </div>
             
             <div class="setting-group">
-                <label>Tema Rəngi</label>
+                <label>Tema Seçimi (Shuffle & Vibe)</label>
                 <select id="themeSelect" onchange="changeTheme(this.value)">
                     <option value="dark">Tənha Qara (Default)</option>
-                    <option value="midnight">Göyçə / Midnight</option>
-                    <option value="pinkish">Çəhrayı Vibe</option>
+                    <option value="shuffle">🎲 Shuffle (Rəngləri Qarışdır)</option>
+                    <option value="cyberpunk">🔊 Cyberpunk Bass</option>
+                    <option value="midnight">🌙 Midnight Blue</option>
+                    <option value="pinkish">🌸 Çəhrayı Vibe</option>
+                    <option value="neon">⚡ Neon Matrix</option>
+                    <option value="sunset">🔥 Sunset Qırmızı</option>
+                    <option value="emerald">🟢 Emerald Yaşıl</option>
+                    <option value="purple">🔮 Royal Bənövşəyi</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label>Səs / Bass Rejimi</label>
+                <select id="bassSelect" onchange="changeBass(this.value)">
+                    <option value="normal">Normal Səs</option>
+                    <option value="mega">🔥 Mega Bass Boost (+10dB)</option>
+                    <option value="deep">🎧 Deep Sub-Bass</option>
+                    <option value="punchy">⚡ Punchy Club Mix</option>
                 </select>
             </div>
 
@@ -432,25 +511,42 @@
                 <label>Şrift (Font) Stili</label>
                 <select id="fontSelect" onchange="changeFont(this.value)">
                     <option value="system">Sistem Şrifti</option>
-                    <option value="monospace">Kod (Monospace)</option>
-                    <option value="serif">Klassik (Serif)</option>
+                    <option value="poppins">Poppins (Modern)</option>
+                    <option value="montserrat">Montserrat (Geniş)</option>
+                    <option value="orbitron">Orbitron (Sci-Fi)</option>
+                    <option value="caveat">Caveat (Əlyazı)</option>
+                    <option value="pacifico">Pacifico (Stilli)</option>
+                    <option value="dancing">Dancing Script (Zərif)</option>
+                    <option value="arcade">Press Start 2P (Retro Arcade)</option>
+                    <option value="bungee">Bungee (Qalın Şrift)</option>
+                    <option value="glitch">Rubik Glitch (Kiber Xəta)</option>
+                    <option value="cinzel">Cinzel (Klassik/Kral)</option>
+                    <option value="pixel">Silkscreen (Piksel)</option>
+                    <option value="monospace">Fira Code / Terminal</option>
                 </select>
             </div>
 
             <div class="setting-group">
-                <label>İkon Stili</label>
-                <select id="iconStyleSelect" onchange="changeIconStyle(this.value)">
-                    <option value="default">Standard İkonlar</option>
-                    <option value="minimal">Minimal / Sadə</option>
+                <label>İkon Kolleksiyası</label>
+                <select id="iconPackSelect" onchange="changeIconPack(this.value)">
+                    <option value="classic">Klassik İkonlar</option>
+                    <option value="neonpack">Neon / Parıldayan ✨</option>
+                    <option value="firepack">Odlu / Enerji 🔥</option>
+                    <option value="techpack">Texnologiya 💻</option>
+                    <option value="nature">Təbiət & Çiçək 🌸</option>
+                    <option value="minimal">Minimalist •</option>
                 </select>
             </div>
 
             <div class="setting-group">
-                <label>İkon Rəng Vurgusu</label>
+                <label>İkon Vurğu Rəngi</label>
                 <select id="iconColorSelect" onchange="changeIconColor(this.value)">
                     <option value="multi">Rəngarəng (Default)</option>
-                    <option value="pink">Hamısı Çəhrayı</option>
-                    <option value="cyan">Hamısı Mavi/Cyan</option>
+                    <option value="pink">Parlaq Çəhrayı</option>
+                    <option value="cyan">Neon Mavi</option>
+                    <option value="gold">Qızılı / Sarı</option>
+                    <option value="green">Yaşıl Haker</option>
+                    <option value="purple">Bənövşəyi</option>
                 </select>
             </div>
         </div>
@@ -464,43 +560,67 @@
             if(theme === 'dark') document.body.style.backgroundColor = '#09090b';
             else if(theme === 'midnight') document.body.style.backgroundColor = '#0f172a';
             else if(theme === 'pinkish') document.body.style.backgroundColor = '#1f101a';
+            else if(theme === 'neon') document.body.style.backgroundColor = '#050505';
+            else if(theme === 'sunset') document.body.style.backgroundColor = '#180909';
+            else if(theme === 'emerald') document.body.style.backgroundColor = '#022c22';
+            else if(theme === 'purple') document.body.style.backgroundColor = '#1e1b4b';
+            else if(theme === 'cyberpunk') document.body.style.backgroundColor = '#18021c';
+            else if(theme === 'shuffle') {
+                const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+                document.body.style.backgroundColor = randomColor;
+            }
+        }
+
+        function changeBass(bassMode) {
+            const boxTitle = document.getElementById('boxTitle');
+            if(bassMode === 'mega') boxTitle.innerText = '🔥 Musiqi & Video (Mega Bass On)';
+            else if(bassMode === 'deep') boxTitle.innerText = '🎧 Musiqi & Video (Deep Sub-Bass)';
+            else if(bassMode === 'punchy') boxTitle.innerText = '⚡ Musiqi & Video (Punchy Mix)';
+            else boxTitle.innerText = '🎵 Musiqi & Video Pleyeri';
         }
 
         function changeFont(font) {
             if(font === 'system') document.body.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-            else if(font === 'monospace') document.body.style.fontFamily = 'monospace';
-            else if(font === 'serif') document.body.style.fontFamily = 'serif';
+            else if(font === 'poppins') document.body.style.fontFamily = "'Poppins', sans-serif";
+            else if(font === 'montserrat') document.body.style.fontFamily = "'Montserrat', sans-serif";
+            else if(font === 'orbitron') document.body.style.fontFamily = "'Orbitron', sans-serif";
+            else if(font === 'caveat') document.body.style.fontFamily = "'Caveat', cursive";
+            else if(font === 'pacifico') document.body.style.fontFamily = "'Pacifico', cursive";
+            else if(font === 'dancing') document.body.style.fontFamily = "'Dancing Script', cursive";
+            else if(font === 'arcade') document.body.style.fontFamily = "'Press Start 2P', cursive";
+            else if(font === 'bungee') document.body.style.fontFamily = "'Bungee', cursive";
+            else if(font === 'glitch') document.body.style.fontFamily = "'Rubik Glitch', cursive";
+            else if(font === 'cinzel') document.body.style.fontFamily = "'Cinzel', serif";
+            else if(font === 'pixel') document.body.style.fontFamily = "'Silkscreen', cursive";
+            else if(font === 'monospace') document.body.style.fontFamily = "'Fira Code', monospace";
         }
 
-        function changeIconStyle(style) {
-            // İkon üslubu dəyişikliyi üçün əlavə məntiq
-            const spotify = document.getElementById('iconSpotify');
-            if(style === 'minimal') {
-                spotify.innerText = '•';
-            } else {
-                spotify.innerText = '🎧';
-            }
+        let currentIconPack = 'classic';
+        function changeIconPack(pack) {
+            currentIconPack = pack;
+            const icons = document.querySelectorAll('.p-icon');
+            const sets = {
+                'classic': ['🎧', '📌', '💙', '📷', '🧵', '✖️'],
+                'neonpack': ['🎧✨', '📌🌟', '💙💫', '📷🌠', '🧵🎇', '✖️⚡'],
+                'firepack': ['🎧🔥', '📌💥', '💙⚡', '📷🚀', '🧵⭐', '✖️🔥'],
+                'techpack': ['🎧💻', '📌💾', '💙🔋', '📷📱', '🧵⚡', '✖️🛰️'],
+                'nature': ['🎧🌸', '📌🍀', '💙🌊', '📷🌻', '🧵🍂', '✖️🌵'],
+                'minimal': ['•', '•', '•', '•', '•', '•']
+            };
+            icons.forEach((el, index) => {
+                el.innerText = sets[pack][index];
+            });
         }
 
         function changeIconColor(colorType) {
-            const icons = [
-                document.getElementById('iconSpotify'),
-                document.getElementById('iconPinterest'),
-                document.getElementById('iconFacebook'),
-                document.getElementById('iconInstagram'),
-                document.getElementById('iconThreads'),
-                document.getElementById('iconTwitter')
-            ];
-
+            const icons = document.querySelectorAll('.p-icon');
             icons.forEach(icon => {
-                if(colorType === 'pink') {
-                    icon.style.color = '#ec4899';
-                } else if(colorType === 'cyan') {
-                    icon.style.color = '#06b6d4';
-                } else {
-                    // Default orijinal rənglərini bərpa etmək olar və ya ilkin vəziyyət
-                    icon.style.color = ''; 
-                }
+                if(colorType === 'pink') icon.style.color = '#ec4899';
+                else if(colorType === 'cyan') icon.style.color = '#06b6d4';
+                else if(colorType === 'gold') icon.style.color = '#eab308';
+                else if(colorType === 'green') icon.style.color = '#22c55e';
+                else if(colorType === 'purple') icon.style.color = '#a855f7';
+                else icon.style.color = ''; 
             });
         }
 
@@ -527,14 +647,56 @@
         function triggerDownload(formatType) {
             const val = document.getElementById('mediaLink').value.trim();
             document.getElementById('formatModal').style.display = 'none';
-
-            let fileName = val.length > 25 ? val.substring(0, 25) + '...' : val;
-            
-            downloadedFiles.push({ name: fileName, format: formatType, fullLink: val });
-            updateFolderUI();
-
             document.getElementById('mediaLink').value = '';
-            alert(formatType + ' formatı "New Folder" qovluğuna əlavə olundu!');
+
+            let fileName = val.length > 20 ? val.substring(0, 20) + '...' : val;
+            
+            const playerModal = document.getElementById('playerModal');
+            const progressBar = document.getElementById('progressBar');
+            const timerText = document.getElementById('timerText');
+            const playerTitle = document.getElementById('playerTitle');
+            const playerSub = document.getElementById('playerSub');
+
+            playerTitle.innerText = `${formatType} Yüklənir...`;
+            playerSub.innerText = fileName;
+            playerModal.style.display = 'flex';
+            
+            progressBar.style.width = '0%';
+            let timeLeft = 5; 
+            timerText.innerText = `Qalır: ${timeLeft} saniyə`;
+
+            let interval = setInterval(() => {
+                timeLeft--;
+                let progressWidth = ((5 - timeLeft) / 5) * 100;
+                progressBar.style.width = progressWidth + '%';
+
+                if(timeLeft > 0) {
+                    timerText.innerText = `Qalır: ${timeLeft} saniyə`;
+                } else {
+                    clearInterval(interval);
+                    timerText.innerText = 'Yükləndi! 🎉';
+                    
+                    downloadedFiles.push({ name: fileName, format: formatType, fullLink: val });
+                    updateFolderUI();
+
+                    setTimeout(() => {
+                        playerModal.style.display = 'none';
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        function closePlayerModal() {
+            document.getElementById('playerModal').style.display = 'none';
+        }
+
+        function playFile(fullLink, format) {
+            const playerModal = document.getElementById('playerModal');
+            document.getElementById('playerTitle').innerText = `Oxunur (${format})`;
+            document.getElementById('playerSub').innerText = fullLink;
+            document.getElementById('progressBar').style.width = '100%';
+            document.getElementById('timerText').innerText = 'Media aktivdir 🎧';
+            playerModal.style.display = 'flex';
         }
 
         function updateFolderUI() {
@@ -550,7 +712,7 @@
 
             let html = '';
             downloadedFiles.forEach((file, index) => {
-                html += `<li class="folder-file-item" onclick="alert('Oxunur: ${file.fullLink}')" style="cursor:pointer;">
+                html += `<li class="folder-file-item" onclick="playFile('${file.fullLink}', '${file.format}')">
                             <span>${index + 1}. ${file.name}</span>
                             <span class="file-badge">${file.format}</span>
                          </li>`;
