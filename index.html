@@ -232,7 +232,7 @@
 
     <div class="top-card">
         <div class="input-group">
-            <input type="text" id="mediaLink" placeholder="Media linki yapışdırın...">
+            <input type="text" id="mediaLink" placeholder="Spotify və ya media linki yapışdırın...">
             <button onclick="processLink('open')">Aç</button>
         </div>
         <div class="action-row">
@@ -255,7 +255,7 @@
 
     <div class="platforms-title">Dəstəklənən Platformalar</div>
     <div class="platforms-grid">
-        <button class="platform-btn" onclick="openPlatform('Spotify')"><span style="color: #22c55e;">🎧</span> Spotify</button>
+        <button class="platform-btn" onclick="downloadSpotify()"><span style="color: #22c55e;">🎧</span> Spotify</button>
         <button class="platform-btn" onclick="openPlatform('Pinterest')"><span style="color: #ef4444;">📌</span> Pinterest</button>
         <button class="platform-btn" onclick="openPlatform('Facebook')"><span style="color: #3b82f6;">💙</span> Facebook</button>
         <button class="platform-btn" onclick="openPlatform('Instagram')"><span style="color: #ec4899;">📷</span> Instagram</button>
@@ -266,10 +266,7 @@
     <!-- Ayarlar Modalı -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <span>Tənzimləmələr</span>
-                <button class="close-btn" onclick="closeSettings()">✕</button>
-            </div>
+            <div class="modal-header"><span>Tənzimləmələr</span><button class="close-btn" onclick="closeSettings()">✕</button></div>
             <div class="setting-group">
                 <label>Tema Seçimi</label>
                 <select id="themeSelect" onchange="changeTheme(this.value)">
@@ -290,47 +287,46 @@
     </div>
 
     <script>
-        function openSettings() {
-            document.getElementById('settingsModal').style.display = 'flex';
-        }
-        function closeSettings() {
-            document.getElementById('settingsModal').style.display = 'none';
-        }
+        function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
+        function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
         function changeTheme(theme) {
-            if(theme === 'dark') {
-                document.body.style.backgroundColor = '#09090b';
-            } else if(theme === 'midnight') {
-                document.body.style.backgroundColor = '#0f172a';
-            } else if(theme === 'pinkish') {
-                document.body.style.backgroundColor = '#1f101a';
-            }
+            if(theme === 'dark') document.body.style.backgroundColor = '#09090b';
+            else if(theme === 'midnight') document.body.style.backgroundColor = '#0f172a';
+            else if(theme === 'pinkish') document.body.style.backgroundColor = '#1f101a';
         }
         function changeFont(font) {
-            if(font === 'system') {
-                document.body.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-            } else if(font === 'monospace') {
-                document.body.style.fontFamily = 'monospace';
-            } else if(font === 'serif') {
-                document.body.style.fontFamily = 'serif';
+            if(font === 'system') document.body.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            else if(font === 'monospace') document.body.style.fontFamily = 'monospace';
+            else if(font === 'serif') document.body.style.fontFamily = 'serif';
+        }
+
+        function goToGoogle() { window.open('https://www.google.com', '_blank'); }
+
+        // Xüsusi olaraq Spotify düyməsi üçün yükləmə funksiyası
+        function downloadSpotify() {
+            const val = document.getElementById('mediaLink').value.trim();
+            if(!val) {
+                alert('Zəhmət olmasa əvvəlcə Spotify musiqi linkini yapışdırın!');
+                return;
             }
+            if(!val.includes('spotify.com')) {
+                alert('Bu, etibarlı Spotify linkinə oxşamır. Zəhmət olmasa doğru link daxil edin.');
+                return;
+            }
+            // İstifadəçiyə yükləmə prosesinin başlandığını bildiririk
+            alert('Spotify musiqisi yüklənir: ' + val);
+            // İstəsəniz buraya birbaşa yükləmə linki yönləndirməsi də əlavə etmək olar.
         }
 
-        // Google tamamilə ayrı tabda açılır
-        function goToGoogle() {
-            window.open('https://www.google.com', '_blank');
-        }
-
-        // Platforma düymələri
         function openPlatform(platformName) {
             const val = document.getElementById('mediaLink').value.trim();
             if(!val) {
-                alert('Zəhmət olmasa əvvəlcə ' + platformName + ' linkini daxil edin!');
+                alert('Zəhmət olmasa ' + platformName + ' linkini daxil edin!');
                 return;
             }
-            alert(platformName + ' üçün link qəbul olundu: ' + val);
+            alert(platformName + ' linki qəbul olundu: ' + val);
         }
 
-        // Əsas link və yükləmə əməliyyatı
         function processLink(type) {
             const val = document.getElementById('mediaLink').value.trim();
             if(!val) {
@@ -344,6 +340,5 @@
             }
         }
     </script>
-
 </body>
 </html>
