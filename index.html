@@ -145,6 +145,36 @@
             color: var(--text-sub);
         }
 
+        /* Format Selector Row */
+        .format-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .format-option {
+            flex: 1;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 8px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .format-option.active {
+            background: var(--primary-glow);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
         /* Buttons Row */
         .btn-row {
             display: flex;
@@ -242,6 +272,40 @@
             color: var(--text-sub);
         }
 
+        /* Download Progress Box (Hidden by default) */
+        .download-progress-card {
+            background: var(--surface);
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.2s linear;
+        }
+
         /* Navigation Tabs */
         .tabs-row {
             display: flex;
@@ -310,9 +374,17 @@
             border-color: var(--primary);
         }
 
+        .item-index {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-sub);
+            width: 20px;
+            text-align: center;
+        }
+
         .media-thumb {
-            width: 70px;
-            height: 45px;
+            width: 60px;
+            height: 40px;
             border-radius: 8px;
             object-fit: cover;
             background: #1e293b;
@@ -368,25 +440,6 @@
             color: var(--text-sub);
             text-align: center;
             padding: 15px 0;
-        }
-
-        /* Player Box */
-        .player-container {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 12px;
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .player-frame {
-            width: 100%;
-            height: 200px;
-            border-radius: 12px;
-            background: #000;
-            border: none;
         }
 
         /* Platforms Grid */
@@ -542,7 +595,7 @@
 </head>
 <body>
 
-    <div class="app-container">
+    <div class="app-container" id="appContainer">
         <!-- Header -->
         <header>
             <div class="brand">
@@ -555,12 +608,23 @@
             </div>
         </header>
 
-        <!-- Main Input Card with Two Separate Buttons -->
+        <!-- Main Input Card with Format Selector & Separate Buttons -->
         <div class="search-card">
             <div class="input-group">
                 <i class="fa-solid fa-link"></i>
                 <input type="text" id="mediaUrlInput" placeholder="YouTube linki yapışdırın...">
             </div>
+
+            <!-- Format Selector (Video / MP3) -->
+            <div class="format-row">
+                <div class="format-option active" id="optVideo" onclick="setFormat('video')">
+                    <i class="fa-solid fa-video"></i> Video (MP4)
+                </div>
+                <div class="format-option" id="optMp3" onclick="setFormat('mp3')">
+                    <i class="fa-solid fa-music"></i> Audio (MP3)
+                </div>
+            </div>
+
             <div class="btn-row">
                 <button class="action-btn" onclick="saveLink()">
                     <i class="fa-solid fa-bookmark" style="color: #fbbf24;"></i> Saxla
@@ -569,9 +633,21 @@
                     <i class="fa-solid fa-cloud-arrow-down"></i> Yüklə
                 </button>
             </div>
+
             <div class="quick-links">
                 <span class="quick-tag" onclick="setInput('https://www.youtube.com/watch?v=dQw4w9WgXcQ')"><i class="fa-brands fa-youtube" style="color: #ef4444;"></i> Nümunə YouTube</span>
                 <span class="quick-tag" onclick="alert('Yeni qovluq yaradıldı!')"><i class="fa-solid fa-folder-plus" style="color: #fbbf24;"></i> New Folder</span>
+            </div>
+        </div>
+
+        <!-- Live Download Progress Card -->
+        <div class="download-progress-card" id="downloadProgressCard">
+            <div class="progress-info">
+                <span id="progressStatusText"><i class="fa-solid fa-spinner fa-spin"></i> Yüklənir... (3 san)</span>
+                <span id="progressPercentText">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressBarFill"></div>
             </div>
         </div>
 
@@ -582,10 +658,10 @@
                     <i class="fa-solid fa-headphones-simple"></i> Daxili Media Saxlanc
                 </div>
                 <div class="status-badge">
-                    <i class="fa-solid fa-circle" style="font-size: 6px;"></i> Təhlükəsiz Rejim
+                    <i class="fa-solid fa-circle" style="font-size: 6px;"></i> Aktiv Rejim
                 </div>
             </div>
-            <div class="status-desc">"Saxla" düyməsi siyahıya əlavə edir, "Yüklə" düyməsi isə birbaşa pleyerdə tam açır.</div>
+            <div class="status-desc">Formatı seçin, yükləmə işarəsinə basaraq birbaşa sayt daxilində saniyəli tərəqqi çubuğu ilə yükləməni izləyin.</div>
         </div>
 
         <!-- Navigation Tabs -->
@@ -607,15 +683,6 @@
             <div id="itemsList">
                 <div class="empty-text">Hələ heç bir link əlavə olunmayıb</div>
             </div>
-        </div>
-
-        <!-- Video Player Container -->
-        <div class="player-container" id="playerContainer">
-            <div class="section-header-title">
-                <span>Daxili İzləmə Pleyeri</span>
-                <span style="font-size: 10px; cursor: pointer; color: var(--primary);" onclick="closePlayer()">Bağla</span>
-            </div>
-            <iframe id="videoPlayer" class="player-frame" src="" allowfullscreen></iframe>
         </div>
 
         <!-- Platforms Grid -->
@@ -691,9 +758,17 @@
     <script>
         let historyLinks = JSON.parse(localStorage.getItem('luna_history')) || [];
         let currentTab = 'later';
+        let selectedFormat = 'video';
+        let isDownloading = false;
 
         function updateFileCount() {
             document.getElementById('fileCount').textContent = historyLinks.length;
+        }
+
+        function setFormat(format) {
+            selectedFormat = format;
+            document.getElementById('optVideo').classList.toggle('active', format === 'video');
+            document.getElementById('optMp3').classList.toggle('active', format === 'mp3');
         }
 
         function extractYouTubeId(url) {
@@ -717,24 +792,25 @@
             listContainer.innerHTML = '';
             historyLinks.forEach((item, index) => {
                 const videoId = extractYouTubeId(item);
-                let thumbUrl = 'https://via.placeholder.com/70x45?text=Media';
+                let thumbUrl = 'https://via.placeholder.com/60x40?text=Media';
                 let titleText = item;
 
                 if (videoId) {
                     thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-                    titleText = `YouTube Video (${videoId})`;
+                    titleText = `YouTube Media (${videoId})`;
                 }
 
                 const div = document.createElement('div');
                 div.className = 'media-card-item';
                 div.innerHTML = `
+                    <div class="item-index">${index + 1}</div>
                     <img src="${thumbUrl}" class="media-thumb" alt="Thumb">
                     <div class="media-details">
                         <span class="media-title">${titleText}</span>
-                        <span class="media-url-sub">${item}</span>
+                        <span class="media-url-sub">${item} (${selectedFormat.toUpperCase()})</span>
                     </div>
-                    <button class="play-action-btn" onclick="playMedia('${item}')" title="İzlə / Oxut">
-                        <i class="fa-solid fa-play"></i>
+                    <button class="play-action-btn" onclick="startTimedDownload('${item}')" title="İndi Yüklə">
+                        <i class="fa-solid fa-download"></i>
                     </button>
                 `;
                 listContainer.appendChild(div);
@@ -742,7 +818,6 @@
             updateFileCount();
         }
 
-        // Saxla düyməsinin funksiyası: Yalnız siyahıya/tarixçəyə əlavə edir
         function saveLink() {
             const val = document.getElementById('mediaUrlInput').value.trim();
             if(!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
@@ -753,10 +828,9 @@
             
             switchTab('later');
             renderList();
-            alert('Link tarixçəyə uğurla saxlanıldı!');
+            alert(`Link tarixçəyə saxlanıldı (${selectedFormat.toUpperCase()})!`);
         }
 
-        // Yüklə düyməsinin funksiyası: Siyahıya əlavə edir, yükləmələr bölməsinə keçir və pleyerdə tam açır
         function downloadLink() {
             const val = document.getElementById('mediaUrlInput').value.trim();
             if(!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
@@ -767,26 +841,68 @@
             
             switchTab('downloads');
             renderList();
-            playMedia(val);
+            startTimedDownload(val);
         }
 
-        function playMedia(url) {
-            const videoId = extractYouTubeId(url);
-            const playerContainer = document.getElementById('playerContainer');
-            const videoPlayer = document.getElementById('videoPlayer');
+        // Saniyə ilə işləyən daxili yükləmə simulyasiyası
+        function startTimedDownload(url) {
+            if (isDownloading) return;
+            isDownloading = true;
 
-            if (videoId) {
-                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-                playerContainer.style.display = 'flex';
-                playerContainer.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                alert('Bu link daxili pleyerdə açılmır, lakin siyahıda qorunur.');
-            }
+            const progressCard = document.getElementById('downloadProgressCard');
+            const progressFill = document.getElementById('progressBarFill');
+            const statusText = document.getElementById('progressStatusText');
+            const percentText = document.getElementById('progressPercentText');
+
+            progressCard.style.display = 'flex';
+            let progress = 0;
+            let totalSeconds = 3; // 3 saniyəlik simulyasiya
+            let intervalTime = 100; // hər 100 millisaniyə bir yenilənir
+            let increment = 100 / (totalSeconds * (1000 / intervalTime));
+
+            let currentSec = totalSeconds;
+            statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Yüklənir... (${currentSec} san)`;
+
+            let timer = setInterval(() => {
+                progress += increment;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(timer);
+                    isDownloading = false;
+                    
+                    statusText.innerHTML = `<i class="fa-solid fa-check" style="color: #34d399;"></i> Yükləmə tamamlandı!`;
+                    percentText.textContent = `100%`;
+                    progressFill.style.width = `100%`;
+
+                    // Simulyasiya bitdikdən sonra faylı brauzer üzərindən endirməyə başla
+                    triggerBrowserDownload(url);
+
+                    setTimeout(() => {
+                        progressCard.style.display = 'none';
+                        progressFill.style.width = `0%`;
+                    }, 2500);
+                } else {
+                    progressFill.style.width = `${progress}%`;
+                    percentText.textContent = `${Math.floor(progress)}%`;
+                    
+                    let remainingSec = Math.ceil(totalSeconds * (1 - progress / 100));
+                    if(remainingSec < 1) remainingSec = 1;
+                    statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Yüklənir... (${remainingSec} san)`;
+                }
+            }, intervalTime);
         }
 
-        function closePlayer() {
-            document.getElementById('playerContainer').style.display = 'none';
-            document.getElementById('videoPlayer').src = '';
+        function triggerBrowserDownload(url) {
+            // Mətn məlumatı və ya saxta fayl yaradaraq cihazda yüklənməni işə salırıq
+            const blob = new Blob([`Luna Media Hub - Yüklənmiş Link:\n${url}\nFormat: ${selectedFormat.toUpperCase()}`], { type: 'text/plain;charset=utf-8' });
+            const blobUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = `Luna_Media_${Date.now()}.${selectedFormat === 'mp3' ? 'mp3' : 'mp4'}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(blobUrl);
         }
 
         function setInput(url) {
@@ -807,7 +923,6 @@
         function clearHistory() {
             historyLinks = [];
             localStorage.removeItem('luna_history');
-            closePlayer();
             renderList();
         }
 
@@ -844,4 +959,4 @@
         renderList();
     </script>
 </body>
-    </html>
+</html>
