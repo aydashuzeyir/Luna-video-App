@@ -746,6 +746,37 @@ let foldersData = JSON.parse(localStorage.getItem('luna_folders') || '[{"name": 
             let val = document.getElementById('mediaUrlInput').value.trim();
             window.open(val ? 'https://www.google.com/search?q=' + encodeURIComponent(val) : 'https://www.google.com', '_blank');
         }
+    function playMedia() {
+    let inputVal = document.getElementById('mediaUrlInput').value.trim();
+    if (!inputVal) {
+        alert('Zəhmət olmasa mahnı adı və ya YouTube linki yazın!');
+        return;
+    }
+    historyData.unshift({ title: inputVal, date: new Date().toLocaleDateString() });
+    localStorage.setItem('luna_hist', JSON.stringify(historyData));
+    updateCounters();
+
+    let targetBox = document.getElementById('mediaContainerTarget');
+    if (targetBox) {
+        targetBox.innerHTML = `<div style="padding: 20px; color: #fff; text-align: center;">Oynadılır: ${inputVal}</div>`;
+        document.getElementById('playerBox').style.display = 'block';
+    }
+}
+
+function downloadMedia() {
+    let inputVal = document.getElementById('mediaUrlInput').value.trim();
+    if (!inputVal) {
+        alert('Zəhmət olmasa yükləmək üçün mahnı adı və ya link daxil edin!');
+        return;
+    }
+    downloadsData.push({ title: inputVal, date: new Date().toLocaleDateString() });
+    localStorage.setItem('luna_downs', JSON.stringify(downloadsData));
+    updateCounters();
+
+    alert('Uğurla yüklənənlərə əlavə olundu (Offline)!');
+    document.getElementById('mediaUrlInput').value = '';
+}
+
 </script>
 </body>
 </html>
