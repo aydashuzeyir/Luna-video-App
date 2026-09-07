@@ -90,6 +90,13 @@
         .card-footer-links { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 500; color: var(--text-sub); padding: 0 2px; }
         .card-footer-links span { cursor: pointer; display: flex; align-items: center; gap: 6px; }
 
+        /* YouTube Endirmə və İzləmə Bölməsi */
+        .downloader-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .downloader-title { font-size: 13px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .download-options-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .dl-option-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 12px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: 0.2s; }
+        .dl-option-btn:active { transform: scale(0.95); background: var(--primary); border-color: transparent; }
+
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .stat-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .stat-icon-box { width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: center; font-size: 15px; }
@@ -185,6 +192,15 @@
         </div>
     </div>
 
+    <!-- YouTube Mahnı Endirmə və İzləmə Bölməsi -->
+    <div class="downloader-card">
+        <div class="downloader-title"><i class="fa-solid fa-download" style="color: #ef4444;"></i> YouTube Media Endirmə Mərkəzi</div>
+        <div class="download-options-row">
+            <button class="dl-option-btn" onclick="playClickSound(); downloadMediaType('mp3')"><i class="fa-solid fa-music" style="color: #22c55e;"></i> MP3 (Mahnı)</button>
+            <button class="dl-option-btn" onclick="playClickSound(); downloadMediaType('mp4')"><i class="fa-solid fa-video" style="color: #3b82f6;"></i> MP4 (Video)</button>
+        </div>
+    </div>
+
     <!-- Mini Player Kartı -->
     <div class="mini-player-card" id="miniPlayerCard">
         <div class="player-header">
@@ -217,14 +233,14 @@
 
     <div class="platforms-grid">
         <div class="platform-btn" onclick="playClickSound(); quickPlatform('YouTube')"><i class="fa-brands fa-youtube" style="font-size: 20px; color: #ef4444;"></i><span>YouTube</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Spotify')"><i class="fa-brands fa-spotify" style="font-size: 20px; color: #22c55e;"></i><span>Spotify</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Yandex')"><i class="fa-solid fa-music" style="font-size: 20px; color: #ffcc00;"></i><span>Yandex Müzik</span></div>
         <div class="platform-btn" onclick="playClickSound(); quickPlatform('Instagram')"><i class="fa-brands fa-instagram" style="font-size: 20px; color: #ec4899;"></i><span>Instagram</span></div>
+        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Threads')"><i class="fa-brands fa-threads" style="font-size: 20px; color: #cbd5e1;"></i><span>Threads</span></div>
+        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Yandex')"><i class="fa-solid fa-music" style="font-size: 20px; color: #ffcc00;"></i><span>Yandex Müzik</span></div>
+        <div class="platform-btn" onclick="playClickSound(); quickPlatform('TikTok')"><i class="fa-brands fa-tiktok" style="font-size: 20px; color: #ffffff;"></i><span>TikTok</span></div>
+        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Spotify')"><i class="fa-brands fa-spotify" style="font-size: 20px; color: #22c55e;"></i><span>Spotify</span></div>
         <div class="platform-btn" onclick="playClickSound(); quickPlatform('Facebook')"><i class="fa-brands fa-facebook" style="font-size: 20px; color: #3b82f6;"></i><span>Facebook</span></div>
         <div class="platform-btn" onclick="playClickSound(); quickPlatform('Twitter')"><i class="fa-brands fa-x-twitter" style="font-size: 20px; color: #ffffff;"></i><span>Twitter (X)</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Threads')"><i class="fa-brands fa-threads" style="font-size: 20px; color: #cbd5e1;"></i><span>Threads</span></div>
         <div class="platform-btn" onclick="playClickSound(); quickPlatform('Pinterest')"><i class="fa-brands fa-pinterest" style="font-size: 20px; color: #ef4444;"></i><span>Pinterest</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('SoundCloud')"><i class="fa-solid fa-cloud" style="font-size: 20px; color: #f97316;"></i><span>SoundCloud</span></div>
     </div>
 </div>
 
@@ -262,7 +278,7 @@
             </div>
         </div>
 
-        <!-- Genişləndirilmiş Rəng Seçimləri -->
+        <!-- Rəng Seçimləri -->
         <div class="setting-group">
             <label>Zəngin Rəng Palitraları</label>
             <div class="theme-options">
@@ -278,7 +294,7 @@
             </div>
         </div>
 
-        <!-- Genişləndirilmiş Font Seçimləri -->
+        <!-- Font Seçimləri -->
         <div class="setting-group">
             <label>Font Stili (Yazı Növləri)</label>
             <div class="theme-options">
@@ -292,7 +308,7 @@
             </div>
         </div>
 
-        <!-- Genişləndirilmiş Səs Effektləri -->
+        <!-- Səs Effektləri -->
         <div class="setting-group">
             <label>Səs Effektləri</label>
             <div class="theme-options">
@@ -381,7 +397,19 @@
     function simulateDownload() {
         const val = document.getElementById('mediaUrlInput').value.trim();
         if(!val) return;
+        runDownloadProcess(val, 'Yaddaş');
+    }
 
+    function downloadMediaType(type) {
+        const val = document.getElementById('mediaUrlInput').value.trim();
+        if(!val) {
+            alert("Zəhmət olmasa yuxarıdakı xanaya mahnı adı və ya YouTube linki daxil edin!");
+            return;
+        }
+        runDownloadProcess(val, type.toUpperCase());
+    }
+
+    function runDownloadProcess(titleText, formatLabel) {
         const barContainer = document.getElementById('loadingBarContainer');
         const progressFill = document.getElementById('progressFill');
         const percentText = document.getElementById('loadingPercent');
@@ -390,21 +418,21 @@
         barContainer.style.display = 'flex';
         progressFill.style.width = '0%';
         percentText.innerText = '0%';
-        statusText.innerText = 'Yüklənir...';
+        statusText.innerText = `${formatLabel} formatında endirilir...`;
 
         let progress = 0;
         let interval = setInterval(() => {
-            progress += 15;
+            progress += 20;
             if(progress > 100) progress = 100;
             progressFill.style.width = progress + '%';
             percentText.innerText = progress + '%';
 
             if(progress === 100) {
                 clearInterval(interval);
-                statusText.innerText = 'Yükləndi və yaddaşa yazıldı!';
+                statusText.innerText = `${formatLabel} uğurla endirildi və yaddaşa yazıldı!`;
                 
                 const now = new Date().toLocaleDateString('az-AZ') + ' ' + new Date().toLocaleTimeString('az-AZ', {hour: '2-digit', minute:'2-digit'});
-                historyItems.unshift({ title: val, date: now });
+                historyItems.unshift({ title: `[${formatLabel}] ${titleText}`, date: now });
                 localStorage.setItem('luna_history', JSON.stringify(historyItems));
                 updateHistoryUI();
 
@@ -452,19 +480,17 @@
     }
 
     function quickPlatform(platform) {
-        const val = document.getElementById('mediaUrlInput').value.trim();
-        let query = val ? ` ${val}` : '';
         let url = 'https://www.youtube.com';
 
-        if(platform === 'Spotify') url = `https://open.spotify.com/search${query}`;
-        else if(platform === 'Yandex') url = `https://music.yandex.ru/search?text=${encodeURIComponent(val || 'music')}`;
-        else if(platform === 'Instagram') url = `https://www.instagram.com`;
-        else if(platform === 'Facebook') url = `https://www.facebook.com`;
-        else if(platform === 'Twitter') url = `https://twitter.com/search?q=${encodeURIComponent(val || '')}`;
-        else if(platform === 'Threads') url = `https://www.threads.net`;
-        else if(platform === 'Pinterest') url = `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(val || 'ideas')}`;
-        else if(platform === 'SoundCloud') url = `https://soundcloud.com/search?q=${encodeURIComponent(val || 'music')}`;
-        else url = `https://www.youtube.com/results?search_query=${encodeURIComponent(val || 'trending')}`;
+        if(platform === 'YouTube') url = 'https://www.youtube.com';
+        else if(platform === 'Instagram') url = 'https://www.instagram.com';
+        else if(platform === 'Threads') url = 'https://www.threads.net';
+        else if(platform === 'Yandex') url = 'https://music.yandex.ru';
+        else if(platform === 'TikTok') url = 'https://www.tiktok.com';
+        else if(platform === 'Spotify') url = 'https://open.spotify.com';
+        else if(platform === 'Facebook') url = 'https://www.facebook.com';
+        else if(platform === 'Twitter') url = 'https://twitter.com';
+        else if(platform === 'Pinterest') url = 'https://www.pinterest.com';
 
         window.open(url, '_blank');
     }
