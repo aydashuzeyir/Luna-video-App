@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luna - Ultimate Media Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700&family=Orbitron:wght@500;700&family=Cinzel:wght@600;700&family=Caveat:wght@600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -43,7 +43,6 @@
         header { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
         .brand-box { display: flex; align-items: center; gap: 12px; }
         
-        /* Dinamik Tətbiq İkonu */
         .app-icon-preview { 
             width: 44px; height: 44px; 
             border-radius: 12px; 
@@ -101,7 +100,6 @@
         .setting-group { display: flex; flex-direction: column; gap: 8px; }
         .setting-group label { font-size: 12px; font-weight: 600; color: #94a3b8; }
         
-        /* Tətbiq İkonları Seçimi üçün şəbəkə */
         .app-icons-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .app-icon-option { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: 0.2s; }
         .app-icon-option.active { border-color: var(--primary); background: rgba(255,255,255,0.1); transform: scale(1.05); }
@@ -116,7 +114,6 @@
         .photo-chip { height: 60px; border-radius: 10px; border: 2px solid transparent; cursor: pointer; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 4px; font-size: 10px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
         .photo-chip.active { border-color: var(--primary); transform: scale(1.03); }
 
-        /* Tarixçə siyahısı */
         .downloads-list { display: flex; flex-direction: column; gap: 8px; }
         .download-item { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); padding: 10px 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
         .download-item:active { background: rgba(255,255,255,0.1); }
@@ -132,7 +129,6 @@
 <div class="app-container">
     <header>
         <div class="brand-box">
-            <!-- Tətbiqin özünün seçilə bilən ikonu -->
             <div class="app-icon-preview" id="mainAppIcon"><i class="fa-solid fa-headphones-simple" id="appIconSymbol"></i></div>
             <div class="brand-info">
                 <h1>Luna</h1>
@@ -206,62 +202,68 @@
 <div class="modal-overlay" id="settingsModal">
     <div class="modal-card">
         <div class="modal-header">
-            <span>Tətbiq İkonu, Rənglər və Fotolar</span>
+            <span>Bol Seçim Paneli</span>
             <i class="fa-solid fa-xmark close-modal" onclick="playClickSound(); closeSettings()"></i>
         </div>
         
-        <!-- Tətbiq İkon Seçimləri -->
+        <!-- İkonlar -->
         <div class="setting-group">
             <label>Luna Proqram İkonu</label>
             <div class="app-icons-grid">
-                <div class="app-icon-option active" onclick="setAppIcon('fa-headphones-simple', '#6366f1', '#a855f7', this)">
-                    <i class="fa-solid fa-headphones-simple" style="color: #6366f1;"></i>
-                    <span>Audio</span>
-                </div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-bolt', '#eab308', '#f59e0b', this)">
-                    <i class="fa-solid fa-bolt" style="color: #eab308;"></i>
-                    <span>Neon</span>
-                </div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-fire', '#ef4444', '#f97316', this)">
-                    <i class="fa-solid fa-fire" style="color: #ef4444;"></i>
-                    <span>Fire</span>
-                </div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-heart', '#ec4899', '#f43f5e', this)">
-                    <i class="fa-solid fa-heart" style="color: #ec4899;"></i>
-                    <span>Love</span>
-                </div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-compact-disc', '#06b6d4', '#3b82f6', this)">
-                    <i class="fa-solid fa-compact-disc" style="color: #06b6d4;"></i>
-                    <span>Disk</span>
-                </div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-star', '#a855f7', '#6366f1', this)">
-                    <i class="fa-solid fa-star" style="color: #a855f7;"></i>
-                    <span>Star</span>
-                </div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-gamepad', '#22c55e', '#10b981', this)">
-                    <i class="fa-solid fa-gamepad" style="color: #22c55e;"></i>
-                    <span>Game</span>
-                </div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-moon', '#94a3b8', '#475569', this)">
-                    <i class="fa-solid fa-moon" style="color: #cbd5e1;"></i>
-                    <span>Moon</span>
-                </div>
+                <div class="app-icon-option active" onclick="setAppIcon('fa-headphones-simple', '#6366f1', '#a855f7', this)"><i class="fa-solid fa-headphones-simple" style="color: #6366f1;"></i><span>Audio</span></div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-bolt', '#eab308', '#f59e0b', this)"><i class="fa-solid fa-bolt" style="color: #eab308;"></i><span>Neon</span></div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-fire', '#ef4444', '#f97316', this)"><i class="fa-solid fa-fire" style="color: #ef4444;"></i><span>Fire</span></div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-heart', '#ec4899', '#f43f5e', this)"><i class="fa-solid fa-heart" style="color: #ec4899;"></i><span>Love</span></div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-compact-disc', '#06b6d4', '#3b82f6', this)"><i class="fa-solid fa-compact-disc" style="color: #06b6d4;"></i><span>Disk</span></div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-star', '#a855f7', '#6366f1', this)"><i class="fa-solid fa-star" style="color: #a855f7;"></i><span>Star</span></div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-gamepad', '#22c55e', '#10b981', this)"><i class="fa-solid fa-gamepad" style="color: #22c55e;"></i><span>Game</span></div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-moon', '#94a3b8', '#475569', this)"><i class="fa-solid fa-moon" style="color: #cbd5e1;"></i><span>Moon</span></div>
             </div>
         </div>
 
+        <!-- Genişləndirilmiş Rəng Seçimləri -->
         <div class="setting-group">
-            <label>Çoxlu Rəng Palitrası</label>
+            <label>Zəngin Rəng Palitraları</label>
             <div class="theme-options">
-                <div class="option-chip active" onclick="setTheme('#6366f1', '#a855f7', '#0b0f19', this)">Göy / Indigo</div>
-                <div class="option-chip" onclick="setTheme('#ec4899', '#f43f5e', '#180e14', this)">Çəhrayı (Pembe)</div>
-                <div class="option-chip" onclick="setTheme('#06b6d4', '#3b82f6', '#08141c', this)">Neon Mavi</div>
-                <div class="option-chip" onclick="setTheme('#22c55e', '#10b981', '#0b160f', this)">Parlaq Yaşıl</div>
-                <div class="option-chip" onclick="setTheme('#eab308', '#f59e0b', '#17140a', this)">Qızılı Sarı</div>
-                <div class="option-chip" onclick="setTheme('#f97316', '#ef4444', '#1a0e0a', this)">Portağal</div>
-                <div class="option-chip" onclick="setTheme('#ffffff', '#94a3b8', '#000000', this)">Qara & Ağ</div>
+                <div class="option-chip active" onclick="setTheme('#6366f1', '#a855f7', '#0b0f19', this)">Indigo Göy</div>
+                <div class="option-chip" onclick="setTheme('#ec4899', '#f43f5e', '#180e14', this)">Çəhrayı Sevgi</div>
+                <div class="option-chip" onclick="setTheme('#06b6d4', '#3b82f6', '#08141c', this)">Kiber Mavi</div>
+                <div class="option-chip" onclick="setTheme('#22c55e', '#10b981', '#0b160f', this)">Matris Yaşıl</div>
+                <div class="option-chip" onclick="setTheme('#eab308', '#f59e0b', '#17140a', this)">Qızılı Lüks</div>
+                <div class="option-chip" onclick="setTheme('#f97316', '#ef4444', '#1a0e0a', this)">Gün Batımı</div>
+                <div class="option-chip" onclick="setTheme('#8b5cf6', '#ec4899', '#120b1c', this)">Bənövşəyi Neon</div>
+                <div class="option-chip" onclick="setTheme('#14b8a6', '#06b6d4', '#061717', this)">Firuzəyi Dəniz</div>
+                <div class="option-chip" onclick="setTheme('#ffffff', '#94a3b8', '#000000', this)">Klassik Qara & Ağ</div>
             </div>
         </div>
 
+        <!-- Genişləndirilmiş Font Seçimləri -->
+        <div class="setting-group">
+            <label>Font Stili (Yazı Növləri)</label>
+            <div class="theme-options">
+                <div class="option-chip active" onclick="setFont('Plus Jakarta Sans', this)">Jakarta (Normal)</div>
+                <div class="option-chip" onclick="setFont('Poppins', this)">Poppins</div>
+                <div class="option-chip" onclick="setFont('Inter', this)">Inter</div>
+                <div class="option-chip" onclick="setFont('Cairo', this)">Cairo</div>
+                <div class="option-chip" onclick="setFont('Orbitron', this)">Orbitron (Sci-Fi)</div>
+                <div class="option-chip" onclick="setFont('Cinzel', this)">Cinzel (Klassik)</div>
+                <div class="option-chip" onclick="setFont('Caveat', this)">Caveat (Əlyazı)</div>
+            </div>
+        </div>
+
+        <!-- Genişləndirilmiş Səs Effektləri -->
+        <div class="setting-group">
+            <label>Səs Effektləri</label>
+            <div class="theme-options">
+                <div class="option-chip active" onclick="setSoundType('bip', this)">Bip (İncə)</div>
+                <div class="option-chip" onclick="setSoundType('pop', this)">Pop (Dərin)</div>
+                <div class="option-chip" onclick="setSoundType('laser', this)">Laser (Futuristik)</div>
+                <div class="option-chip" onclick="setSoundType('bell', this)">Zəng Səsi</div>
+                <div class="option-chip" onclick="setSoundType('off', this)">Tamamilə Səssiz</div>
+            </div>
+        </div>
+
+        <!-- Fon Fotoları -->
         <div class="setting-group">
             <label>Möhtəşəm Fon Fotoları</label>
             <div class="photo-options">
@@ -273,34 +275,36 @@
                 <div class="photo-chip" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('url(\'https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=1000&auto=format&fit=crop\')', this)">Yağış</div>
             </div>
         </div>
-
-        <div class="setting-group">
-            <label>Səs Effektləri</label>
-            <div class="theme-options">
-                <div class="option-chip active" onclick="setSoundMode('on', this)">Bip səsi Açıq</div>
-                <div class="option-chip" onclick="setSoundMode('off', this)">Səssiz</div>
-            </div>
-        </div>
     </div>
 </div>
 
 <script>
-    let soundEnabled = true;
+    let soundType = 'bip';
     let historyItems = JSON.parse(localStorage.getItem('luna_history')) || [];
     updateHistoryUI();
 
     function playClickSound() {
-        if(!soundEnabled) return;
+        if(soundType === 'off') return;
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             osc.connect(gain);
             gain.connect(ctx.destination);
-            osc.frequency.setValueAtTime(650, ctx.currentTime);
+            
+            let freq = 650;
+            let duration = 0.05;
+            let type = 'sine';
+
+            if(soundType === 'pop') { freq = 300; duration = 0.08; type = 'triangle'; }
+            else if(soundType === 'laser') { freq = 900; duration = 0.06; type = 'sawtooth'; osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + duration); }
+            else if(soundType === 'bell') { freq = 1200; duration = 0.1; type = 'sine'; }
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
             gain.gain.setValueAtTime(0.04, ctx.currentTime);
             osc.start();
-            osc.stop(ctx.currentTime + 0.05);
+            osc.stop(ctx.currentTime + duration);
         } catch(e) {}
     }
 
@@ -403,6 +407,13 @@
         playClickSound();
     }
 
+    function setFont(fontName, el) {
+        document.documentElement.style.setProperty('--font-family', `'${fontName}', sans-serif`);
+        el.parentElement.querySelectorAll('.option-chip').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+        playClickSound();
+    }
+
     function setPhoto(bgImg, el) {
         document.documentElement.style.setProperty('--bg-image', bgImg);
         el.parentElement.querySelectorAll('.photo-chip').forEach(e => e.classList.remove('active'));
@@ -410,8 +421,8 @@
         playClickSound();
     }
 
-    function setSoundMode(mode, el) {
-        soundEnabled = (mode === 'on');
+    function setSoundType(type, el) {
+        soundType = type;
         el.parentElement.querySelectorAll('.option-chip').forEach(e => e.classList.remove('active'));
         el.classList.add('active');
         playClickSound();
