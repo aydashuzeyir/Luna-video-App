@@ -111,22 +111,23 @@
             </div>
         </header>
 
-        <!-- Search / Input Card -->
+<!-- Search / Input Card -->
 <div class="search-card">
     <div class="input-group">
         <i class="fa-brands fa-youtube" style="color: #ef4444;"></i>
         <input type="text" id="mediaUrlInput" placeholder="Mahnı adı və ya YouTube linki yazın...">
     </div>
     
-    <div class="btn-row" style="display: flex; gap: 10px; margin-top: 10px;">
-        <button class="action-btn primary" type="button" onclick="playMedia()" style="flex: 1; cursor: pointer; z-index: 10;">
+    <div class="btn-row">
+        <button class="action-btn primary" onclick="playMedia()">
             <i class="fa-solid fa-circle-play"></i> Dinlə / İzlə
         </button>
-        <button class="action-btn outline" type="button" onclick="downloadMedia()" style="flex: 1; cursor: pointer; z-index: 10;">
+        <button class="action-btn outline" onclick="downloadMedia()">
             <i class="fa-solid fa-cloud-arrow-down" style="color: #4f46e5;"></i> Offline Yüklə
         </button>
     </div>
 </div>
+
 
 
             <div class="downloading-status" id="downloadStatus"><i class="fa-solid fa-spinner fa-spin"></i> Fayl tam yüklənir və yaddaşa yazılır...</div>
