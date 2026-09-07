@@ -8,81 +8,123 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0b0f19;
-            --surface: #1e1e2f;
-            --surface-hover: #2a2a40;
+            --bg-color: #0b0f19;
+            --bg-image: none;
+            --surface: rgba(30, 30, 47, 0.75);
+            --surface-hover: rgba(42, 42, 64, 0.85);
             --primary: #6366f1;
             --primary-gradient: linear-gradient(135deg, #6366f1, #a855f7);
             --text-main: #ffffff;
             --text-sub: #94a3b8;
-            --border: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.12);
             --radius: 20px;
             --font-family: 'Plus Jakarta Sans', sans-serif;
+            --backdrop-blur: blur(12px);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 16px; transition: background 0.3s, color 0.3s; }
-        .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; }
+        
+        body { 
+            background-color: var(--bg-color); 
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main); 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            padding: 16px; 
+            transition: background 0.4s, color 0.3s; 
+        }
+
+        .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; z-index: 2; }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
         .brand-box { display: flex; align-items: center; gap: 12px; }
-        .brand-logo { color: #ef4444; font-size: 24px; filter: drop-shadow(0 0 8px rgba(239,68,68,0.4)); }
+        
+        /* Dinamik Tətbiq İkonu */
+        .app-icon-preview { 
+            width: 44px; height: 44px; 
+            border-radius: 12px; 
+            background: var(--primary-gradient); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-size: 20px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+
         .brand-info h1 { font-size: 19px; font-weight: 700; line-height: 1.1; }
         .brand-info span { font-size: 11px; color: var(--text-sub); }
 
         .header-actions { display: flex; gap: 8px; }
-        .top-icon-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); font-size: 15px; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .top-icon-btn { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); color: var(--text-main); font-size: 15px; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
         .top-icon-btn:active { transform: scale(0.9); }
 
-        .search-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .input-group { display: flex; align-items: center; gap: 10px; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; }
+        .search-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .input-group { display: flex; align-items: center; gap: 10px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; }
         .input-group input { flex: 1; background: none; border: none; outline: none; color: var(--text-main); font-size: 14px; }
         .input-group input::placeholder { color: var(--text-sub); }
 
         .btn-row { display: flex; gap: 10px; }
         .action-btn { flex: 1; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; transition: 0.2s; }
         .action-btn.primary { background: var(--primary-gradient); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
-        .action-btn.outline { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); }
+        .action-btn.outline { background: var(--surface-hover); backdrop-filter: var(--backdrop-blur); color: var(--text-main); border: 1px solid var(--border); }
         .action-btn:active { transform: scale(0.96); }
 
         .card-footer-links { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 500; color: var(--text-sub); padding: 0 4px; }
         .card-footer-links span { cursor: pointer; display: flex; align-items: center; gap: 6px; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .stat-icon-box { width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .stat-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .stat-icon-box { width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: center; font-size: 16px; }
         .stat-info span { font-size: 10px; font-weight: 600; color: var(--text-sub); text-transform: uppercase; }
         .stat-info p { font-size: 13px; font-weight: 700; color: var(--text-main); }
 
         .section-header { font-size: 11px; font-weight: 700; color: var(--text-sub); letter-spacing: 0.5px; margin-top: 4px; padding: 0 4px; }
         
         .platforms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .platform-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-main); cursor: pointer; font-size: 12px; font-weight: 500; transition: 0.2s; }
+        .platform-btn { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: 16px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-main); cursor: pointer; font-size: 12px; font-weight: 500; transition: 0.2s; }
         .platform-btn:active { transform: scale(0.95); background: var(--surface-hover); }
 
         /* Modallar */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: flex-end; z-index: 100; backdrop-filter: blur(5px); }
-        .modal-card { background: var(--surface); width: 100%; max-width: 420px; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 20px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; border-top: 1px solid var(--border); animation: slideUp 0.3s ease; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: none; justify-content: center; align-items: flex-end; z-index: 100; backdrop-filter: blur(8px); }
+        .modal-card { background: #181b2e; width: 100%; max-width: 420px; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 20px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; border-top: 1px solid var(--border); animation: slideUp 0.3s ease; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         
-        .modal-header { display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 700; }
-        .close-modal { cursor: pointer; font-size: 18px; color: var(--text-sub); padding: 4px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 700; color: #fff; }
+        .close-modal { cursor: pointer; font-size: 18px; color: #94a3b8; padding: 4px; }
 
         .setting-group { display: flex; flex-direction: column; gap: 8px; }
-        .setting-group label { font-size: 12px; font-weight: 600; color: var(--text-sub); }
+        .setting-group label { font-size: 12px; font-weight: 600; color: #94a3b8; }
+        
+        /* Tətbiq İkonları Seçimi üçün şəbəkə */
+        .app-icons-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .app-icon-option { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: 0.2s; }
+        .app-icon-option.active { border-color: var(--primary); background: rgba(255,255,255,0.1); transform: scale(1.05); }
+        .app-icon-option i { font-size: 20px; }
+        .app-icon-option span { font-size: 10px; color: #94a3b8; font-weight: 500; }
+
         .theme-options { display: flex; gap: 8px; flex-wrap: wrap; }
-        .option-chip { background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 8px 12px; border-radius: 10px; font-size: 12px; color: var(--text-main); cursor: pointer; font-weight: 500; }
+        .option-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 10px; font-size: 12px; color: #fff; cursor: pointer; font-weight: 500; }
         .option-chip.active { background: var(--primary); border-color: transparent; font-weight: 700; color: #fff; }
+
+        .photo-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .photo-chip { height: 60px; border-radius: 10px; border: 2px solid transparent; cursor: pointer; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 4px; font-size: 10px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
+        .photo-chip.active { border-color: var(--primary); transform: scale(1.03); }
 
         /* Tarixçə siyahısı */
         .downloads-list { display: flex; flex-direction: column; gap: 8px; }
-        .download-item { background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 10px 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
-        .download-item:active { background: var(--surface-hover); }
+        .download-item { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); padding: 10px 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
+        .download-item:active { background: rgba(255,255,255,0.1); }
         .download-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; padding-right: 10px; flex: 1; }
-        .download-title { font-size: 13px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .download-date { font-size: 10px; color: var(--text-sub); }
+        .download-title { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .download-date { font-size: 10px; color: #94a3b8; }
         .delete-download { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 14px; padding: 4px; }
-        .empty-downloads { text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0; }
+        .empty-downloads { text-align: center; color: #94a3b8; font-size: 13px; padding: 20px 0; }
     </style>
 </head>
 <body>
@@ -90,14 +132,15 @@
 <div class="app-container">
     <header>
         <div class="brand-box">
-            <i class="fa-solid fa-headphones-simple brand-logo"></i>
+            <!-- Tətbiqin özünün seçilə bilən ikonu -->
+            <div class="app-icon-preview" id="mainAppIcon"><i class="fa-solid fa-headphones-simple" id="appIconSymbol"></i></div>
             <div class="brand-info">
                 <h1>Luna</h1>
                 <span>Media & Sound Center</span>
             </div>
         </div>
         <div class="header-actions">
-            <button class="top-icon-btn" onclick="playClickSound(); openSettings()"><i class="fa-solid fa-palette"></i></button>
+            <button class="top-icon-btn" onclick="playClickSound(); openSettings()"><i class="fa-solid fa-sliders"></i></button>
         </div>
     </header>
 
@@ -131,10 +174,10 @@
             </div>
         </div>
         <div class="stat-card" onclick="playClickSound(); openSettings()">
-            <div class="stat-icon-box" style="color: #a855f7;"><i class="fa-solid fa-palette"></i></div>
+            <div class="stat-icon-box" style="color: #a855f7;"><i class="fa-solid fa-icons"></i></div>
             <div class="stat-info">
-                <span>Temalar</span>
-                <p>Bütün rənglər</p>
+                <span>İkon & Rənglər</span>
+                <p>Stili Dəyiş</p>
             </div>
         </div>
     </div>
@@ -159,34 +202,75 @@
     </div>
 </div>
 
-<!-- Tənzimləmələr / Temalar Modalı -->
+<!-- Tənzimləmələr Modalı -->
 <div class="modal-overlay" id="settingsModal">
     <div class="modal-card">
         <div class="modal-header">
-            <span>Rənglər və Temalar</span>
+            <span>Tətbiq İkonu, Rənglər və Fotolar</span>
             <i class="fa-solid fa-xmark close-modal" onclick="playClickSound(); closeSettings()"></i>
         </div>
         
+        <!-- Tətbiq İkon Seçimləri -->
         <div class="setting-group">
-            <label>Rəng Seçimi (Bütün rənglər)</label>
-            <div class="theme-options">
-                <div class="option-chip active" style="border-color: #6366f1;" onclick="setTheme('#6366f1', '#a855f7', '#0b0f19', '#1e1e2f', '#ffffff', this)">Göy / Indigo</div>
-                <div class="option-chip" style="border-color: #ec4899;" onclick="setTheme('#ec4899', '#f43f5e', '#180e14', '#2a1523', '#ffffff', this)">Pembe (Çəhrayı)</div>
-                <div class="option-chip" style="border-color: #06b6d4;" onclick="setTheme('#06b6d4', '#3b82f6', '#08141c', '#102230', '#ffffff', this)">Mavi</div>
-                <div class="option-chip" style="border-color: #22c55e;" onclick="setTheme('#22c55e', '#10b981', '#0b160f', '#14281c', '#ffffff', this)">Yaşıl</div>
-                <div class="option-chip" style="border-color: #eab308;" onclick="setTheme('#eab308', '#f59e0b', '#17140a', '#292311', '#ffffff', this)">Sarı</div>
-                <div class="option-chip" style="border-color: #ffffff;" onclick="setTheme('#3b82f6', '#60a5fa', '#ffffff', '#f1f5f9', '#0f172a', this)">Kara & Beyaz</div>
-                <div class="option-chip" style="border-color: #71717a;" onclick="setTheme('#52525b', '#27272a', '#000000', '#121212', '#ffffff', this)">Qara (Midnight)</div>
+            <label>Luna Proqram İkonu</label>
+            <div class="app-icons-grid">
+                <div class="app-icon-option active" onclick="setAppIcon('fa-headphones-simple', '#6366f1', '#a855f7', this)">
+                    <i class="fa-solid fa-headphones-simple" style="color: #6366f1;"></i>
+                    <span>Audio</span>
+                </div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-bolt', '#eab308', '#f59e0b', this)">
+                    <i class="fa-solid fa-bolt" style="color: #eab308;"></i>
+                    <span>Neon</span>
+                </div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-fire', '#ef4444', '#f97316', this)">
+                    <i class="fa-solid fa-fire" style="color: #ef4444;"></i>
+                    <span>Fire</span>
+                </div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-heart', '#ec4899', '#f43f5e', this)">
+                    <i class="fa-solid fa-heart" style="color: #ec4899;"></i>
+                    <span>Love</span>
+                </div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-compact-disc', '#06b6d4', '#3b82f6', this)">
+                    <i class="fa-solid fa-compact-disc" style="color: #06b6d4;"></i>
+                    <span>Disk</span>
+                </div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-star', '#a855f7', '#6366f1', this)">
+                    <i class="fa-solid fa-star" style="color: #a855f7;"></i>
+                    <span>Star</span>
+                </div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-gamepad', '#22c55e', '#10b981', this)">
+                    <i class="fa-solid fa-gamepad" style="color: #22c55e;"></i>
+                    <span>Game</span>
+                </div>
+                <div class="app-icon-option" onclick="setAppIcon('fa-moon', '#94a3b8', '#475569', this)">
+                    <i class="fa-solid fa-moon" style="color: #cbd5e1;"></i>
+                    <span>Moon</span>
+                </div>
             </div>
         </div>
 
         <div class="setting-group">
-            <label>Şrift Stili</label>
+            <label>Çoxlu Rəng Palitrası</label>
             <div class="theme-options">
-                <div class="option-chip active" onclick="setFont('Plus Jakarta Sans', this)">Jakarta Sans</div>
-                <div class="option-chip" onclick="setFont('Poppins', this)">Poppins</div>
-                <div class="option-chip" onclick="setFont('Inter', this)">Inter</div>
-                <div class="option-chip" onclick="setFont('Cairo', this)">Cairo</div>
+                <div class="option-chip active" onclick="setTheme('#6366f1', '#a855f7', '#0b0f19', this)">Göy / Indigo</div>
+                <div class="option-chip" onclick="setTheme('#ec4899', '#f43f5e', '#180e14', this)">Çəhrayı (Pembe)</div>
+                <div class="option-chip" onclick="setTheme('#06b6d4', '#3b82f6', '#08141c', this)">Neon Mavi</div>
+                <div class="option-chip" onclick="setTheme('#22c55e', '#10b981', '#0b160f', this)">Parlaq Yaşıl</div>
+                <div class="option-chip" onclick="setTheme('#eab308', '#f59e0b', '#17140a', this)">Qızılı Sarı</div>
+                <div class="option-chip" onclick="setTheme('#f97316', '#ef4444', '#1a0e0a', this)">Portağal</div>
+                <div class="option-chip" onclick="setTheme('#ffffff', '#94a3b8', '#000000', this)">Qara & Ağ</div>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <label>Möhtəşəm Fon Fotoları</label>
+            <div class="photo-options">
+                <div class="photo-chip active" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('none', this)">Normal</div>
+                <div class="photo-chip" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('url(\'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1000&auto=format&fit=crop\')', this)">Kosmos</div>
+                <div class="photo-chip" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('url(\'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop\')', this)">Okean</div>
+                <div class="photo-chip" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('url(\'https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?q=80&w=1000&auto=format&fit=crop\')', this)">Meşə</div>
+                <div class="photo-chip" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('url(\'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=1000&auto=format&fit=crop\')', this)">Abstrakt</div>
+                <div class="photo-chip" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('url(\'https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=1000&auto=format&fit=crop\')', this)">Yağış</div>
             </div>
         </div>
 
@@ -300,21 +384,28 @@
     function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
     function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
 
-    function setTheme(c1, c2, bg, surface, textMain, el) {
+    function setAppIcon(iconClass, c1, c2, el) {
+        document.getElementById('appIconSymbol').className = `fa-solid ${iconClass}`;
+        document.getElementById('mainAppIcon').style.background = `linear-gradient(135deg, ${c1}, ${c2})`;
+        
+        el.parentElement.querySelectorAll('.app-icon-option').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+        playClickSound();
+    }
+
+    function setTheme(c1, c2, bg, el) {
         document.documentElement.style.setProperty('--primary', c1);
         document.documentElement.style.setProperty('--primary-gradient', `linear-gradient(135deg, ${c1}, ${c2})`);
-        document.documentElement.style.setProperty('--bg', bg);
-        document.documentElement.style.setProperty('--surface', surface);
-        document.documentElement.style.setProperty('--text-main', textMain);
+        document.documentElement.style.setProperty('--bg-color', bg);
         
         el.parentElement.querySelectorAll('.option-chip').forEach(e => e.classList.remove('active'));
         el.classList.add('active');
         playClickSound();
     }
 
-    function setFont(fontName, el) {
-        document.documentElement.style.setProperty('--font-family', `'${fontName}', sans-serif`);
-        el.parentElement.querySelectorAll('.option-chip').forEach(e => e.classList.remove('active'));
+    function setPhoto(bgImg, el) {
+        document.documentElement.style.setProperty('--bg-image', bgImg);
+        el.parentElement.querySelectorAll('.photo-chip').forEach(e => e.classList.remove('active'));
         el.classList.add('active');
         playClickSound();
     }
