@@ -132,10 +132,11 @@
                 <button class="action-btn primary" onclick="processMedia('play')">
                     <i class="fa-solid fa-circle-play"></i> Onlayn Dinlə
                 </button>
-                <button class="action-btn outline" onclick="document.getElementById('localFileInput').click()">
+                <button class="action-btn outline" onclick="triggerFileSelect()">
                     <i class="fa-solid fa-cloud-arrow-down" style="color: #38bdf8;"></i> Offline Yüklə
                 </button>
-                <input type="file" id="localFileInput" style="display:none" accept="audio/*,video/*" onchange="handleLocalFileDownload(this)">
+                <!-- Tətbiq daxili səssiz fayl seçimi üçün sadələşdirilmiş input -->
+                <input type="file" id="localFileInput" style="display:none" accept="audio/*,video/*" multiple="false" onchange="handleLocalFileDownload(this)">
             </div>
             <div class="card-footer-links">
                 <span onclick="openGoogleSearch()"><i class="fa-brands fa-google" style="color: #ea4335;"></i> Google</span>
@@ -334,6 +335,13 @@
             });
         }
 
+        // Honor Files tətbiqinin açılmasının qarşısını almaq üçün təmiz element çağırışı
+        function triggerFileSelect() {
+            let fileInput = document.getElementById('localFileInput');
+            fileInput.value = ''; // Əvvəlki seçimi təmizləyir
+            fileInput.click();
+        }
+
         function handleLocalFileDownload(input) {
             let file = input.files[0];
             if (!file) return;
@@ -355,7 +363,7 @@
 
                 tx.oncomplete = function() {
                     updateDownloadCountFromDB();
-                    alert("Fayl tamamilə uğurla yükləndi! İndi interneti söndürüb 'Yüklənənlər' bölməsindən dinləyə bilərsən.");
+                    alert("Fayl uğurla yaddaşa endirildi! İnternetsiz dinləyə bilərsiniz.");
                     input.value = '';
                 };
             };
