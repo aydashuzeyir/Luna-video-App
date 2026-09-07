@@ -82,6 +82,16 @@
         .download-date { font-size: 10px; color: var(--text-sub); }
         .delete-download { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 14px; padding: 6px; }
         .empty-downloads { text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0; }
+
+        /* Platforma daxili səhifə görünüşü */
+        .platform-inner-content { display: flex; flex-direction: column; gap: 12px; }
+        .platform-search-box { display: flex; gap: 8px; }
+        .platform-search-box input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; padding: 10px; color: var(--text-main); outline: none; font-size: 13px; }
+        .platform-search-box button { background: var(--primary); color: #fff; border: none; padding: 0 14px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        .platform-results { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; }
+        .platform-result-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+        .platform-result-item span { font-weight: 500; }
+        .platform-result-item button { background: var(--surface-hover); color: var(--text-main); border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; }
     </style>
 </head>
 <body>
@@ -162,19 +172,19 @@
 
     <!-- Platforms Section -->
     <div class="section-header">
-        <span>SOSİAL VƏ PLATFORMALAR</span>
+        <span>SOSİAL VƏ PLATFORMALAR (DAXİLİ MƏRKƏZ)</span>
     </div>
 
     <div class="platforms-grid">
-        <a href="https://youtube.com" target="_blank" class="platform-btn" onclick="playCurrentSound()"><i class="fa-brands fa-youtube" style="font-size: 22px; color: #ef4444;"></i><span>YouTube</span></a>
-        <a href="https://music.youtube.com" target="_blank" class="platform-btn" onclick="playCurrentSound()"><i class="fa-solid fa-compact-disc" style="font-size: 22px; color: #ef4444;"></i><span>YT Music</span></a>
-        <a href="https://spotify.com" target="_blank" class="platform-btn" onclick="playCurrentSound()"><i class="fa-brands fa-spotify" style="font-size: 22px; color: #22c55e;"></i><span>Spotify</span></a>
-        <a href="https://music.yandex.ru" target="_blank" class="platform-btn" onclick="playCurrentSound()"><i class="fa-solid fa-music" style="font-size: 22px; color: #eab308;"></i><span>Yandex Music</span></a>
-        <a href="https://instagram.com" target="_blank" class="platform-btn" onclick="playCurrentSound()"><i class="fa-brands fa-instagram" style="font-size: 22px; color: #ec4899;"></i><span>Instagram</span></a>
-        <a href="https://tiktok.com" target="_blank" class="platform-btn" onclick="playCurrentSound()"><i class="fa-brands fa-tiktok" style="font-size: 22px; color: #fff;"></i><span>TikTok</span></a>
-        <a href="https://pinterest.com" target="_blank" class="platform-btn" onclick="playCurrentSound()"><i class="fa-brands fa-pinterest" style="font-size: 22px; color: #e60023;"></i><span>Pinterest</span></a>
-        <a href="https://twitter.com" target="_blank" class="platform-btn" onclick="playCurrentSound()"><i class="fa-brands fa-x-twitter" style="font-size: 22px; color: #38bdf8;"></i><span>X (Twitter)</span></a>
-        <a href="https://www.threads.net" target="_blank" class="platform-btn" onclick="playCurrentSound()"><i class="fa-brands fa-threads" style="font-size: 22px; color: #fff;"></i><span>Threads</span></a>
+        <div class="platform-btn" onclick="playCurrentSound(); openPlatform('YouTube', '#ef4444', 'fa-youtube')"><i class="fa-brands fa-youtube" style="font-size: 22px; color: #ef4444;"></i><span>YouTube</span></div>
+        <div class="platform-btn" onclick="playCurrentSound(); openPlatform('YT Music', '#ef4444', 'fa-compact-disc')"><i class="fa-solid fa-compact-disc" style="font-size: 22px; color: #ef4444;"></i><span>YT Music</span></div>
+        <div class="platform-btn" onclick="playCurrentSound(); openPlatform('Spotify', '#22c55e', 'fa-spotify')"><i class="fa-brands fa-spotify" style="font-size: 22px; color: #22c55e;"></i><span>Spotify</span></div>
+        <div class="platform-btn" onclick="playCurrentSound(); openPlatform('Yandex Music', '#eab308', 'fa-music')"><i class="fa-solid fa-music" style="font-size: 22px; color: #eab308;"></i><span>Yandex Music</span></div>
+        <div class="platform-btn" onclick="playCurrentSound(); openPlatform('Instagram', '#ec4899', 'fa-instagram')"><i class="fa-brands fa-instagram" style="font-size: 22px; color: #ec4899;"></i><span>Instagram</span></div>
+        <div class="platform-btn" onclick="playCurrentSound(); openPlatform('TikTok', '#ffffff', 'fa-tiktok')"><i class="fa-brands fa-tiktok" style="font-size: 22px; color: #fff;"></i><span>TikTok</span></div>
+        <div class="platform-btn" onclick="playCurrentSound(); openPlatform('Pinterest', '#e60023', 'fa-pinterest')"><i class="fa-brands fa-pinterest" style="font-size: 22px; color: #e60023;"></i><span>Pinterest</span></div>
+        <div class="platform-btn" onclick="playCurrentSound(); openPlatform('X (Twitter)', '#38bdf8', 'fa-x-twitter')"><i class="fa-brands fa-x-twitter" style="font-size: 22px; color: #38bdf8;"></i><span>X (Twitter)</span></div>
+        <div class="platform-btn" onclick="playCurrentSound(); openPlatform('Threads', '#ffffff', 'fa-threads')"><i class="fa-brands fa-threads" style="font-size: 22px; color: #fff;"></i><span>Threads</span></div>
     </div>
 </div>
 
@@ -245,6 +255,25 @@
             <i class="fa-solid fa-xmark close-modal" onclick="playCurrentSound(); closeDownloadsModal()"></i>
         </div>
         <div class="downloads-list" id="downloadsListContainer"></div>
+    </div>
+</div>
+
+<!-- Platforma Daxili Modalı -->
+<div class="modal-overlay" id="platformModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <span id="platformModalTitle">Platforma</span>
+            <i class="fa-solid fa-xmark close-modal" onclick="playCurrentSound(); closePlatformModal()"></i>
+        </div>
+        <div class="platform-inner-content">
+            <div class="platform-search-box">
+                <input type="text" id="platformSearchInput" placeholder="Bu platformada axtar...">
+                <button onclick="playCurrentSound(); searchPlatformContent()">Axtar</button>
+            </div>
+            <div class="platform-results" id="platformResultsContainer">
+                <div class="empty-downloads">Axtarış edin və ya siyahıdan seçin.</div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -374,6 +403,52 @@
 
     function openModal(type) {}
 
+    // Sosial Platforma daxili idarəetmə funksiyaları
+    function openPlatform(name, color, icon) {
+        document.getElementById('platformModalTitle').innerHTML = `<i class="fa-brands ${icon}" style="color: ${color};"></i> ${name} - Daxili Mərkəz`;
+        document.getElementById('platformSearchInput').value = '';
+        document.getElementById('platformResultsContainer').innerHTML = `
+            <div class="platform-result-item">
+                <span>Tövsiyə olunan trend məzmun 1</span>
+                <button onclick="playCurrentSound(); selectPlatformItem('${name} - Trend 1')">Seç</button>
+            </div>
+            <div class="platform-result-item">
+                <span>Tövsiyə olunan trend məzmun 2</span>
+                <button onclick="playCurrentSound(); selectPlatformItem('${name} - Trend 2')">Seç</button>
+            </div>
+        `;
+        document.getElementById('platformModal').style.display = 'flex';
+    }
+
+    function closePlatformModal() {
+        document.getElementById('platformModal').style.display = 'none';
+    }
+
+    function searchPlatformContent() {
+        const query = document.getElementById('platformSearchInput').value;
+        if(!query) return;
+        const container = document.getElementById('platformResultsContainer');
+        container.innerHTML = `
+            <div class="platform-result-item">
+                <span>Nəticə: ${query} (1)</span>
+                <button onclick="playCurrentSound(); selectPlatformItem('${query} 1')">Seç</button>
+            </div>
+            <div class="platform-result-item">
+                <span>Nəticə: ${query} (2)</span>
+                <button onclick="playCurrentSound(); selectPlatformItem('${query} 2')">Seç</button>
+            </div>
+        `;
+    }
+
+    function selectPlatformItem(title) {
+        document.getElementById('mediaUrlInput').value = title;
+        closePlatformModal();
+        const status = document.getElementById('downloadStatus');
+        status.innerHTML = `<i class="fa-solid fa-check" style="color: #10b981;"></i> Seçildi: ${title}`;
+        status.style.display = 'block';
+        setTimeout(() => { status.style.display = 'none'; }, 3000);
+    }
+
     function setTheme(name, c1, c2) {
         document.documentElement.style.setProperty('--primary', c1);
         document.documentElement.style.setProperty('--primary-gradient', `linear-gradient(135deg, ${c1}, ${c2})`);
@@ -405,3 +480,4 @@
 
 </body>
 </html>
+
