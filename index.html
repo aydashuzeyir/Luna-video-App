@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luna - Media Player & PWA</title>
     
-    <!-- SEO və Axtarış Motoru Açıqlamaları -->
     <meta name="description" content="Luna Media Player - Spotify, Pinterest, Instagram və digər platformalardan media linkləri daxil edərək musiqi dinləyin və yükləyin.">
     <meta name="keywords" content="Luna, media player, pwa app, musiqi yüklə, video player, spotify downloader">
     <meta name="author" content="Luna App">
     
-    <!-- Sosial Şəbəkə Paylaşım Kartları (Open Graph) -->
     <meta property="og:title" content="Luna - Media Player">
     <meta property="og:description" content="Media linkləri idarə edin, musiqi dinləyin və yükləyin.">
     <meta property="og:type" content="website">
@@ -159,7 +157,7 @@
             font-size: 12px;
             cursor: pointer;
         }
-        /* Ayarlar üçün açılan pəncərə dizaynı */
+        /* Modallar */
         .modal {
             display: none;
             position: fixed;
@@ -167,7 +165,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -184,9 +182,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: #ec4899;
             font-weight: bold;
+            font-size: 15px;
         }
         .close-btn {
             background: none;
@@ -214,6 +213,25 @@
             outline: none;
             font-size: 13px;
         }
+        /* Rəqəmli format düymələri */
+        .format-btn {
+            display: block;
+            width: 100%;
+            background-color: #27272a;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: left;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .format-btn:hover {
+            background-color: #3f3f46;
+        }
     </style>
 </head>
 <body>
@@ -224,7 +242,6 @@
             <p>Media Player</p>
         </div>
         <div class="top-icons">
-            <button class="icon-btn" title="Axtarış" onclick="alert('Axtarış bölməsi')">🔍</button>
             <button class="icon-btn" title="Ayarlar" onclick="openSettings()">⚙️</button>
             <button class="icon-btn" title="Yenilə" onclick="location.reload()">🔄</button>
         </div>
@@ -232,8 +249,8 @@
 
     <div class="top-card">
         <div class="input-group">
-            <input type="text" id="mediaLink" placeholder="Spotify və ya media linki yapışdırın...">
-            <button onclick="processLink('open')">Aç</button>
+            <input type="text" id="mediaLink" placeholder="Media linki yapışdırın...">
+            <button onclick="checkAndOpenFormat()">Aç</button>
         </div>
         <div class="action-row">
             <button class="action-sub-btn" onclick="goToGoogle()">🌐 Google-a Get</button>
@@ -246,27 +263,43 @@
             <span class="status-title">🎵 Musiqi & Video Pleyeri</span>
             <div class="status-right">
                 <span onclick="location.reload()" style="cursor:pointer">🔄 Yenilə</span>
-                <span onclick="processLink('download')" style="cursor:pointer">📥 Yüklə</span>
+                <span onclick="checkAndOpenFormat()" style="cursor:pointer">📥 Yüklə</span>
                 <span style="color: #22c55e; font-weight: 600;">Hazır</span>
             </div>
         </div>
-        <p class="status-desc">Link daxil edərək musiqini dinləyə və yükləyə bilərsiniz.</p>
+        <p class="status-desc">Link daxil edərək format seçib yükləyə bilərsiniz.</p>
     </div>
 
     <div class="platforms-title">Dəstəklənən Platformalar</div>
     <div class="platforms-grid">
-        <button class="platform-btn" onclick="downloadSpotify()"><span style="color: #22c55e;">🎧</span> Spotify</button>
-        <button class="platform-btn" onclick="openPlatform('Pinterest')"><span style="color: #ef4444;">📌</span> Pinterest</button>
-        <button class="platform-btn" onclick="openPlatform('Facebook')"><span style="color: #3b82f6;">💙</span> Facebook</button>
-        <button class="platform-btn" onclick="openPlatform('Instagram')"><span style="color: #ec4899;">📷</span> Instagram</button>
-        <button class="platform-btn" onclick="openPlatform('Threads')"><span style="color: #60a5fa;">🧵</span> Threads</button>
-        <button class="platform-btn" onclick="openPlatform('Twitter')"><span style="color: #f3f4f6;">✖️</span> Twitter (X)</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #22c55e;">🎧</span> Spotify</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #ef4444;">📌</span> Pinterest</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #3b82f6;">💙</span> Facebook</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #ec4899;">📷</span> Instagram</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #60a5fa;">🧵</span> Threads</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #f3f4f6;">✖️</span> Twitter (X)</button>
+    </div>
+
+    <!-- Format Seçim Pəncərəsi (Rəqəmlərlə MP3 / MP4) -->
+    <div id="formatModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Format Seçin</span>
+                <button class="close-btn" onclick="closeFormatModal()">✕</button>
+            </div>
+            <p style="color: #a1a1aa; font-size: 12px; margin-bottom: 15px;">Yükləmək istədiyiniz formatı seçin:</p>
+            <button class="format-btn" onclick="triggerDownload('MP3')">1. 🎵 MP3 (Audio)</button>
+            <button class="format-btn" onclick="triggerDownload('MP4')">2. 🎬 MP4 (Video)</button>
+        </div>
     </div>
 
     <!-- Ayarlar Modalı -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><span>Tənzimləmələr</span><button class="close-btn" onclick="closeSettings()">✕</button></div>
+            <div class="modal-header">
+                <span>Tənzimləmələr</span>
+                <button class="close-btn" onclick="closeSettings()">✕</button>
+            </div>
             <div class="setting-group">
                 <label>Tema Seçimi</label>
                 <select id="themeSelect" onchange="changeTheme(this.value)">
@@ -289,6 +322,7 @@
     <script>
         function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
         function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
+        
         function changeTheme(theme) {
             if(theme === 'dark') document.body.style.backgroundColor = '#09090b';
             else if(theme === 'midnight') document.body.style.backgroundColor = '#0f172a';
@@ -302,42 +336,25 @@
 
         function goToGoogle() { window.open('https://www.google.com', '_blank'); }
 
-        // Xüsusi olaraq Spotify düyməsi üçün yükləmə funksiyası
-        function downloadSpotify() {
+        // Link yoxlanılır və rəqəmli format pəncərəsi açılır
+        function checkAndOpenFormat() {
             const val = document.getElementById('mediaLink').value.trim();
             if(!val) {
-                alert('Zəhmət olmasa əvvəlcə Spotify musiqi linkini yapışdırın!');
+                alert('Zəhmət olmasa əvvəlcə xanaya link yapışdırın!');
                 return;
             }
-            if(!val.includes('spotify.com')) {
-                alert('Bu, etibarlı Spotify linkinə oxşamır. Zəhmət olmasa doğru link daxil edin.');
-                return;
-            }
-            // İstifadəçiyə yükləmə prosesinin başlandığını bildiririk
-            alert('Spotify musiqisi yüklənir: ' + val);
-            // İstəsəniz buraya birbaşa yükləmə linki yönləndirməsi də əlavə etmək olar.
+            document.getElementById('formatModal').style.display = 'flex';
         }
 
-        function openPlatform(platformName) {
-            const val = document.getElementById('mediaLink').value.trim();
-            if(!val) {
-                alert('Zəhmət olmasa ' + platformName + ' linkini daxil edin!');
-                return;
-            }
-            alert(platformName + ' linki qəbul olundu: ' + val);
+        function closeFormatModal() {
+            document.getElementById('formatModal').style.display = 'none';
         }
 
-        function processLink(type) {
+        // Seçim edildikdən sonra işləyən funksiya
+        function triggerDownload(formatType) {
             const val = document.getElementById('mediaLink').value.trim();
-            if(!val) {
-                alert('Zəhmət olmasa link daxil edin!');
-                return;
-            }
-            if(type === 'download') {
-                alert('Fayl yüklənir...');
-            } else {
-                alert('Link açıldı: ' + val);
-            }
+            closeFormatModal();
+            alert(formatType + ' formatı seçildi. Yükləməyə başlandı!');
         }
     </script>
 </body>
