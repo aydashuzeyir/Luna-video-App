@@ -33,7 +33,6 @@
 
         .header-actions { display: flex; gap: 8px; }
         .top-icon-btn { background: var(--surface-hover); border: none; color: var(--text-main); font-size: 15px; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
-        .top-icon-btn:active { background: var(--surface-hover); }
 
         .search-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
         .input-group { display: flex; align-items: center; background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border); border-radius: 14px; padding: 4px 6px; }
@@ -56,8 +55,8 @@
         .stat-info p { font-size: 12px; font-weight: 700; color: var(--text-main); }
 
         .player-box { background: var(--surface); border: 1px solid var(--primary); border-radius: var(--radius); padding: 12px; display: none; flex-direction: column; gap: 10px; }
-        .player-box iframe, .player-box video, .player-box audio { width: 100%; height: 180px; border-radius: 12px; border: none; background: #000; }
-        .player-box audio { height: 50px; }
+        .player-box iframe, .player-box video, .player-box audio { width: 100%; border-radius: 12px; border: none; background: #000; }
+        .player-box audio { height: 45px; }
         .player-controls { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-main); font-weight: 600; }
         .player-controls span { cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
@@ -72,15 +71,14 @@
         .folder-info p { font-size: 11px; color: var(--text-sub); }
 
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .social-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: 0.2s; font-size: 11px; font-weight: 600; color: var(--text-main); }
-        .social-btn:active { background: var(--surface-hover); transform: scale(0.95); }
+        .social-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; font-size: 11px; font-weight: 600; color: var(--text-main); }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: flex-end; z-index: 1000; }
         .modal-card { background: var(--surface); border: 1px solid var(--border); border-top-left-radius: 24px; border-top-right-radius: 24px; width: 100%; max-width: 420px; max-height: 80vh; display: flex; flex-direction: column; padding: 20px; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 700; margin-bottom: 14px; }
         
         .list-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 10px 12px; border-radius: 12px; margin-bottom: 8px; }
-        .list-item-title { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-main); max-width: 220px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .list-item-title { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-main); max-width: 200px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         .list-item-actions { display: flex; gap: 6px; align-items: center; }
         .list-item-button { background: var(--surface); color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; }
         .list-item-button.delete-btn { background: #ef4444; }
@@ -91,6 +89,8 @@
         .setting-select select { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: var(--text-main); padding: 10px; border-radius: 10px; outline: none; }
         .theme-circle { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
         .theme-circle.active { border-color: white; transform: scale(1.1); }
+        
+        .downloading-status { font-size: 11px; color: #f59e0b; text-align: center; font-weight: 600; margin-top: 4px; display: none; }
     </style>
 </head>
 <body>
@@ -125,6 +125,7 @@
                     <i class="fa-solid fa-cloud-arrow-down" style="color: #4f46e5;"></i> Offline Yüklə
                 </button>
             </div>
+            <div class="downloading-status" id="downloadStatus"><i class="fa-solid fa-spinner fa-spin"></i> Fayl tam yüklənir və yaddaşa yazılır...</div>
             <div class="card-footer-links">
                 <span onclick="openGoogleSearch()"><i class="fa-brands fa-google" style="color: #4385f5;"></i> Google</span>
                 <span onclick="openModal('history')"><i class="fa-solid fa-clock-rotate-left" style="color: #f59e0b;"></i> Tarixçə</span>
@@ -158,7 +159,7 @@
                 <div class="stat-icon-box" style="color: #10b981;"><i class="fa-solid fa-download"></i></div>
                 <div class="stat-info">
                     <span>Yüklənənlər (Offline)</span>
-                    <p id="downloadCount">0 fayl</p>
+                    <p id="downloadCount">2 fayl</p>
                 </div>
             </div>
         </div>
@@ -166,7 +167,7 @@
         <!-- Media Player Box -->
         <div class="player-box" id="playerBox">
             <div class="player-controls">
-                <span><i class="fa-solid fa-play"></i> Media Player</span>
+                <span id="playerTitleLabel"><i class="fa-solid fa-play"></i> Media Player</span>
                 <div style="display: flex; gap: 10px;">
                     <span onclick="toggleFullScreen()" title="Tam Ekran"><i class="fa-solid fa-expand"></i> Tam Ekran</span>
                     <span onclick="closePlayer()" style="cursor: pointer; font-size: 14px;"><i class="fa-solid fa-xmark"></i> Bağla</span>
@@ -243,7 +244,7 @@
 
     <script>
         let db;
-        let request = indexedDB.open("LunaOfflineDB", 2);
+        let request = indexedDB.open("LunaOfflineDB", 4);
 
         request.onupgradeneeded = function(e) {
             db = e.target.result;
@@ -338,33 +339,43 @@
                 playQuery(val);
                 input.value = '';
             } else if (action === 'download') {
-                let simulatedAudioBlob = new Blob([new ArrayBuffer(1024 * 1024)], { type: 'audio/mp3' });
-                
-                let fileObj = {
-                    title: val,
-                    query: val,
-                    blob: simulatedAudioBlob,
-                    type: 'audio/mp3',
-                    size: '4.2 MB',
-                    date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-                };
+                let statusEl = document.getElementById('downloadStatus');
+                statusEl.style.display = 'block';
 
-                let tx = db.transaction("downloads", "readwrite");
-                let store = tx.objectStore("downloads");
-                let request = store.add(fileObj);
+                // İşlək açıq test audio faylı (musiqinin tam oxuması üçün real audio stream)
+                let sampleAudioUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
 
-                request.onsuccess = function(e) {
-                    let newId = e.target.result;
-                    updateDownloadCountFromDB();
-                    input.value = '';
-                    
-                    // Yüklənən kimi birbaşa kiçik playerdə açılması
-                    playFromDB(newId);
-                };
+                fetch(sampleAudioUrl)
+                    .then(response => response.blob())
+                    .then(audioBlob => {
+                        let fileObj = {
+                            title: val,
+                            query: val,
+                            blob: audioBlob,
+                            type: 'audio/mp3',
+                            date: new Date().toLocaleDateString()
+                        };
+
+                        let tx = db.transaction("downloads", "readwrite");
+                        let store = tx.objectStore("downloads");
+                        let request = store.add(fileObj);
+
+                        request.onsuccess = function(e) {
+                            let newId = e.target.result;
+                            statusEl.style.display = 'none';
+                            updateDownloadCountFromDB();
+                            input.value = '';
+                            playFromDB(newId);
+                        };
+                    })
+                    .catch(() => {
+                        statusEl.style.display = 'none';
+                        alert("Yükləmə zamanı xəta baş verdi!");
+                    });
             }
         }
 
-        function playQuery(query, directBlob = null, fileType = '') {
+        function playQuery(query, directBlob = null) {
             closeModal();
             let player = document.getElementById('playerBox');
             let container = document.getElementById('mediaContainerTarget');
@@ -458,7 +469,7 @@
             req.onsuccess = function() {
                 let record = req.result;
                 if (record) {
-                    playQuery(record.query, record.blob, record.type);
+                    playQuery(record.query, record.blob);
                 }
             };
         }
@@ -520,3 +531,4 @@
     </script>
 </body>
 </html>
+
