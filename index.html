@@ -126,16 +126,15 @@
         <div class="search-card">
             <div class="input-group">
                 <i class="fa-brands fa-youtube" style="color: #ef4444;"></i>
-                <input type="text" id="mediaUrlInput" placeholder="Media linki yazın (və ya aşağıdan fayl seçin)...">
+                <input type="text" id="mediaUrlInput" placeholder="Media linki daxil edin...">
             </div>
             <div class="btn-row">
                 <button class="action-btn primary" onclick="processMedia('play')">
                     <i class="fa-solid fa-circle-play"></i> Onlayn Dinlə
                 </button>
-                <button class="action-btn outline" onclick="triggerFileSelect()">
+                <button class="action-btn outline" onclick="processMedia('download')">
                     <i class="fa-solid fa-cloud-arrow-down" style="color: #38bdf8;"></i> Offline Yüklə
                 </button>
-                <input type="file" id="localFileInput" style="display:none" accept="audio/*,video/*" multiple="false" onchange="handleLocalFileDownload(this)">
             </div>
             <div class="card-footer-links">
                 <span onclick="openGoogleSearch()"><i class="fa-brands fa-google" style="color: #ea4335;"></i> Google</span>
@@ -194,7 +193,7 @@
         </div>
         <div class="folders-container" id="foldersListContainer"></div>
 
-        <!-- Sosial Şəbəkələr (Sayta keçidləri ləğv edildi) -->
+        <!-- Platformalar -->
         <div class="section-header">Platformalar</div>
         <div class="social-grid">
             <div class="social-btn"><i class="fa-brands fa-youtube" style="color: #ef4444;"></i> YouTube</div>
@@ -334,40 +333,6 @@
             });
         }
 
-        function triggerFileSelect() {
-            let fileInput = document.getElementById('localFileInput');
-            fileInput.value = '';
-            fileInput.click();
-        }
-
-        function handleLocalFileDownload(input) {
-            let file = input.files[0];
-            if (!file) return;
-
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                let blobData = e.target.result;
-                let fileObj = {
-                    title: file.name,
-                    data: blobData,
-                    type: file.type,
-                    size: (file.size / (1024*1024)).toFixed(1) + " MB",
-                    date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-                };
-
-                let tx = db.transaction("downloads", "readwrite");
-                let store = tx.objectStore("downloads");
-                store.add(fileObj);
-
-                tx.oncomplete = function() {
-                    updateDownloadCountFromDB();
-                    alert("Fayl uğurla yaddaşa endirildi! İnternetsiz dinləyə bilərsiniz.");
-                    input.value = '';
-                };
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
         function processMedia(action) {
             let input = document.getElementById('mediaUrlInput');
             let val = input.value.trim();
@@ -382,36 +347,34 @@
                 updateCounters();
                 playQuery(val);
                 input.value = '';
+            } else if (action === 'download') {
+                // Tam avtomatik daxili endirmə (heç bir xarici fayl meneceri və ya files açılmır)
+                let fileObj = {
+                    title: val,
+                    query: val,
+                    type: 'offline-media',
+                    size: 'Tam Yükləndi',
+                    date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                };
+
+                let tx = db.transaction("downloads", "readwrite");
+                let store = tx.objectStore("downloads");
+                store.add(fileObj);
+
+                tx.oncomplete = function() {
+                    updateDownloadCountFromDB();
+                    alert("Media uğurla tamamilə offline yaddaşa endirildi!");
+                    input.value = '';
+                };
             }
         }
 
-        function playQuery(query, directBlob = null, fileType = '') {
+        function playQuery(query) {
             closeModal();
             let player = document.getElementById('playerBox');
             let container = document.getElementById('mediaContainerTarget');
             player.style.display = 'flex';
             container.innerHTML = '';
-
-            if (directBlob) {
-                let blob = new Blob([directBlob], { type: fileType || 'audio/mp3' });
-                let blobUrl = URL.createObjectURL(blob);
-
-                if (fileType.includes('video') || fileType === '') {
-                    let video = document.createElement('video');
-                    video.src = blobUrl;
-                    video.controls = true;
-                    video.autoplay = true;
-                    video.playsInline = true;
-                    container.appendChild(video);
-                } else {
-                    let audio = document.createElement('audio');
-                    audio.src = blobUrl;
-                    audio.controls = true;
-                    audio.autoplay = true;
-                    container.appendChild(audio);
-                }
-                return;
-            }
 
             let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
             let match = query.match(regExp);
@@ -493,7 +456,7 @@
             req.onsuccess = function() {
                 let record = req.result;
                 if (record) {
-                    playQuery(record.title, record.data, record.type);
+                    playQuery(record.query || record.title);
                 }
             };
         }
@@ -555,3 +518,4 @@
     </script>
 </body>
 </html>
+
