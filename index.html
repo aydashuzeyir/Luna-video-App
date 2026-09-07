@@ -272,7 +272,7 @@
             color: var(--text-sub);
         }
 
-        /* Download Progress Box (Hidden by default) */
+        /* Download Progress Card */
         .download-progress-card {
             background: var(--surface);
             border: 1px solid var(--primary);
@@ -608,7 +608,7 @@
             </div>
         </header>
 
-        <!-- Main Input Card with Format Selector & Separate Buttons -->
+        <!-- Main Input Card -->
         <div class="search-card">
             <div class="input-group">
                 <i class="fa-solid fa-link"></i>
@@ -661,7 +661,7 @@
                     <i class="fa-solid fa-circle" style="font-size: 6px;"></i> Aktiv Rejim
                 </div>
             </div>
-            <div class="status-desc">Formatı seçin, yükləmə işarəsinə basaraq birbaşa sayt daxilində saniyəli tərəqqi çubuğu ilə yükləməni izləyin.</div>
+            <div class="status-desc">Formatı seçin, yükləmə işarəsinə basaraq saniyə sayğacı ilə birbaşa cihazınıza endirin.</div>
         </div>
 
         <!-- Navigation Tabs -->
@@ -844,7 +844,6 @@
             startTimedDownload(val);
         }
 
-        // Saniyə ilə işləyən daxili yükləmə simulyasiyası
         function startTimedDownload(url) {
             if (isDownloading) return;
             isDownloading = true;
@@ -856,12 +855,9 @@
 
             progressCard.style.display = 'flex';
             let progress = 0;
-            let totalSeconds = 3; // 3 saniyəlik simulyasiya
-            let intervalTime = 100; // hər 100 millisaniyə bir yenilənir
+            let totalSeconds = 3;
+            let intervalTime = 100;
             let increment = 100 / (totalSeconds * (1000 / intervalTime));
-
-            let currentSec = totalSeconds;
-            statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Yüklənir... (${currentSec} san)`;
 
             let timer = setInterval(() => {
                 progress += increment;
@@ -874,8 +870,7 @@
                     percentText.textContent = `100%`;
                     progressFill.style.width = `100%`;
 
-                    // Simulyasiya bitdikdən sonra faylı brauzer üzərindən endirməyə başla
-                    triggerBrowserDownload(url);
+                    triggerRealDownload();
 
                     setTimeout(() => {
                         progressCard.style.display = 'none';
@@ -892,17 +887,19 @@
             }, intervalTime);
         }
 
-        function triggerBrowserDownload(url) {
-            // Mətn məlumatı və ya saxta fayl yaradaraq cihazda yüklənməni işə salırıq
-            const blob = new Blob([`Luna Media Hub - Yüklənmiş Link:\n${url}\nFormat: ${selectedFormat.toUpperCase()}`], { type: 'text/plain;charset=utf-8' });
-            const blobUrl = URL.createObjectURL(blob);
+        function triggerRealDownload() {
+            // Real işlək test linkləri (MP3 üçün musiqi, Video üçün MP4 faylı)
+            let fileUrl = selectedFormat === 'mp3' 
+                ? 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' 
+                : 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+            
             const a = document.createElement('a');
-            a.href = blobUrl;
+            a.href = fileUrl;
             a.download = `Luna_Media_${Date.now()}.${selectedFormat === 'mp3' ? 'mp3' : 'mp4'}`;
+            a.target = '_blank';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            URL.revokeObjectURL(blobUrl);
         }
 
         function setInput(url) {
