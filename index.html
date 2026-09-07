@@ -374,20 +374,6 @@
             margin-bottom: 10px;
             cursor: pointer;
         }
-        .settings-reload-btn {
-            display: block;
-            width: 100%;
-            background-color: #ec4899;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            text-align: center;
-            margin-top: 15px;
-        }
     </style>
 </head>
 <body>
@@ -397,7 +383,9 @@
             <h1 id="appTitle">Luna</h1>
             <p id="subTitle">Media Player</p>
         </div>
+        <!-- Yeniləmə və Ayarlar düymələri yuxarı sağ küncdə -->
         <div class="top-icons">
+            <button class="icon-btn" title="Yenilə" onclick="location.reload()">🔄</button>
             <button class="icon-btn" title="Ayarlar" onclick="openSettings()">⚙️</button>
         </div>
     </div>
@@ -484,7 +472,7 @@
         </div>
     </div>
 
-    <!-- Ayarlar Modalı (Genişləndirilmiş Səs, İkon, 100+ Font və Yeniləmə Düyməsi) -->
+    <!-- Ayarlar Modalı -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -575,9 +563,6 @@
                     <option value="purple">Bənövşəyi</option>
                 </select>
             </div>
-
-            <!-- Ayarların içində Luna-nı yeniləmə düyməsi -->
-            <button class="settings-reload-btn" onclick="location.reload()">🔄 Luna Yenilə (Yenidən Yüklə)</button>
         </div>
     </div>
 
