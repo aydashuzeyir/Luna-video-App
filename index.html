@@ -257,7 +257,7 @@
             font-size: 14px;
         }
 
-        /* Ümumi Modallar (Ayarlar və Format) */
+        /* Ümumi Modallar */
         .modal {
             display: none;
             position: fixed;
@@ -344,9 +344,8 @@
 
     <div class="top-card">
         <div class="input-group">
-            <!-- Lupa simvolu ilə axtarış sahəsi -->
             <span style="font-size: 15px;">🔍</span>
-            <input type="text" id="mediaLink" placeholder="Media linki yapışdırın (Lupa ilə axtar)...">
+            <input type="text" id="mediaLink" placeholder="Media linki yapışdırın...">
             <button onclick="checkAndOpenFormat()">Aç</button>
         </div>
         <div class="action-row">
@@ -368,12 +367,12 @@
 
     <div class="platforms-title">Dəstəklənən Platformalar</div>
     <div class="platforms-grid">
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #22c55e;">🎧</span> Spotify</button>
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #ef4444;">📌</span> Pinterest</button>
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #3b82f6;">💙</span> Facebook</button>
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #ec4899;">📷</span> Instagram</button>
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #60a5fa;">🧵</span> Threads</button>
-        <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #f3f4f6;">✖️</span> Twitter</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconSpotify" style="color: #22c55e;">🎧</span> Spotify</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconPinterest" style="color: #ef4444;">📌</span> Pinterest</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconFacebook" style="color: #3b82f6;">💙</span> Facebook</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconInstagram" style="color: #ec4899;">📷</span> Instagram</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconThreads" style="color: #60a5fa;">🧵</span> Threads</button>
+        <button class="platform-btn" onclick="checkAndOpenFormat()"><span id="iconTwitter" style="color: #f3f4f6;">✖️</span> Twitter</button>
     </div>
 
     <!-- Ana səhifədə qovluq kartı -->
@@ -412,21 +411,23 @@
         </div>
     </div>
 
-    <!-- Ayarlar Modalı -->
+    <!-- Genişləndirilmiş Ayarlar Modalı -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span>Tənzimləmələr</span>
                 <button class="close-btn" onclick="closeSettings()">✕</button>
             </div>
+            
             <div class="setting-group">
-                <label>Tema Seçimi</label>
+                <label>Tema Rəngi</label>
                 <select id="themeSelect" onchange="changeTheme(this.value)">
                     <option value="dark">Tənha Qara (Default)</option>
                     <option value="midnight">Göyçə / Midnight</option>
                     <option value="pinkish">Çəhrayı Vibe</option>
                 </select>
             </div>
+
             <div class="setting-group">
                 <label>Şrift (Font) Stili</label>
                 <select id="fontSelect" onchange="changeFont(this.value)">
@@ -435,11 +436,27 @@
                     <option value="serif">Klassik (Serif)</option>
                 </select>
             </div>
+
+            <div class="setting-group">
+                <label>İkon Stili</label>
+                <select id="iconStyleSelect" onchange="changeIconStyle(this.value)">
+                    <option value="default">Standard İkonlar</option>
+                    <option value="minimal">Minimal / Sadə</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label>İkon Rəng Vurgusu</label>
+                <select id="iconColorSelect" onchange="changeIconColor(this.value)">
+                    <option value="multi">Rəngarəng (Default)</option>
+                    <option value="pink">Hamısı Çəhrayı</option>
+                    <option value="cyan">Hamısı Mavi/Cyan</option>
+                </select>
+            </div>
         </div>
     </div>
 
     <script>
-        // Ayarlar modalı funksiyaları
         function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
         function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
         
@@ -448,15 +465,47 @@
             else if(theme === 'midnight') document.body.style.backgroundColor = '#0f172a';
             else if(theme === 'pinkish') document.body.style.backgroundColor = '#1f101a';
         }
+
         function changeFont(font) {
             if(font === 'system') document.body.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
             else if(font === 'monospace') document.body.style.fontFamily = 'monospace';
             else if(font === 'serif') document.body.style.fontFamily = 'serif';
         }
 
+        function changeIconStyle(style) {
+            // İkon üslubu dəyişikliyi üçün əlavə məntiq
+            const spotify = document.getElementById('iconSpotify');
+            if(style === 'minimal') {
+                spotify.innerText = '•';
+            } else {
+                spotify.innerText = '🎧';
+            }
+        }
+
+        function changeIconColor(colorType) {
+            const icons = [
+                document.getElementById('iconSpotify'),
+                document.getElementById('iconPinterest'),
+                document.getElementById('iconFacebook'),
+                document.getElementById('iconInstagram'),
+                document.getElementById('iconThreads'),
+                document.getElementById('iconTwitter')
+            ];
+
+            icons.forEach(icon => {
+                if(colorType === 'pink') {
+                    icon.style.color = '#ec4899';
+                } else if(colorType === 'cyan') {
+                    icon.style.color = '#06b6d4';
+                } else {
+                    // Default orijinal rənglərini bərpa etmək olar və ya ilkin vəziyyət
+                    icon.style.color = ''; 
+                }
+            });
+        }
+
         let downloadedFiles = [];
 
-        // Qovluq funksiyaları
         function openFolder() {
             document.getElementById('folderModal').style.display = 'flex';
             updateFolderUI();
