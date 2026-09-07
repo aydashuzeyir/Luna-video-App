@@ -229,6 +229,74 @@
             color: var(--text-main);
         }
 
+        /* Live Download Progress Card */
+        .download-progress-card {
+            background: var(--surface);
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.2s linear;
+        }
+
+        /* In-App Music Player Card (Hidden until played) */
+        .in-app-player-card {
+            background: var(--surface);
+            border: 1px solid #22c55e;
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+        }
+
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #22c55e;
+        }
+
+        .player-header span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        audio {
+            width: 100%;
+            height: 36px;
+            accent-color: var(--primary);
+            border-radius: 8px;
+        }
+
         /* Status Banner */
         .status-card {
             background: var(--surface);
@@ -270,40 +338,6 @@
         .status-desc {
             font-size: 11px;
             color: var(--text-sub);
-        }
-
-        /* Download Progress Card */
-        .download-progress-card {
-            background: var(--surface);
-            border: 1px solid var(--primary);
-            border-radius: 16px;
-            padding: 14px 16px;
-            display: none;
-            flex-direction: column;
-            gap: 8px;
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .progress-bar-bg {
-            width: 100%;
-            height: 6px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            transition: width 0.2s linear;
         }
 
         /* Navigation Tabs */
@@ -612,7 +646,7 @@
         <div class="search-card">
             <div class="input-group">
                 <i class="fa-solid fa-link"></i>
-                <input type="text" id="mediaUrlInput" placeholder="YouTube linki yapışdırın...">
+                <input type="text" id="mediaUrlInput" placeholder="Musiqi və ya Spotify/YouTube linki...">
             </div>
 
             <!-- Format Selector (Video / MP3) -->
@@ -630,25 +664,34 @@
                     <i class="fa-solid fa-bookmark" style="color: #fbbf24;"></i> Saxla
                 </button>
                 <button class="action-btn primary-action" onclick="downloadLink()">
-                    <i class="fa-solid fa-cloud-arrow-down"></i> Yüklə
+                    <i class="fa-solid fa-play"></i> Saytda Aç / Dinlə
                 </button>
             </div>
 
             <div class="quick-links">
-                <span class="quick-tag" onclick="setInput('https://www.youtube.com/watch?v=dQw4w9WgXcQ')"><i class="fa-brands fa-youtube" style="color: #ef4444;"></i> Nümunə YouTube</span>
+                <span class="quick-tag" onclick="setInput('https://open.spotify.com/track/sample')"><i class="fa-brands fa-spotify" style="color: #22c55e;"></i> Spotify Nümunə</span>
                 <span class="quick-tag" onclick="alert('Yeni qovluq yaradıldı!')"><i class="fa-solid fa-folder-plus" style="color: #fbbf24;"></i> New Folder</span>
             </div>
         </div>
 
-        <!-- Live Download Progress Card -->
+        <!-- Live Download / Processing Progress Card -->
         <div class="download-progress-card" id="downloadProgressCard">
             <div class="progress-info">
-                <span id="progressStatusText"><i class="fa-solid fa-spinner fa-spin"></i> Yüklənir... (3 san)</span>
+                <span id="progressStatusText"><i class="fa-solid fa-spinner fa-spin"></i> Hazırlanır... (3 san)</span>
                 <span id="progressPercentText">0%</span>
             </div>
             <div class="progress-bar-bg">
                 <div class="progress-bar-fill" id="progressBarFill"></div>
             </div>
+        </div>
+
+        <!-- In-App Music Player (Appears when played) -->
+        <div class="in-app-player-card" id="inAppPlayerCard">
+            <div class="player-header">
+                <span><i class="fa-solid fa-headphones-simple"></i> Saytda İfa Olunur</span>
+                <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="closeInAppPlayer()"></i>
+            </div>
+            <audio id="siteAudioPlayer" controls></audio>
         </div>
 
         <!-- Status Banner -->
@@ -661,7 +704,7 @@
                     <i class="fa-solid fa-circle" style="font-size: 6px;"></i> Aktiv Rejim
                 </div>
             </div>
-            <div class="status-desc">Formatı seçin, yükləmə işarəsinə basaraq saniyə sayğacı ilə birbaşa cihazınıza endirin.</div>
+            <div class="status-desc">Düyməyə basdıqda saniyə sayğacı işə düşür və musiqi birbaşa saytın daxilindəki pleyerdə səslənir.</div>
         </div>
 
         <!-- Navigation Tabs -->
@@ -670,7 +713,7 @@
                 <i class="fa-solid fa-clock-rotate-left" style="color: #fbbf24;"></i> Tarixçə
             </div>
             <div class="tab-item" id="tabDownloads" onclick="switchTab('downloads')">
-                <i class="fa-solid fa-cloud-arrow-down" style="color: #38bdf8;"></i> Daxili Yükləmələr
+                <i class="fa-solid fa-play" style="color: #38bdf8;"></i> Daxili İfa Siyahısı
             </div>
         </div>
 
@@ -758,7 +801,7 @@
     <script>
         let historyLinks = JSON.parse(localStorage.getItem('luna_history')) || [];
         let currentTab = 'later';
-        let selectedFormat = 'video';
+        let selectedFormat = 'mp3';
         let isDownloading = false;
 
         function updateFileCount() {
@@ -781,7 +824,7 @@
             const listContainer = document.getElementById('itemsList');
             const titleElem = document.getElementById('listTitle');
             
-            titleElem.textContent = currentTab === 'later' ? 'Tarixçə Siyahısı' : 'Daxili Yüklənmiş Fayllar';
+            titleElem.textContent = currentTab === 'later' ? 'Tarixçə Siyahısı' : 'Daxili İfa Siyahısı';
 
             if (historyLinks.length === 0) {
                 listContainer.innerHTML = '<div class="empty-text">Hələ heç bir element yoxdur</div>';
@@ -797,7 +840,10 @@
 
                 if (videoId) {
                     thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-                    titleText = `YouTube Media (${videoId})`;
+                    titleText = `Media Track (${videoId})`;
+                } else if (item.includes('spotify')) {
+                    thumbUrl = 'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=100&auto=format&fit=crop&q=60';
+                    titleText = 'Spotify Audio Track';
                 }
 
                 const div = document.createElement('div');
@@ -807,10 +853,10 @@
                     <img src="${thumbUrl}" class="media-thumb" alt="Thumb">
                     <div class="media-details">
                         <span class="media-title">${titleText}</span>
-                        <span class="media-url-sub">${item} (${selectedFormat.toUpperCase()})</span>
+                        <span class="media-url-sub">${item}</span>
                     </div>
-                    <button class="play-action-btn" onclick="startTimedDownload('${item}')" title="İndi Yüklə">
-                        <i class="fa-solid fa-download"></i>
+                    <button class="play-action-btn" onclick="startTimedDownload('${item}')" title="Saytda Dinlə">
+                        <i class="fa-solid fa-play"></i>
                     </button>
                 `;
                 listContainer.appendChild(div);
@@ -828,7 +874,7 @@
             
             switchTab('later');
             renderList();
-            alert(`Link tarixçəyə saxlanıldı (${selectedFormat.toUpperCase()})!`);
+            alert('Link tarixçəyə saxlanıldı!');
         }
 
         function downloadLink() {
@@ -855,7 +901,7 @@
 
             progressCard.style.display = 'flex';
             let progress = 0;
-            let totalSeconds = 3;
+            let totalSeconds = 3; // 3 saniyəlik sayğac simulyasiyası
             let intervalTime = 100;
             let increment = 100 / (totalSeconds * (1000 / intervalTime));
 
@@ -866,40 +912,42 @@
                     clearInterval(timer);
                     isDownloading = false;
                     
-                    statusText.innerHTML = `<i class="fa-solid fa-check" style="color: #34d399;"></i> Yükləmə tamamlandı!`;
+                    statusText.innerHTML = `<i class="fa-solid fa-check" style="color: #34d399;"></i> Hazırdır, səsləndirilir!`;
                     percentText.textContent = `100%`;
                     progressFill.style.width = `100%`;
 
-                    triggerRealDownload();
+                    // Saytın içindəki daxili pleyerdə səsləndirməni başlat
+                    playInAppAudio();
 
                     setTimeout(() => {
                         progressCard.style.display = 'none';
                         progressFill.style.width = `0%`;
-                    }, 2500);
+                    }, 2000);
                 } else {
                     progressFill.style.width = `${progress}%`;
                     percentText.textContent = `${Math.floor(progress)}%`;
                     
                     let remainingSec = Math.ceil(totalSeconds * (1 - progress / 100));
                     if(remainingSec < 1) remainingSec = 1;
-                    statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Yüklənir... (${remainingSec} san)`;
+                    statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Hazırlanır... (${remainingSec} san)`;
                 }
             }, intervalTime);
         }
 
-        function triggerRealDownload() {
-            // Real işlək test linkləri (MP3 üçün musiqi, Video üçün MP4 faylı)
-            let fileUrl = selectedFormat === 'mp3' 
-                ? 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' 
-                : 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+        function playInAppAudio() {
+            const playerCard = document.getElementById('inAppPlayerCard');
+            const audioPlayer = document.getElementById('siteAudioPlayer');
             
-            const a = document.createElement('a');
-            a.href = fileUrl;
-            a.download = `Luna_Media_${Date.now()}.${selectedFormat === 'mp3' ? 'mp3' : 'mp4'}`;
-            a.target = '_blank';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            // İşlək test audio axını (Spotify və ya digər musiqiləri saytda oxutmaq üçün)
+            audioPlayer.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+            playerCard.style.display = 'flex';
+            audioPlayer.play().catch(e => console.log("Avtomatik oxutma bloku:", e));
+        }
+
+        function closeInAppPlayer() {
+            const audioPlayer = document.getElementById('siteAudioPlayer');
+            audioPlayer.pause();
+            document.getElementById('inAppPlayerCard').style.display = 'none';
         }
 
         function setInput(url) {
@@ -907,7 +955,7 @@
         }
 
         function setPlatform(domain) {
-            document.getElementById('mediaUrlInput').value = 'https://www.' + domain + '/';
+            document.getElementById('mediaUrlInput').value = 'https://www.' + domain + '/track/demo';
         }
 
         function switchTab(type) {
