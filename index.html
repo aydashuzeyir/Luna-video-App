@@ -144,6 +144,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
+            margin-bottom: 20px;
         }
         .platform-btn {
             background-color: #18181b;
@@ -157,6 +158,58 @@
             font-size: 12px;
             cursor: pointer;
         }
+        /* New Folder Bölməsi (Tətbiq İçi Yükləmələr) */
+        .folder-section {
+            background-color: #18181b;
+            border-radius: 16px;
+            padding: 14px;
+        }
+        .folder-header {
+            font-size: 13px;
+            color: #ec4899;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-list {
+            list-style: none;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .file-item {
+            background-color: #27272a;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-item span {
+            color: #d4d4d8;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 180px;
+        }
+        .file-badge {
+            background-color: #ec4899;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .empty-folder {
+            color: #71717a;
+            font-size: 12px;
+            text-align: center;
+            padding: 10px;
+        }
+
         /* Modallar */
         .modal {
             display: none;
@@ -213,7 +266,6 @@
             outline: none;
             font-size: 13px;
         }
-        /* Rəqəmli format düymələri */
         .format-btn {
             display: block;
             width: 100%;
@@ -254,7 +306,7 @@
         </div>
         <div class="action-row">
             <button class="action-sub-btn" onclick="goToGoogle()">🌐 Google-a Get</button>
-            <button class="action-sub-btn" onclick="alert('Yeni qovluq yaradıldı')">📁 New Folder</button>
+            <button class="action-sub-btn" onclick="alert('New Folder aktivdir')">📁 New Folder</button>
         </div>
     </div>
 
@@ -267,7 +319,7 @@
                 <span style="color: #22c55e; font-weight: 600;">Hazır</span>
             </div>
         </div>
-        <p class="status-desc">Link daxil edərək format seçib yükləyə bilərsiniz.</p>
+        <p class="status-desc">Link daxil edərək format seçib tətbiq daxilinə yükləyə bilərsiniz.</p>
     </div>
 
     <div class="platforms-title">Dəstəklənən Platformalar</div>
@@ -280,7 +332,18 @@
         <button class="platform-btn" onclick="checkAndOpenFormat()"><span style="color: #f3f4f6;">✖️</span> Twitter (X)</button>
     </div>
 
-    <!-- Format Seçim Pəncərəsi (Rəqəmlərlə MP3 / MP4) -->
+    <!-- New Folder Fayl Qovluğu Bölməsi -->
+    <div class="folder-section">
+        <div class="folder-header">
+            <span>📁 New Folder (Tətbiq İçi Yükləmələr)</span>
+            <span id="fileCount" style="font-size: 11px; color: #a1a1aa;">0 fayl</span>
+        </div>
+        <div id="fileContainer">
+            <div class="empty-folder">Hələ ki heç bir fayl yüklənməyib.</div>
+        </div>
+    </div>
+
+    <!-- Format Seçim Pəncərəsi (MP3 / MP4) -->
     <div id="formatModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -336,7 +399,6 @@
 
         function goToGoogle() { window.open('https://www.google.com', '_blank'); }
 
-        // Link yoxlanılır və rəqəmli format pəncərəsi açılır
         function checkAndOpenFormat() {
             const val = document.getElementById('mediaLink').value.trim();
             if(!val) {
@@ -350,11 +412,42 @@
             document.getElementById('formatModal').style.display = 'none';
         }
 
-        // Seçim edildikdən sonra işləyən funksiya
+        // Yalnız tətbiq daxilində işləyən yükləmə (telefona heç nə getmir)
+        let downloadedFiles = [];
+
         function triggerDownload(formatType) {
             const val = document.getElementById('mediaLink').value.trim();
             closeFormatModal();
-            alert(formatType + ' formatı seçildi. Yükləməyə başlandı!');
+
+            let fileName = val.length > 30 ? val.substring(0, 30) + '...' : val;
+            
+            downloadedFiles.push({ name: fileName, format: formatType, fullLink: val });
+            updateFolderUI();
+
+            document.getElementById('mediaLink').value = '';
+            alert(formatType + ' formatı uğurla "New Folder" daxilinə yığıldı!');
+        }
+
+        function updateFolderUI() {
+            const container = document.getElementById('fileContainer');
+            const countSpan = document.getElementById('fileCount');
+            
+            countSpan.innerText = downloadedFiles.length + ' fayl';
+
+            if(downloadedFiles.length === 0) {
+                container.innerHTML = '<div class="empty-folder">Hələ ki heç bir fayl yüklənməyib.</div>';
+                return;
+            }
+
+            let html = '<ul class="file-list">';
+            downloadedFiles.forEach((file, index) => {
+                html += `<li class="file-item" onclick="alert('Oxunur: ${file.fullLink}')" style="cursor:pointer;">
+                            <span>${index + 1}. ${file.name}</span>
+                            <span class="file-badge">${file.format}</span>
+                         </li>`;
+            });
+            html += '</ul>';
+            container.innerHTML = html;
         }
     </script>
 </body>
