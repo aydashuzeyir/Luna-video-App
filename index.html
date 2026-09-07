@@ -1,11 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="az">
 <head>
     <meta charset="UTF-8">
-    <title>Luna Media</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luna</title>
     <link rel="manifest" href="./manifest.json">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #09090b;
+            color: #ffffff;
+            padding: 16px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .title-area h1 {
+            color: #ec4899;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .title-area p {
+            color: #a1a1aa;
+            font-size: 13px;
+            margin-top: 2px;
+        }
+        .top-card {
+            background-color: #18181b;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .input-group {
+            display: flex;
+            gap: 8px;
+            background-color: #27272a;
+            border-radius: 12px;
+            padding: 6px 12px;
+            align-items: center;
+        }
+        .input-group input {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            width: 100%;
+        }
+        .input-group input::placeholder {
+            color: #71717a;
+        }
+        .input-group button {
+            background-color: #ec4899;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .status-box {
+            background-color: #18181b;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .status-title {
+            color: #ec4899;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .status-desc {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+        .platforms-title {
+            font-size: 14px;
+            color: #d4d4d8;
+            margin-bottom: 12px;
+        }
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .platform-btn {
+            background-color: #18181b;
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: left;
+        }
+        .platform-btn:active {
+            background-color: #27272a;
+        }
+    </style>
 </head>
 <body>
-    <h1>Luna Media Player</h1>
+
+    <div class="header">
+        <div class="title-area">
+            <h1>Luna</h1>
+            <p>Media Player & Google Girişi</p>
+        </div>
+    </div>
+
+    <div class="top-card">
+        <div class="input-group">
+            <input type="text" placeholder="Spotify / Media linki yapışdırın...">
+            <button>Aç</button>
+        </div>
+    </div>
+
+    <div class="status-box">
+        <div class="status-header">
+            <span class="status-title">🎵 Musiqi & Video Pleyeri</span>
+            <span style="color: #22c55e; font-size: 12px; font-weight: 600;">Hazır</span>
+        </div>
+        <p class="status-desc">Link daxil edərək musiqini dinləyə və yükləyə bilərsiniz.</p>
+    </div>
+
+    <div class="platforms-title">Dəstəklənən Platformalar</div>
+    <div class="platforms-grid">
+        <button class="platform-btn">🎧 Spotify</button>
+        <button class="platform-btn">📌 Pinterest</button>
+        <button class="platform-btn">💙 Facebook</button>
+        <button class="platform-btn">📷 Instagram</button>
+        <button class="platform-btn">🧵 Threads</button>
+        <button class="platform-btn">✖️ Twitter (X)</button>
+    </div>
+
 </body>
 </html>
