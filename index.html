@@ -685,18 +685,35 @@
     <script>
         function startPlayingLink() {
     const val = document.getElementById('mediaLink').value.trim();
-    if(!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
+    if (!val) { alert('Zəhmət olmasa link daxil edin!'); return; }
     document.getElementById('mediaLink').value = '';
 
-    let isVideo = val.includes('youtube.com') || val.includes('youtu.be') || val.match(/\.(mp4|webm|ogg|mov)$/i);
-    let mediaName = "YouTube / Media Linki";
+    let isSupported = val.includes('youtube.com') || val.includes('youtu.be') || 
+                      val.includes('spotify.com') || val.includes('instagram.com') || 
+                      val.includes('pinterest.com') || val.includes('facebook.com') || 
+                      val.includes('tiktok.com') || val.match(/\.(mp4|mp3|webm|ogg|mov)$/i);
     
-    if(!uploadsList.some(item => item.fullLink === val)) {
+    let mediaName = "Media Elementi";
+
+    if (!isSupported) {
+        alert('Bu link dəstəklənən şəbəkələrə aid deyil!');
+        return;
+    }
+    
+    if (!uploadsList.some(item => item.fullLink === val)) {
         uploadsList.unshift({ name: mediaName, fullLink: val });
-        foldersList[0].count++;
-        renderFolders();
+        if(typeof foldersList !== 'undefined' && foldersList[0]) {
+            foldersList[0].count++;
+            renderFolders();
+        }
         updateUI();
     }
+
+    if (typeof playFile === 'function') {
+        playFile(val, mediaName, true);
+    }
+}
+
 
     playFile(val, mediaName, isVideo);
 }
