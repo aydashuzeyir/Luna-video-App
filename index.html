@@ -34,59 +34,72 @@
             min-height: 100vh; 
             display: flex; 
             justify-content: center; 
-            padding: 16px; 
+            padding: 16px 16px 50px 16px; 
+            overflow-y: auto; 
             transition: background 0.4s, color 0.3s; 
         }
 
-        .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; z-index: 2; }
+        .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 14px; z-index: 2; }
 
-        header { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
         .brand-box { display: flex; align-items: center; gap: 12px; }
         
         .app-icon-preview { 
-            width: 44px; height: 44px; 
+            width: 42px; height: 42px; 
             border-radius: 12px; 
             background: var(--primary-gradient); 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             color: white; 
-            font-size: 20px; 
+            font-size: 18px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: 0.3s;
         }
 
-        .brand-info h1 { font-size: 19px; font-weight: 700; line-height: 1.1; }
+        .brand-info h1 { font-size: 18px; font-weight: 700; line-height: 1.1; }
         .brand-info span { font-size: 11px; color: var(--text-sub); }
 
         .header-actions { display: flex; gap: 8px; }
-        .top-icon-btn { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); color: var(--text-main); font-size: 15px; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .top-icon-btn { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); color: var(--text-main); font-size: 15px; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
         .top-icon-btn:active { transform: scale(0.9); }
 
-        .search-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .input-group { display: flex; align-items: center; gap: 10px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; }
+        .search-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .input-group { display: flex; align-items: center; gap: 10px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; }
         .input-group input { flex: 1; background: none; border: none; outline: none; color: var(--text-main); font-size: 14px; }
         .input-group input::placeholder { color: var(--text-sub); }
 
         .btn-row { display: flex; gap: 10px; }
-        .action-btn { flex: 1; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; transition: 0.2s; }
+        .action-btn { flex: 1; padding: 11px; border-radius: 12px; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; transition: 0.2s; }
         .action-btn.primary { background: var(--primary-gradient); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
         .action-btn.outline { background: var(--surface-hover); backdrop-filter: var(--backdrop-blur); color: var(--text-main); border: 1px solid var(--border); }
         .action-btn:active { transform: scale(0.96); }
 
-        .card-footer-links { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 500; color: var(--text-sub); padding: 0 4px; }
+        /* Yüklənmə statusu barı */
+        .loading-bar-container { display: none; flex-direction: column; gap: 4px; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); }
+        .loading-info { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); }
+        .progress-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+        .progress-fill { width: 0%; height: 100%; background: var(--primary-gradient); transition: width 0.3s; }
+
+        /* Mini Player Kartı */
+        .mini-player-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: none; flex-direction: column; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .player-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--primary); }
+        .video-wrapper { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; position: relative; }
+        .video-wrapper iframe { width: 100%; height: 100%; border: none; }
+
+        .card-footer-links { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 500; color: var(--text-sub); padding: 0 2px; }
         .card-footer-links span { cursor: pointer; display: flex; align-items: center; gap: 6px; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .stat-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .stat-icon-box { width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .stat-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .stat-icon-box { width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: center; font-size: 15px; }
         .stat-info span { font-size: 10px; font-weight: 600; color: var(--text-sub); text-transform: uppercase; }
         .stat-info p { font-size: 13px; font-weight: 700; color: var(--text-main); }
 
-        .section-header { font-size: 11px; font-weight: 700; color: var(--text-sub); letter-spacing: 0.5px; margin-top: 4px; padding: 0 4px; }
+        .section-header { font-size: 11px; font-weight: 700; color: var(--text-sub); letter-spacing: 0.5px; margin-top: 2px; padding: 0 4px; }
         
-        .platforms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .platform-btn { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: 16px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-main); cursor: pointer; font-size: 12px; font-weight: 500; transition: 0.2s; }
+        .platforms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding-bottom: 20px; }
+        .platform-btn { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: 16px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-main); cursor: pointer; font-size: 12px; font-weight: 500; transition: 0.2s; }
         .platform-btn:active { transform: scale(0.95); background: var(--surface-hover); }
 
         /* Modallar */
@@ -146,18 +159,40 @@
             <input type="text" id="mediaUrlInput" placeholder="Mahnı adı və ya YouTube linki...">
         </div>
         
+        <!-- Yüklənmə İndikatoru Barı -->
+        <div class="loading-bar-container" id="loadingBarContainer">
+            <div class="loading-info">
+                <span id="loadingStatusText">Yüklənir...</span>
+                <span id="loadingPercent">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
         <div class="btn-row">
-            <button class="action-btn primary" onclick="playClickSound(); openYouTubeFromInput()">
-                <i class="fa-solid fa-play"></i> YouTube-da Dinlə
+            <button class="action-btn primary" onclick="playClickSound(); playInMiniPlayer()">
+                <i class="fa-solid fa-play"></i> Mini Pleyerdə Aç
             </button>
-            <button class="action-btn outline" onclick="playClickSound(); saveToHistory()">
-                <i class="fa-solid fa-cloud-arrow-down" style="color: var(--primary);"></i> Yaddaş
+            <button class="action-btn outline" onclick="playClickSound(); simulateDownload()">
+                <i class="fa-solid fa-cloud-arrow-down" style="color: var(--primary);"></i> Yüklə & Yaddaş
             </button>
         </div>
 
         <div class="card-footer-links">
             <span onclick="playClickSound(); openGoogle()"><i class="fa-brands fa-google" style="color: #4285f4;"></i> Google Axtarış</span>
             <span onclick="playClickSound(); openHistoryModal()"><i class="fa-solid fa-clock-rotate-left"></i> Tarixçə (<span id="historyNum">0</span>)</span>
+        </div>
+    </div>
+
+    <!-- Mini Player Kartı -->
+    <div class="mini-player-card" id="miniPlayerCard">
+        <div class="player-header">
+            <span><i class="fa-solid fa-compact-disc fa-spin"></i> Mini Player</span>
+            <i class="fa-solid fa-xmark" style="cursor: pointer; font-size: 16px;" onclick="closeMiniPlayer()"></i>
+        </div>
+        <div class="video-wrapper" id="videoContainer">
+            <!-- Video bura yüklənəcək -->
         </div>
     </div>
 
@@ -178,11 +213,17 @@
         </div>
     </div>
 
-    <div class="section-header">SOSİAL PLATFORMALAR</div>
+    <div class="section-header">SOSİAL PLATFORMALAR & MUSİQİ</div>
 
     <div class="platforms-grid">
         <div class="platform-btn" onclick="playClickSound(); quickPlatform('YouTube')"><i class="fa-brands fa-youtube" style="font-size: 20px; color: #ef4444;"></i><span>YouTube</span></div>
         <div class="platform-btn" onclick="playClickSound(); quickPlatform('Spotify')"><i class="fa-brands fa-spotify" style="font-size: 20px; color: #22c55e;"></i><span>Spotify</span></div>
+        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Yandex')"><i class="fa-solid fa-music" style="font-size: 20px; color: #ffcc00;"></i><span>Yandex Müzik</span></div>
+        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Instagram')"><i class="fa-brands fa-instagram" style="font-size: 20px; color: #ec4899;"></i><span>Instagram</span></div>
+        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Facebook')"><i class="fa-brands fa-facebook" style="font-size: 20px; color: #3b82f6;"></i><span>Facebook</span></div>
+        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Twitter')"><i class="fa-brands fa-x-twitter" style="font-size: 20px; color: #ffffff;"></i><span>Twitter (X)</span></div>
+        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Threads')"><i class="fa-brands fa-threads" style="font-size: 20px; color: #cbd5e1;"></i><span>Threads</span></div>
+        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Pinterest')"><i class="fa-brands fa-pinterest" style="font-size: 20px; color: #ef4444;"></i><span>Pinterest</span></div>
         <div class="platform-btn" onclick="playClickSound(); quickPlatform('SoundCloud')"><i class="fa-solid fa-cloud" style="font-size: 20px; color: #f97316;"></i><span>SoundCloud</span></div>
     </div>
 </div>
@@ -308,31 +349,71 @@
         } catch(e) {}
     }
 
-    function openYouTube(query) {
-        if(!query) return;
-        let targetUrl = query.includes('youtu.be/') || query.includes('watch?v=') 
-            ? query 
-            : `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
-        window.open(targetUrl, '_blank');
+    function extractVideoID(url) {
+        let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        let match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
     }
 
-    function openYouTubeFromInput() {
+    function playInMiniPlayer() {
         const val = document.getElementById('mediaUrlInput').value.trim();
         if(!val) return;
-        openYouTube(val);
+
+        let videoId = extractVideoID(val);
+        const container = document.getElementById('videoContainer');
+        const playerCard = document.getElementById('miniPlayerCard');
+
+        if(videoId) {
+            container.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        } else {
+            container.innerHTML = `<iframe src="https://www.youtube.com/results?search_query=${encodeURIComponent(val)}" allow="autoplay"></iframe>`;
+        }
+
+        playerCard.style.display = 'flex';
+        playerCard.scrollIntoView({ behavior: 'smooth' });
     }
 
-    function saveToHistory() {
+    function closeMiniPlayer() {
+        document.getElementById('miniPlayerCard').style.display = 'none';
+        document.getElementById('videoContainer').innerHTML = '';
+    }
+
+    function simulateDownload() {
         const val = document.getElementById('mediaUrlInput').value.trim();
         if(!val) return;
-        
-        const now = new Date().toLocaleDateString('az-AZ') + ' ' + new Date().toLocaleTimeString('az-AZ', {hour: '2-digit', minute:'2-digit'});
-        historyItems.unshift({ title: val, date: now });
-        localStorage.setItem('luna_history', JSON.stringify(historyItems));
-        updateHistoryUI();
 
-        document.getElementById('mediaUrlInput').value = '';
-        openYouTube(val);
+        const barContainer = document.getElementById('loadingBarContainer');
+        const progressFill = document.getElementById('progressFill');
+        const percentText = document.getElementById('loadingPercent');
+        const statusText = document.getElementById('loadingStatusText');
+
+        barContainer.style.display = 'flex';
+        progressFill.style.width = '0%';
+        percentText.innerText = '0%';
+        statusText.innerText = 'Yüklənir...';
+
+        let progress = 0;
+        let interval = setInterval(() => {
+            progress += 15;
+            if(progress > 100) progress = 100;
+            progressFill.style.width = progress + '%';
+            percentText.innerText = progress + '%';
+
+            if(progress === 100) {
+                clearInterval(interval);
+                statusText.innerText = 'Yükləndi və yaddaşa yazıldı!';
+                
+                const now = new Date().toLocaleDateString('az-AZ') + ' ' + new Date().toLocaleTimeString('az-AZ', {hour: '2-digit', minute:'2-digit'});
+                historyItems.unshift({ title: val, date: now });
+                localStorage.setItem('luna_history', JSON.stringify(historyItems));
+                updateHistoryUI();
+
+                setTimeout(() => {
+                    barContainer.style.display = 'none';
+                    document.getElementById('mediaUrlInput').value = '';
+                }, 1500);
+            }
+        }, 200);
     }
 
     function updateHistoryUI() {
@@ -348,7 +429,7 @@
         } else {
             historyItems.forEach((item, index) => {
                 container.innerHTML += `
-                    <div class="download-item" onclick="playClickSound(); closeHistoryModal(); openYouTube('${item.title.replace(/'/g, "\\'")}')">
+                    <div class="download-item" onclick="playClickSound(); closeHistoryModal(); document.getElementById('mediaUrlInput').value = '${item.title.replace(/'/g, "\\'")}'; playInMiniPlayer();">
                         <div class="download-info">
                             <span class="download-title">${item.title}</span>
                             <span class="download-date">${item.date}</span>
@@ -374,9 +455,17 @@
         const val = document.getElementById('mediaUrlInput').value.trim();
         let query = val ? ` ${val}` : '';
         let url = 'https://www.youtube.com';
+
         if(platform === 'Spotify') url = `https://open.spotify.com/search${query}`;
+        else if(platform === 'Yandex') url = `https://music.yandex.ru/search?text=${encodeURIComponent(val || 'music')}`;
+        else if(platform === 'Instagram') url = `https://www.instagram.com`;
+        else if(platform === 'Facebook') url = `https://www.facebook.com`;
+        else if(platform === 'Twitter') url = `https://twitter.com/search?q=${encodeURIComponent(val || '')}`;
+        else if(platform === 'Threads') url = `https://www.threads.net`;
+        else if(platform === 'Pinterest') url = `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(val || 'ideas')}`;
         else if(platform === 'SoundCloud') url = `https://soundcloud.com/search?q=${encodeURIComponent(val || 'music')}`;
         else url = `https://www.youtube.com/results?search_query=${encodeURIComponent(val || 'trending')}`;
+
         window.open(url, '_blank');
     }
 
