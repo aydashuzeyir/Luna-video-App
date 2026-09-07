@@ -201,7 +201,7 @@
             <a href="https://music.youtube.com" target="_blank" class="social-btn"><i class="fa-solid fa-compact-disc" style="color: #ef4444;"></i> YT Music</a>
             <a href="https://open.spotify.com" target="_blank" class="social-btn"><i class="fa-brands fa-spotify" style="color: #22c55e;"></i> Spotify</a>
             <a href="https://music.yandex.ru" target="_blank" class="social-btn"><i class="fa-solid fa-radio" style="color: #eab308;"></i> Yandex</a>
-            <a href="https://soundcloud.com" target="_blank" class="social-btn"><i class="fa-brands fa-soundcloud" style="color: #f97316;"></i> SoundCloud</a>
+            <a href="https://www.threads.net" target="_blank" class="social-btn"><i class="fa-brands fa-threads" style="color: #f8fafc;"></i> Threads</a>
             <a href="https://www.instagram.com" target="_blank" class="social-btn"><i class="fa-brands fa-instagram" style="color: #ec4899;"></i> Instagram</a>
             <a href="https://www.tiktok.com" target="_blank" class="social-btn"><i class="fa-brands fa-tiktok" style="color: #38bdf8;"></i> TikTok</a>
             <a href="https://telegram.org" target="_blank" class="social-btn"><i class="fa-brands fa-telegram" style="color: #0ea5e9;"></i> Telegram</a>
@@ -435,7 +435,7 @@
                 title.textContent = "Tarixçə";
                 renderListContent(content, historyData, type, false);
             } else if (type === 'downloads') {
-                title.textContent = "Yüklənmiş Fayllər (Offline)";
+                title.textContent = "Yüklənmiş Fayllar (Offline)";
                 let tx = db.transaction("downloads", "readonly");
                 let store = tx.objectStore("downloads");
                 let req = store.getAll();
