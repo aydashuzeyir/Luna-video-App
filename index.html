@@ -37,7 +37,7 @@
         .top-icon-btn:active { background: var(--surface-hover); }
 
         /* Search & Input Card */
-        .search-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); transition: background 0.3s, border 0.3s; }
+        .search-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
         .input-group { display: flex; align-items: center; background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border); border-radius: 14px; padding: 6px 12px; gap: 10px; }
         .input-group input { flex: 1; background: none; border: none; outline: none; color: var(--text-main); font-size: 13px; padding: 8px 0; }
         .input-group input::placeholder { color: var(--text-sub); }
@@ -58,25 +58,30 @@
         .stat-info h4 { font-size: 12px; font-weight: 600; color: var(--text-main); }
         .stat-info span { font-size: 10px; color: var(--text-sub); }
 
-        /* Qovluqlarım Bölməsi */
+        /* Player Box */
+        .player-box { background: var(--surface); border: 1px solid var(--primary); border-radius: 16px; padding: 12px; display: none; flex-direction: column; gap: 8px; }
+        .player-box iframe, .player-box video, .player-box audio { width: 100%; height: 210px; border-radius: 12px; border: none; background: #000; }
+        .player-box audio { height: 50px; }
+        .player-controls { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--primary); font-weight: 600; }
+        .player-controls span { cursor: pointer; display: flex; align-items: center; gap: 4px; }
+
+        /* Qovluqlarım & Sosial */
         .section-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
         .add-folder-btn { color: var(--primary); cursor: pointer; font-size: 12px; font-weight: 600; text-transform: none; display: flex; align-items: center; gap: 4px; }
         
         .folders-container { display: flex; flex-direction: column; gap: 8px; }
-        .folder-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; }
-        .folder-box:active { background: var(--surface-hover); }
+        .folder-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
         .folder-left { display: flex; align-items: center; gap: 12px; }
         .folder-icon { font-size: 20px; color: #fbbf24; }
         .folder-info h3 { font-size: 13px; font-weight: 600; color: var(--text-main); }
         .folder-info p { font-size: 10px; color: var(--text-sub); margin-top: 2px; }
 
-        /* Sosial Şəbəkələr Bölməsi */
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .social-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; text-decoration: none; color: var(--text-main); font-size: 11px; font-weight: 600; transition: 0.2s; }
-        .social-btn:active { background: var(--surface-hover); transform: scale(0.96); }
-        .social-btn i { font-size: 18px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        .social-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; color: var(--text-main); font-size: 11px; font-weight: 600; transition: 0.2s; }
+        .social-btn:active { background: var(--surface-hover); transform: scale(0.95); }
+        .social-btn i { font-size: 20px; }
 
-        /* Modal Pəncərələr */
+        /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 100; }
         .modal-card { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 380px; border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 14px; max-height: 80vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: 700; }
@@ -90,19 +95,13 @@
         .list-item button { background: var(--primary); color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 10px; font-weight: 600; }
         .list-item button.delete-btn { background: #ef4444; }
 
-        /* Ayarlar paneli */
+        /* Ayarlar */
         .setting-group { display: flex; flex-direction: column; gap: 8px; }
         .setting-group label { font-size: 12px; font-weight: 600; color: var(--text-sub); }
         .setting-select, .setting-btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
         .setting-select select { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: var(--text-main); padding: 8px; border-radius: 10px; outline: none; font-size: 12px; }
-        .theme-circle { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+        .theme-circle { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
         .theme-circle.active { border-color: white; transform: scale(1.15); }
-
-        /* Player Box */
-        .player-box { background: var(--surface); border: 1px solid #ef4444; border-radius: 16px; padding: 12px; display: none; flex-direction: column; gap: 8px; }
-        .player-box iframe { width: 100%; height: 210px; border-radius: 12px; border: none; }
-        .player-controls { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #ef4444; font-weight: 600; }
-        .player-controls span { cursor: pointer; display: flex; align-items: center; gap: 4px; }
     </style>
 </head>
 <body>
@@ -111,7 +110,7 @@
         <!-- Header -->
         <header>
             <div class="brand-box">
-                <i class="fa-solid fa-fire brand-logo" style="color: #f43f5e;"></i>
+                <i class="fa-solid fa-fire brand-logo"></i>
                 <div class="brand-info">
                     <h1>Luna</h1>
                     <span>Ultimate Media & Sound Center</span>
@@ -127,15 +126,16 @@
         <div class="search-card">
             <div class="input-group">
                 <i class="fa-brands fa-youtube" style="color: #ef4444;"></i>
-                <input type="text" id="mediaUrlInput" placeholder="YouTube mahnı adı və ya linki yazın...">
+                <input type="text" id="mediaUrlInput" placeholder="Media linki yazın (və ya aşağıdan fayl seçin)...">
             </div>
             <div class="btn-row">
                 <button class="action-btn primary" onclick="processMedia('play')">
-                    <i class="fa-solid fa-circle-play"></i> YouTube-da Dinlə
+                    <i class="fa-solid fa-circle-play"></i> Onlayn Dinlə
                 </button>
-                <button class="action-btn outline" onclick="processMedia('download')">
-                    <i class="fa-solid fa-cloud-arrow-down" style="color: #38bdf8;"></i> Fayl Yüklə
+                <button class="action-btn outline" onclick="document.getElementById('localFileInput').click()">
+                    <i class="fa-solid fa-cloud-arrow-down" style="color: #38bdf8;"></i> Offline Yüklə
                 </button>
+                <input type="file" id="localFileInput" style="display:none" accept="audio/*,video/*" onchange="handleLocalFileDownload(this)">
             </div>
             <div class="card-footer-links">
                 <span onclick="openGoogleSearch()"><i class="fa-brands fa-google" style="color: #ea4335;"></i> Google</span>
@@ -143,7 +143,7 @@
             </div>
         </div>
 
-        <!-- 4 Stats Cards -->
+        <!-- Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card" onclick="openModal('history')">
                 <div class="stat-icon-box" style="color: #38bdf8;"><i class="fa-solid fa-clock-rotate-left"></i></div>
@@ -169,32 +169,32 @@
             <div class="stat-card" onclick="openModal('downloads')">
                 <div class="stat-icon-box" style="color: #34d399;"><i class="fa-solid fa-download"></i></div>
                 <div class="stat-info">
-                    <h4>Yüklənənlər</h4>
+                    <h4>Yüklənənlər (Offline)</h4>
                     <span id="downloadCount">0 fayl</span>
                 </div>
             </div>
         </div>
 
-        <!-- Player Box -->
+        <!-- Universal Media Player Box -->
         <div class="player-box" id="playerBox">
             <div class="player-controls">
-                <span><i class="fa-brands fa-youtube"></i> YouTube Player</span>
+                <span id="playerTitleLabel"><i class="fa-solid fa-play"></i> Media Pleyer</span>
                 <div style="display: flex; gap: 10px;">
                     <span onclick="toggleFullScreen()" title="Tam Ekran"><i class="fa-solid fa-expand"></i> Tam Ekran</span>
                     <i class="fa-solid fa-xmark" style="cursor:pointer; font-size: 14px;" onclick="closePlayer()"></i>
                 </div>
             </div>
-            <iframe id="youtubePlayer" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div id="mediaContainerTarget"></div>
         </div>
 
-        <!-- Qovluqlarım Bölməsi -->
+        <!-- Qovluqlarım -->
         <div class="section-header">
             <span>Qovluqlarım</span>
             <span class="add-folder-btn" onclick="createNewFolder()"><i class="fa-solid fa-folder-plus"></i> Yeni Qovluq</span>
         </div>
         <div class="folders-container" id="foldersListContainer"></div>
 
-        <!-- Sosial Şəbəkələr Bölməsi -->
+        <!-- Sosial Şəbəkələr -->
         <div class="section-header">Sosial Şəbəkələr & Platformalar</div>
         <div class="social-grid">
             <a href="https://www.youtube.com" target="_blank" class="social-btn"><i class="fa-brands fa-youtube" style="color: #ef4444;"></i> YouTube</a>
@@ -209,7 +209,7 @@
         </div>
     </div>
 
-    <!-- Universal Modal Pəncərəsi -->
+    <!-- Modal -->
     <div class="modal-overlay" id="universalModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -220,16 +220,15 @@
         </div>
     </div>
 
-    <!-- Ayarlar Paneli Modalı -->
+    <!-- Ayarlar -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card">
             <div class="modal-header">
                 <span>Tənzimləmələr</span>
                 <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closeSettings()"></i>
             </div>
-            
             <div class="setting-group">
-                <label>Şrift Seçimi (Fontlar)</label>
+                <label>Şrift Seçimi</label>
                 <div class="setting-select">
                     <select id="fontSelector" onchange="changeFont(this.value)">
                         <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
@@ -238,50 +237,54 @@
                         <option value="'Outfit', sans-serif">Outfit</option>
                         <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
                         <option value="'Rubik', sans-serif">Rubik</option>
-                        <option value="'Montserrat', sans-serif">Montserrat</option>
-                        <option value="'Cairo', sans-serif">Cairo</option>
                     </select>
                 </div>
             </div>
-
             <div class="setting-group">
-                <label>Mövzular (Bol Temalar və Rənglər)</label>
+                <label>Mövzular</label>
                 <div class="setting-btn-row">
-                    <div class="theme-circle active" style="background: #0b0c10;" onclick="changeTheme('#0b0c10', '#141620', this)" title="Qara / Klassik"></div>
-                    <div class="theme-circle" style="background: #0f172a;" onclick="changeTheme('#0f172a', '#1e293b', this)" title="Göy / Tünd"></div>
-                    <div class="theme-circle" style="background: #18181b;" onclick="changeTheme('#18181b', '#27272a', this)" title="Antrasit"></div>
-                    <div class="theme-circle" style="background: #2e1065;" onclick="changeTheme('#1e1b4b', '#312e81', this)" title="Bənövşəyi"></div>
-                    <div class="theme-circle" style="background: #064e3b;" onclick="changeTheme('#022c22', '#065f46', this)" title="Yaşıl / Təbiət"></div>
-                    <div class="theme-circle" style="background: #450a0a;" onclick="changeTheme('#2b0909', '#5c1d1d', this)" title="Qırmızı / Tünd"></div>
-                    <div class="theme-circle" style="background: #3b2f00;" onclick="changeTheme('#1c1700', '#4d3d00', this)" title="Qızılı / Sarılq"></div>
+                    <div class="theme-circle active" style="background: #0b0c10;" onclick="changeTheme('#0b0c10', '#141620', this)"></div>
+                    <div class="theme-circle" style="background: #0f172a;" onclick="changeTheme('#0f172a', '#1e293b', this)"></div>
+                    <div class="theme-circle" style="background: #18181b;" onclick="changeTheme('#18181b', '#27272a', this)"></div>
+                    <div class="theme-circle" style="background: #2e1065;" onclick="changeTheme('#1e1b4b', '#312e81', this)"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        let db;
+        const dbReq = indexedDB.open("LunaOfflineDB", 1);
+        
+        dbReq.onupgradeneeded = function(e) {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains("downloads")) {
+                db.createObjectStore("downloads", { keyPath: "id", autoIncrement: true });
+            }
+        };
+
+        dbReq.onsuccess = function(e) {
+            db = e.target.result;
+            updateDownloadCountFromDB();
+        };
+
         let historyData = JSON.parse(localStorage.getItem('luna_hist') || '[]');
-        let downloadData = JSON.parse(localStorage.getItem('luna_down') || '[]');
         let pendingData = JSON.parse(localStorage.getItem('luna_pend') || '[]');
         let watchLaterData = JSON.parse(localStorage.getItem('luna_watch') || '[]');
         let foldersData = JSON.parse(localStorage.getItem('luna_folders') || '[{"name": "Əsas Qovluq", "desc": "Ümumi fayllar"}]');
-        let currentModalType = '';
 
         window.onload = function() {
             updateCounters();
             renderFolders();
-            
             let savedFont = localStorage.getItem('luna_font');
             if(savedFont) {
                 document.documentElement.style.setProperty('--font-family', savedFont);
                 document.getElementById('fontSelector').value = savedFont;
             }
-
             let savedBg = localStorage.getItem('luna_bg');
             let savedSurface = localStorage.getItem('luna_surface');
             if(savedBg && savedSurface) {
-                document.documentElement.style.setProperty('--bg', savedBg);
-                document.documentElement.style.setProperty('--surface', savedSurface);
+                changeTheme(savedBg, savedSurface, null);
             }
         };
 
@@ -289,7 +292,17 @@
             document.getElementById('historyCount').textContent = historyData.length + " qeyd";
             document.getElementById('pendingCount').textContent = pendingData.length + " qeyd";
             document.getElementById('watchLaterCount').textContent = watchLaterData.length + " qeyd";
-            document.getElementById('downloadCount').textContent = downloadData.length + " fayl";
+            updateDownloadCountFromDB();
+        }
+
+        function updateDownloadCountFromDB() {
+            if (!db) return;
+            let tx = db.transaction("downloads", "readonly");
+            let store = tx.objectStore("downloads");
+            let countReq = store.count();
+            countReq.onsuccess = function() {
+                document.getElementById('downloadCount').textContent = countReq.result + " fayl";
+            };
         }
 
         function createNewFolder() {
@@ -321,197 +334,217 @@
             });
         }
 
+        function handleLocalFileDownload(input) {
+            let file = input.files[0];
+            if (!file) return;
+
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let blobData = e.target.result;
+                let fileObj = {
+                    title: file.name,
+                    data: blobData,
+                    type: file.type,
+                    size: (file.size / (1024*1024)).toFixed(1) + " MB",
+                    date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                };
+
+                let tx = db.transaction("downloads", "readwrite");
+                let store = tx.objectStore("downloads");
+                store.add(fileObj);
+
+                tx.oncomplete = function() {
+                    updateDownloadCountFromDB();
+                    alert("Fayl tamamilə uğurla yükləndi! İndi interneti söndürüb 'Yüklənənlər' bölməsindən dinləyə bilərsən.");
+                    input.value = '';
+                };
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
         function processMedia(action) {
             let input = document.getElementById('mediaUrlInput');
             let val = input.value.trim();
             if (!val) {
-                alert("Zəhmət olmasa mahnı adı və ya link daxil edin!");
+                alert("Zəhmət olmasa link daxil edin!");
                 return;
             }
 
             if (action === 'play') {
                 historyData.unshift({ title: val, query: val });
                 localStorage.setItem('luna_hist', JSON.stringify(historyData));
-                
-                watchLaterData.unshift({ title: val, query: val });
-                localStorage.setItem('luna_watch', JSON.stringify(watchLaterData));
-
                 updateCounters();
+                playQuery(val);
+                input.value = '';
+            }
+        }
 
-                let player = document.getElementById('playerBox');
-                let ytFrame = document.getElementById('youtubePlayer');
-                
-                let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-                let match = val.match(regExp);
+        function playQuery(query, directBlob = null, fileType = '') {
+            closeModal();
+            let player = document.getElementById('playerBox');
+            let container = document.getElementById('mediaContainerTarget');
+            player.style.display = 'flex';
+            container.innerHTML = '';
 
-                if (match && match[2].length === 11) {
-                    player.style.display = 'flex';
-                    ytFrame.src = `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
+            if (directBlob) {
+                let blob = new Blob([directBlob], { type: fileType || 'audio/mp3' });
+                let blobUrl = URL.createObjectURL(blob);
+
+                if (fileType.includes('video') || fileType === '') {
+                    let video = document.createElement('video');
+                    video.src = blobUrl;
+                    video.controls = true;
+                    video.autoplay = true;
+                    video.playsInline = true;
+                    container.appendChild(video);
                 } else {
-                    window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(val)}`, '_blank');
+                    let audio = document.createElement('audio');
+                    audio.src = blobUrl;
+                    audio.controls = true;
+                    audio.autoplay = true;
+                    container.appendChild(audio);
                 }
-                input.value = '';
-            } else if (action === 'download') {
-                // Peşəkar Yükləmə Meneceri məntiqi
-                let randomSize = (Math.random() * 15 + 3).toFixed(1) + " MB";
-                let currentDate = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                
-                downloadData.unshift({ 
-                    title: val, 
-                    size: randomSize, 
-                    date: currentDate, 
-                    status: 'Tamamlandı' 
-                });
-                
-                localStorage.setItem('luna_down', JSON.stringify(downloadData));
-                updateCounters();
-                alert("Fayl uğurla endirildi və Yüklənənlərə əlavə olundu!");
-                input.value = '';
+                return;
+            }
+
+            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            let match = query.match(regExp);
+
+            if (match && match[2].length === 11) {
+                let iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                iframe.setAttribute('allowfullscreen', 'true');
+                container.appendChild(iframe);
+            } else {
+                let iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}&autoplay=1`;
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                iframe.setAttribute('allowfullscreen', 'true');
+                container.appendChild(iframe);
             }
         }
 
         function openModal(type) {
-            currentModalType = type;
             let modal = document.getElementById('universalModal');
             let title = document.getElementById('modalTitle');
             let content = document.getElementById('modalContentList');
-            
             modal.style.display = 'flex';
-            let data = [];
             
             if (type === 'history') {
                 title.textContent = "Tarixçə";
-                data = historyData;
+                renderListContent(content, historyData, type, false);
             } else if (type === 'downloads') {
-                title.textContent = "Yüklənmiş Fayllar (Manager)";
-                data = downloadData;
+                title.textContent = "Yüklənmiş Fayllər (Offline)";
+                let tx = db.transaction("downloads", "readonly");
+                let store = tx.objectStore("downloads");
+                let req = store.getAll();
+                req.onsuccess = function() {
+                    renderListContent(content, req.result, type, true);
+                };
             } else if (type === 'pending') {
-                title.textContent = "Gözlənilən Fayllar";
-                data = pendingData;
+                title.textContent = "Gözlənilən";
+                renderListContent(content, pendingData, type, false);
             } else if (type === 'watchlater') {
-                title.textContent = "Sonra İzlə Siyahısı";
-                data = watchLaterData;
+                title.textContent = "Sonra İzlə";
+                renderListContent(content, watchLaterData, type, false);
             }
+        }
 
-            if (data.length === 0) {
-                content.innerHTML = `<div style="text-align:center; color: var(--text-sub); padding: 20px; font-size:12px;">Heç bir məlumat yoxdur</div>`;
+        function renderListContent(container, data, type, isIndexedDB) {
+            if (!data || data.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color: var(--text-sub); padding: 20px; font-size:12px;">Məlumat yoxdur</div>`;
                 return;
             }
 
-            content.innerHTML = '';
+            container.innerHTML = '';
             data.forEach((item, index) => {
                 let div = document.createElement('div');
                 div.className = 'list-item';
                 
-                if (type === 'downloads') {
-                    // Peşəkar Görünüş Yüklənənlər üçün
-                    div.innerHTML = `
-                        <div class="list-item-info">
-                            <span class="list-item-title"><i class="fa-solid fa-file-audio" style="color:#34d399;"></i> ${item.title}</span>
-                            <span class="list-item-meta"><span>${item.size || '4.5 MB'}</span> • <span style="color:#34d399;">${item.status || 'Tamamlandı'}</span></span>
-                        </div>
-                        <div class="list-item-actions">
-                            <button onclick="playQuery('${item.title}')">Aç</button>
-                            <button class="delete-btn" onclick="deleteItem('${type}', ${index})"><img src="" style="display:none"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    `;
-                } else {
-                    div.innerHTML = `
-                        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">${item.title}</span>
-                        <div class="list-item-actions">
-                            <button onclick="playQuery('${item.title}')">Aç</button>
-                            <button class="delete-btn" onclick="deleteItem('${type}', ${index})"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    `;
-                }
-                content.appendChild(div);
+                let playAction = isIndexedDB ? `playFromDB(${item.id})` : `playQuery('${item.title}')`;
+                let deleteAction = isIndexedDB ? `deleteFromDB(${item.id})` : `deleteItem('${type}', ${index})`;
+
+                div.innerHTML = `
+                    <div class="list-item-info">
+                        <span class="list-item-title"><i class="fa-solid fa-file-audio" style="color:#34d399;"></i> ${item.title}</span>
+                        <span class="list-item-meta"><span>${item.size || ''}</span></span>
+                    </div>
+                    <div class="list-item-actions">
+                        <button onclick="${playAction}">Dinlə</button>
+                        <button class="delete-btn" onclick="${deleteAction}"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                container.appendChild(div);
             });
         }
 
+        function playFromDB(id) {
+            closeModal();
+            let tx = db.transaction("downloads", "readonly");
+            let store = tx.objectStore("downloads");
+            let req = store.get(id);
+            req.onsuccess = function() {
+                let record = req.result;
+                if (record) {
+                    playQuery(record.title, record.data, record.type);
+                }
+            };
+        }
+
+        function deleteFromDB(id) {
+            let tx = db.transaction("downloads", "readwrite");
+            let store = tx.objectStore("downloads");
+            store.delete(id);
+            tx.oncomplete = function() {
+                updateDownloadCountFromDB();
+                openModal('downloads');
+            };
+        }
+
         function deleteItem(type, index) {
-            if (type === 'history') {
-                historyData.splice(index, 1);
-                localStorage.setItem('luna_hist', JSON.stringify(historyData));
-            } else if (type === 'downloads') {
-                downloadData.splice(index, 1);
-                localStorage.setItem('luna_down', JSON.stringify(downloadData));
-            } else if (type === 'pending') {
-                pendingData.splice(index, 1);
-                localStorage.setItem('luna_pend', JSON.stringify(pendingData));
-            } else if (type === 'watchlater') {
-                watchLaterData.splice(index, 1);
-                localStorage.setItem('luna_watch', JSON.stringify(watchLaterData));
-            }
+            if (type === 'history') { historyData.splice(index, 1); localStorage.setItem('luna_hist', JSON.stringify(historyData)); }
             updateCounters();
             openModal(type);
         }
 
-        function closeModal() {
-            document.getElementById('universalModal').style.display = 'none';
-        }
-
-        function openSettings() {
-            document.getElementById('settingsModal').style.display = 'flex';
-        }
-
-        function closeSettings() {
-            document.getElementById('settingsModal').style.display = 'none';
-        }
+        function closeModal() { document.getElementById('universalModal').style.display = 'none'; }
+        function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
+        function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
 
         function changeFont(fontVal) {
             document.documentElement.style.setProperty('--font-family', fontVal);
             localStorage.setItem('luna_font', fontVal);
         }
 
-        function changeTheme(bgColor, surfaceColor, element) {
-            document.documentElement.style.setProperty('--bg', bgColor);
-            document.documentElement.style.setProperty('--surface', surfaceColor);
-            localStorage.setItem('luna_bg', bgColor);
-            localStorage.setItem('luna_surface', surfaceColor);
-
-            document.querySelectorAll('.theme-circle').forEach(el => el.classList.remove('active'));
-            if(element) element.classList.add('active');
-        }
-
-        function playQuery(query) {
-            closeModal();
-            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            let match = query.match(regExp);
-
-            if (match && match[2].length === 11) {
-                let player = document.getElementById('playerBox');
-                let ytFrame = document.getElementById('youtubePlayer');
-                player.style.display = 'flex';
-                ytFrame.src = `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
-            } else {
-                window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
+        function changeTheme(bg, surface, el) {
+            document.documentElement.style.setProperty('--bg', bg);
+            document.documentElement.style.setProperty('--surface', surface);
+            localStorage.setItem('luna_bg', bg);
+            localStorage.setItem('luna_surface', surface);
+            if(el) {
+                document.querySelectorAll('.theme-circle').forEach(c => c.classList.remove('active'));
+                el.classList.add('active');
             }
         }
 
         function toggleFullScreen() {
-            let iframe = document.getElementById('youtubePlayer');
-            if (iframe.requestFullscreen) {
-                iframe.requestFullscreen();
-            } else if (iframe.webkitRequestFullscreen) {
-                iframe.webkitRequestFullscreen();
-            } else if (iframe.msRequestFullscreen) {
-                iframe.msRequestFullscreen();
+            let container = document.getElementById('mediaContainerTarget');
+            let targetEl = container.querySelector('iframe, video, audio');
+            if (targetEl) {
+                if (targetEl.requestFullscreen) targetEl.requestFullscreen();
+                else if (targetEl.webkitRequestFullscreen) targetEl.webkitRequestFullscreen();
             }
         }
 
         function closePlayer() {
-            let ytFrame = document.getElementById('youtubePlayer');
-            ytFrame.src = "";
+            document.getElementById('mediaContainerTarget').innerHTML = '';
             document.getElementById('playerBox').style.display = 'none';
         }
 
         function openGoogleSearch() {
             let val = document.getElementById('mediaUrlInput').value.trim();
-            if(val) {
-                window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank');
-            } else {
-                window.open('https://www.google.com', '_blank');
-            }
+            window.open(val ? 'https://www.google.com/search?q=' + encodeURIComponent(val) : 'https://www.google.com', '_blank');
         }
     </script>
 </body>
