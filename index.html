@@ -263,7 +263,7 @@
             transition: width 0.2s linear;
         }
 
-        /* In-App Music Player Card (Hidden until played) */
+        /* In-App Music Player Card */
         .in-app-player-card {
             background: var(--surface);
             border: 1px solid #22c55e;
@@ -649,12 +649,12 @@
                 <input type="text" id="mediaUrlInput" placeholder="Musiqi və ya Spotify/YouTube linki...">
             </div>
 
-            <!-- Format Selector (Video / MP3) -->
+            <!-- Format Selector -->
             <div class="format-row">
-                <div class="format-option active" id="optVideo" onclick="setFormat('video')">
+                <div class="format-option" id="optVideo" onclick="setFormat('video')">
                     <i class="fa-solid fa-video"></i> Video (MP4)
                 </div>
-                <div class="format-option" id="optMp3" onclick="setFormat('mp3')">
+                <div class="format-option active" id="optMp3" onclick="setFormat('mp3')">
                     <i class="fa-solid fa-music"></i> Audio (MP3)
                 </div>
             </div>
@@ -685,7 +685,7 @@
             </div>
         </div>
 
-        <!-- In-App Music Player (Appears when played) -->
+        <!-- In-App Music Player -->
         <div class="in-app-player-card" id="inAppPlayerCard">
             <div class="player-header">
                 <span><i class="fa-solid fa-headphones-simple"></i> Saytda İfa Olunur</span>
@@ -901,7 +901,7 @@
 
             progressCard.style.display = 'flex';
             let progress = 0;
-            let totalSeconds = 3; // 3 saniyəlik sayğac simulyasiyası
+            let totalSeconds = 3;
             let intervalTime = 100;
             let increment = 100 / (totalSeconds * (1000 / intervalTime));
 
@@ -916,7 +916,6 @@
                     percentText.textContent = `100%`;
                     progressFill.style.width = `100%`;
 
-                    // Saytın içindəki daxili pleyerdə səsləndirməni başlat
                     playInAppAudio();
 
                     setTimeout(() => {
@@ -938,7 +937,6 @@
             const playerCard = document.getElementById('inAppPlayerCard');
             const audioPlayer = document.getElementById('siteAudioPlayer');
             
-            // İşlək test audio axını (Spotify və ya digər musiqiləri saytda oxutmaq üçün)
             audioPlayer.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
             playerCard.style.display = 'flex';
             audioPlayer.play().catch(e => console.log("Avtomatik oxutma bloku:", e));
