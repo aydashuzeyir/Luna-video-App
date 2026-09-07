@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luna - Ultimate Media & Sound Center</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -22,7 +22,7 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 16px 12px; }
+        body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 16px 12px; transition: background 0.3s; }
         .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; }
 
         /* Header */
@@ -37,7 +37,7 @@
         .top-icon-btn:active { background: var(--surface-hover); }
 
         /* Search & Input Card */
-        .search-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .search-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); transition: background 0.3s, border 0.3s; }
         .input-group { display: flex; align-items: center; background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border); border-radius: 14px; padding: 6px 12px; gap: 10px; }
         .input-group input { flex: 1; background: none; border: none; outline: none; color: var(--text-main); font-size: 13px; padding: 8px 0; }
         .input-group input::placeholder { color: var(--text-sub); }
@@ -72,9 +72,9 @@
 
         /* Sosial Şəbəkələr Bölməsi */
         .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .social-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; text-decoration: none; color: var(--text-main); font-size: 11px; font-weight: 500; transition: 0.2s; }
+        .social-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; text-decoration: none; color: var(--text-main); font-size: 11px; font-weight: 600; transition: 0.2s; }
         .social-btn:active { background: var(--surface-hover); transform: scale(0.96); }
-        .social-btn i { font-size: 16px; }
+        .social-btn i { font-size: 18px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
 
         /* Modal Pəncərələr */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 100; }
@@ -85,16 +85,16 @@
         .list-item button { background: var(--primary); color: white; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 10px; }
 
         /* Ayarlar paneli */
-        .setting-group { display: flex; flex-direction: column; gap: 6px; }
+        .setting-group { display: flex; flex-direction: column; gap: 8px; }
         .setting-group label { font-size: 12px; font-weight: 600; color: var(--text-sub); }
-        .setting-select, .setting-btn-row { display: flex; gap: 8px; }
+        .setting-select, .setting-btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
         .setting-select select { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: var(--text-main); padding: 8px; border-radius: 10px; outline: none; font-size: 12px; }
-        .theme-circle { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
-        .theme-circle.active { border-color: white; }
+        .theme-circle { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+        .theme-circle.active { border-color: white; transform: scale(1.1); }
 
-        /* Player Box */
-        .player-box { background: var(--surface); border: 1px solid #22c55e; border-radius: 16px; padding: 12px; display: none; flex-direction: column; gap: 8px; }
-        audio { width: 100%; height: 35px; outline: none; }
+        /* Player Box (YouTube Frame üçün) */
+        .player-box { background: var(--surface); border: 1px solid #ef4444; border-radius: 16px; padding: 12px; display: none; flex-direction: column; gap: 8px; }
+        .player-box iframe { width: 100%; height: 200px; border-radius: 12px; border: none; }
     </style>
 </head>
 <body>
@@ -118,12 +118,12 @@
         <!-- Search / Input Card -->
         <div class="search-card">
             <div class="input-group">
-                <i class="fa-solid fa-link" style="color: var(--text-sub);"></i>
-                <input type="text" id="mediaUrlInput" placeholder="YouTube linki və ya səs ünvanı...">
+                <i class="fa-brands fa-youtube" style="color: #ef4444;"></i>
+                <input type="text" id="mediaUrlInput" placeholder="YouTube mahnı adı və ya linki yazın...">
             </div>
             <div class="btn-row">
                 <button class="action-btn primary" onclick="processMedia('play')">
-                    <i class="fa-solid fa-play"></i> Dinlə / İzlə
+                    <i class="fa-solid fa-play"></i> YouTube-da Dinlə
                 </button>
                 <button class="action-btn outline" onclick="processMedia('download')">
                     <i class="fa-solid fa-cloud-arrow-down" style="color: #38bdf8;"></i> Fayl Yüklə
@@ -167,13 +167,13 @@
             </div>
         </div>
 
-        <!-- Player Box -->
+        <!-- Player Box (YouTube Oynadıcı) -->
         <div class="player-box" id="playerBox">
-            <div style="display: flex; justify-content: space-between; font-size: 11px; color: #22c55e; font-weight: 600;">
-                <span><i class="fa-solid fa-headphones"></i> Canlı Dinləmə</span>
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: #ef4444; font-weight: 600;">
+                <span><i class="fa-brands fa-youtube"></i> YouTube Player</span>
                 <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="closePlayer()"></i>
             </div>
-            <audio id="audioPlayer" controls autoplay></audio>
+            <iframe id="youtubePlayer" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
 
         <!-- Qovluqlarım Bölməsi -->
@@ -193,7 +193,7 @@
             <a href="https://www.instagram.com" target="_blank" class="social-btn"><i class="fa-brands fa-instagram" style="color: #ec4899;"></i> Instagram</a>
             <a href="https://www.facebook.com" target="_blank" class="social-btn"><i class="fa-brands fa-facebook" style="color: #3b82f6;"></i> Facebook</a>
             <a href="https://twitter.com" target="_blank" class="social-btn"><i class="fa-brands fa-twitter" style="color: #0ea5e9;"></i> Twitter / X</a>
-            <a href="https://www.threads.net" target="_blank" class="social-btn"><i class="fa-brands fa-threads"></i> Threads</a>
+            <a href="https://www.threads.net" target="_blank" class="social-btn"><i class="fa-brands fa-threads" style="color: #ffffff;"></i> Threads</a>
             <a href="https://www.pinterest.com" target="_blank" class="social-btn"><i class="fa-brands fa-pinterest" style="color: #dc2626;"></i> Pinterest</a>
         </div>
     </div>
@@ -224,16 +224,20 @@
                         <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
                         <option value="'Inter', sans-serif">Inter</option>
                         <option value="'Poppins', sans-serif">Poppins</option>
+                        <option value="'Outfit', sans-serif">Outfit</option>
+                        <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
                     </select>
                 </div>
             </div>
 
             <div class="setting-group">
-                <label>Temalar</label>
+                <label>Mövzular (Temalar)</label>
                 <div class="setting-btn-row">
-                    <div class="theme-circle active" style="background: #0b0c10;" onclick="changeTheme('#0b0c10', '#141620')"></div>
-                    <div class="theme-circle" style="background: #0f172a;" onclick="changeTheme('#0f172a', '#1e293b')"></div>
-                    <div class="theme-circle" style="background: #18181b;" onclick="changeTheme('#18181b', '#27272a')"></div>
+                    <div class="theme-circle active" style="background: #0b0c10;" onclick="changeTheme('#0b0c10', '#141620', this)"></div>
+                    <div class="theme-circle" style="background: #0f172a;" onclick="changeTheme('#0f172a', '#1e293b', this)"></div>
+                    <div class="theme-circle" style="background: #18181b;" onclick="changeTheme('#18181b', '#27272a', this)"></div>
+                    <div class="theme-circle" style="background: #2e1065;" onclick="changeTheme('#1e1b4b', '#312e81', this)"></div>
+                    <div class="theme-circle" style="background: #064e3b;" onclick="changeTheme('#022c22', '#065f46', this)"></div>
                 </div>
             </div>
         </div>
@@ -249,10 +253,18 @@
         window.onload = function() {
             updateCounters();
             renderFolders();
+            
             let savedFont = localStorage.getItem('luna_font');
             if(savedFont) {
                 document.documentElement.style.setProperty('--font-family', savedFont);
                 document.getElementById('fontSelector').value = savedFont;
+            }
+
+            let savedBg = localStorage.getItem('luna_bg');
+            let savedSurface = localStorage.getItem('luna_surface');
+            if(savedBg && savedSurface) {
+                document.documentElement.style.setProperty('--bg', savedBg);
+                document.documentElement.style.setProperty('--surface', savedSurface);
             }
         };
 
@@ -292,31 +304,55 @@
             });
         }
 
+        // YouTube axtarış və ya birbaşa keçid məntiqi
+        function getYouTubeEmbedUrl(inputVal) {
+            let query = inputVal.trim();
+            // Əgər birbaşa YouTube linkidirsə ID-ni çıxar, deyilsə YouTube search aç
+            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            let match = query.match(regExp);
+
+            if (match && match[2].length === 11) {
+                return `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
+            } else {
+                // Axtarış sözünə uyğun YouTube musiqi axtarış nəticəsini göstərən iframe (və ya ümumi axtarış)
+                return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+            }
+        }
+
         function processMedia(action) {
             let input = document.getElementById('mediaUrlInput');
             let val = input.value.trim();
             if (!val) {
-                val = "Media Elementi #" + (historyData.length + 1);
+                alert("Zəhmət olmasa mahnı adı və ya link daxil edin!");
+                return;
             }
 
-            let sampleAudio = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-
             if (action === 'play') {
-                historyData.unshift({ title: val, url: sampleAudio });
+                historyData.unshift({ title: val, query: val });
                 localStorage.setItem('luna_hist', JSON.stringify(historyData));
                 
-                watchLaterData.unshift({ title: val, url: sampleAudio });
+                watchLaterData.unshift({ title: val, query: val });
                 localStorage.setItem('luna_watch', JSON.stringify(watchLaterData));
 
                 updateCounters();
 
                 let player = document.getElementById('playerBox');
-                let audio = document.getElementById('audioPlayer');
-                player.style.display = 'flex';
-                audio.src = sampleAudio;
+                let ytFrame = document.getElementById('youtubePlayer');
+                
+                // Əgər birbaşa linkdirsə oxut, yoxsa axtarış səhifəsinə yönləndir
+                let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                let match = val.match(regExp);
+
+                if (match && match[2].length === 11) {
+                    player.style.display = 'flex';
+                    ytFrame.src = `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
+                } else {
+                    // Link deyilsə, birbaşa YouTube-da axtarış pəncərəsini açır
+                    window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(val)}`, '_blank');
+                }
                 input.value = '';
             } else if (action === 'download') {
-                downloadData.unshift({ title: val, url: sampleAudio });
+                downloadData.unshift({ title: val });
                 localStorage.setItem('luna_down', JSON.stringify(downloadData));
                 updateCounters();
                 alert("Uğurla yüklənənlərə əlavə olundu!");
@@ -357,7 +393,7 @@
                 div.className = 'list-item';
                 div.innerHTML = `
                     <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:200px;">${item.title}</span>
-                    <button onclick="playItem('${item.url}')">Dinlə</button>
+                    <button onclick="playQuery('${item.title}')">Aç</button>
                 `;
                 content.appendChild(div);
             });
@@ -380,22 +416,35 @@
             localStorage.setItem('luna_font', fontVal);
         }
 
-        function changeTheme(bgColor, surfaceColor) {
+        function changeTheme(bgColor, surfaceColor, element) {
             document.documentElement.style.setProperty('--bg', bgColor);
             document.documentElement.style.setProperty('--surface', surfaceColor);
+            localStorage.setItem('luna_bg', bgColor);
+            localStorage.setItem('luna_surface', surfaceColor);
+
+            document.querySelectorAll('.theme-circle').forEach(el => el.classList.remove('active'));
+            if(element) element.classList.add('active');
         }
 
-        function playItem(url) {
+        function playQuery(query) {
             closeModal();
-            let player = document.getElementById('playerBox');
-            let audio = document.getElementById('audioPlayer');
-            player.style.display = 'flex';
-            audio.src = url;
+            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            let match = query.match(regExp);
+
+            if (match && match[2].length === 11) {
+                let player = document.getElementById('playerBox');
+                let ytFrame = document.getElementById('youtubePlayer');
+                player.style.display = 'flex';
+                ytFrame.src = `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
+            } else {
+                window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
+            }
         }
 
         function closePlayer() {
+            let ytFrame = document.getElementById('youtubePlayer');
+            ytFrame.src = "";
             document.getElementById('playerBox').style.display = 'none';
-            document.getElementById('audioPlayer').pause();
         }
 
         function openGoogleSearch() {
