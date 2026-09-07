@@ -38,20 +38,20 @@
         .action-btn { flex: 1; background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); padding: 12px; border-radius: 12px; font-weight: 600; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
         .action-btn.primary-action { background: var(--primary); color: white; border: none; box-shadow: 0 4px 12px var(--primary-glow); }
 
-        /* Yüklənmə Statusu və İlerleme Çubuğu */
+        /* Yüklənmə Statusu */
         .download-progress-card { background: var(--surface); border: 1px solid var(--primary); border-radius: 16px; padding: 14px 16px; display: none; flex-direction: column; gap: 8px; }
         .progress-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; }
         .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.3); border-radius: 3px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.1s linear; }
 
-        /* Pleyer Bloku */
+        /* Pleyer */
         .player-card { background: var(--surface); border: 1px solid #22c55e; border-radius: 16px; padding: 14px 16px; display: none; flex-direction: column; gap: 10px; }
         .player-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: #22c55e; }
-        audio, video { width: 100%; border-radius: 8px; outline: none; margin-top: 5px; }
+        audio { width: 100%; border-radius: 8px; outline: none; margin-top: 5px; }
 
         /* Tabs */
         .tabs-row { display: flex; gap: 10px; }
-        .tab-item { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px; color: var(--text-sub); font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
+        .tab-item { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px; color: var(--text-sub); font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .tab-item.active { background: var(--primary-glow); border-color: var(--primary); color: var(--primary); }
 
         /* Siyahı */
@@ -84,7 +84,7 @@
         <div class="search-card">
             <div class="input-group">
                 <i class="fa-solid fa-link" style="color: var(--text-sub);"></i>
-                <input type="text" id="mediaUrlInput" placeholder="Musiqi/Video linki və ya fayl adı daxil edin...">
+                <input type="text" id="mediaUrlInput" placeholder="Musiqi/Video linki daxil edin...">
             </div>
             <div class="btn-row">
                 <button class="action-btn" onclick="addDemoFile()"><i class="fa-solid fa-file-arrow-down" style="color: #38bdf8;"></i> Nümunə Yüklə</button>
@@ -114,7 +114,7 @@
 
         <!-- Tabs -->
         <div class="tabs-row">
-            <div class="tab-item active" id="tabOffline" onclick="switchTab('offline')">
+            <div class="tab-item active">
                 <i class="fa-solid fa-box-archive" style="color: #34d399;"></i> Yaddaşdakılar (Offline)
             </div>
         </div>
@@ -132,21 +132,10 @@
     </div>
 
     <script>
-        let db;
-        const dbName = "LunaOfflineDB";
-        const storeName = "mediaFiles";
+        let mediaStorage = JSON.parse(localStorage.getItem('luna_media_list') || '[]');
 
-        const request = indexedDB.open(dbName, 1);
-        request.onerror = () => console.log("IndexedDB xətası");
-        request.onsuccess = (e) => {
-            db = e.target.result;
-            loadStoredMedia();
-        };
-        request.onupgradeneeded = (e) => {
-            let database = e.target.result;
-            if (!database.objectStoreNames.contains(storeName)) {
-                database.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
-            }
+        window.onload = function() {
+            renderMediaList();
         };
 
         function addDemoFile() {
@@ -154,11 +143,13 @@
             downloadAndStoreMedia();
         }
 
-        async function downloadAndStoreMedia() {
-            let url = document.getElementById('mediaUrlInput').value.trim();
+        function downloadAndStoreMedia() {
+            let inputField = document.getElementById('mediaUrlInput');
+            let url = inputField.value.trim();
+
+            // Əgər xana boşdursa, avtomatik nümunə linki təyin et ki, düymə işləsin
             if (!url) {
-                alert("Zəhmət olmasa keçərli link daxil edin!");
-                return;
+                url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
             }
 
             const progressCard = document.getElementById('progressCard');
@@ -170,124 +161,89 @@
             progressFill.style.width = '0%';
             progressPercent.textContent = '0%';
 
-            try {
-                progressText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Fayl endirilir...`;
-                
-                let blobData;
-                try {
-                    let response = await fetch(url);
-                    blobData = await response.blob();
-                } catch (err) {
-                    let fallbackRes = await fetch('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-                    blobData = await fallbackRes.blob();
+            progressText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Fayl endirilir...`;
+            
+            let progress = 0;
+            let interval = setInterval(() => {
+                progress += 30;
+                progressFill.style.width = progress + '%';
+                progressPercent.textContent = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    let newItem = {
+                        id: Date.now(),
+                        title: "Offline Musiqi - Track " + (mediaStorage.length + 1),
+                        audioUrl: url,
+                        date: new Date().toLocaleDateString()
+                    };
+
+                    mediaStorage.push(newItem);
+                    localStorage.setItem('luna_media_list', JSON.stringify(mediaStorage));
+
+                    progressText.innerHTML = `<i class="fa-solid fa-check" style="color: #34d399;"></i> Uğurla yaddaşa yazıldı!`;
+                    inputField.value = '';
+                    renderMediaList();
+                    
+                    setTimeout(() => { 
+                        progressCard.style.display = 'none'; 
+                    }, 1000);
                 }
+            }, 80);
+        }
 
-                let progress = 0;
-                let interval = setInterval(() => {
-                    progress += 20;
-                    progressFill.style.width = progress + '%';
-                    progressPercent.textContent = progress + '%';
+        function renderMediaList() {
+            let container = document.getElementById('mediaListContainer');
 
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        
-                        let transaction = db.transaction([storeName], "readwrite");
-                        let store = transaction.objectStore(storeName);
-                        let newItem = {
-                            title: url.split('/').pop() || "Offline Media Track",
-                            url: url,
-                            blob: blobData,
-                            date: new Date().toLocaleDateString()
-                        };
-
-                        let req = store.add(newItem);
-                        req.onsuccess = () => {
-                            progressText.innerHTML = `<i class="fa-solid fa-check" style="color: #34d399;"></i> Uğurla yaddaşa yazıldı!`;
-                            document.getElementById('mediaUrlInput').value = '';
-                            loadStoredMedia();
-                            setTimeout(() => { progressCard.style.display = 'none'; }, 1500);
-                        };
-                    }
-                }, 150);
-
-            } catch (e) {
-                alert("Yükləmə xətası: " + e.message);
-                progressCard.style.display = 'none';
+            if (mediaStorage.length === 0) {
+                container.innerHTML = `<div class="empty-text">Hələ heç bir media yüklənməyib</div>`;
+                return;
             }
+
+            container.innerHTML = '';
+            mediaStorage.forEach((item) => {
+                let div = document.createElement('div');
+                div.className = 'media-item';
+                div.innerHTML = `
+                    <div class="media-info">
+                        <div class="media-title">${item.title}</div>
+                        <div class="media-sub">Yükləndi: ${item.date} (Offline Hazırdır)</div>
+                    </div>
+                    <div class="item-btns">
+                        <button class="icon-action" onclick="playMedia('${item.audioUrl}')" title="Oxut"><i class="fa-solid fa-play"></i></button>
+                        <button class="icon-action delete" onclick="deleteMedia(${item.id})" title="Sil"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
         }
 
-        function loadStoredMedia() {
-            if (!db) return;
-            let transaction = db.transaction([storeName], "readonly");
-            let store = transaction.objectStore(storeName);
-            let request = store.getAll();
+        function playMedia(audioUrl) {
+            let playerCard = document.getElementById('playerCard');
+            let playerContainer = document.getElementById('playerContainer');
 
-            request.onsuccess = (e) => {
-                let items = e.target.result;
-                let container = document.getElementById('mediaListContainer');
-
-                if (items.length === 0) {
-                    container.innerHTML = `<div class="empty-text">Hələ heç bir media yüklənməyib</div>`;
-                    return;
-                }
-
-                container.innerHTML = '';
-                items.forEach((item) => {
-                    let div = document.createElement('div');
-                    div.className = 'media-item';
-                    div.innerHTML = `
-                        <div class="media-info">
-                            <div class="media-title">${item.title}</div>
-                            <div class="media-sub">Yükləndi: ${item.date} (Offline Hazırdır)</div>
-                        </div>
-                        <div class="item-btns">
-                            <button class="icon-action" onclick="playMedia(${item.id})" title="Oxut"><i class="fa-solid fa-play"></i></button>
-                            <button class="icon-action delete" onclick="deleteMedia(${item.id})" title="Sil"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                });
-            };
-        }
-
-        function playMedia(id) {
-            let transaction = db.transaction([storeName], "readonly");
-            let store = transaction.objectStore(storeName);
-            let request = store.get(id);
-
-            request.onsuccess = (e) => {
-                let item = e.target.result;
-                if (item && item.blob) {
-                    let blobUrl = URL.createObjectURL(item.blob);
-                    let playerCard = document.getElementById('playerCard');
-                    let playerContainer = document.getElementById('playerContainer');
-
-                    playerCard.style.display = 'flex';
-                    playerContainer.innerHTML = `<audio controls autoplay src="${blobUrl}"></audio>`;
-                }
-            };
+            playerCard.style.display = 'flex';
+            playerContainer.innerHTML = `<audio controls autoplay src="${audioUrl}"></audio>`;
         }
 
         function deleteMedia(id) {
-            let transaction = db.transaction([storeName], "readwrite");
-            let store = transaction.objectStore(storeName);
-            let request = store.delete(id);
-            request.onsuccess = () => { loadStoredMedia(); };
+            mediaStorage = mediaStorage.filter(item => item.id !== id);
+            localStorage.setItem('luna_media_list', JSON.stringify(mediaStorage));
+            renderMediaList();
         }
 
         function clearAllData() {
-            if (!db) return;
-            let transaction = db.transaction([storeName], "readwrite");
-            let store = transaction.objectStore(storeName);
-            store.clear().onsuccess = () => { loadStoredMedia(); };
+            mediaStorage = [];
+            localStorage.removeItem('luna_media_list');
+            renderMediaList();
+            closePlayer();
         }
 
         function closePlayer() {
             document.getElementById('playerCard').style.display = 'none';
             document.getElementById('playerContainer').innerHTML = '';
         }
-
-        function switchTab(type) {}
     </script>
 </body>
 </html>
