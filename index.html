@@ -21,7 +21,7 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 90px; }
+        body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 110px; }
         .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
@@ -39,7 +39,7 @@
         .input-group input::placeholder { color: var(--text-sub); }
 
         .btn-row { display: flex; gap: 10px; }
-        .action-btn { flex: 1; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; pointer-events: auto; }
+        .action-btn { flex: 1; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
         .action-btn.primary { background: var(--primary-gradient); color: white; border: none; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
         .action-btn.outline { background: var(--surface-hover); color: var(--text-main); border: 1px solid var(--border); }
 
@@ -62,14 +62,17 @@
         .platform-btn { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-main); cursor: pointer; text-decoration: none; transition: 0.2s; }
         .platform-btn:hover { background: var(--surface-hover); transform: translateY(-2px); }
 
-        /* Sabit Media Pleyer (Ekranın aşağısında çıxan) */
-        .floating-player { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 388px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 16px; display: none; align-items: center; justify-content: space-between; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 99; backdrop-filter: blur(10px); }
+        /* Sabit Media Pleyer və YouTube çərçivəsi */
+        .floating-player { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 388px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px; display: none; flex-direction: column; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); z-index: 99; backdrop-filter: blur(10px); }
+        .player-top-row { display: flex; align-items: center; justify-content: space-between; }
         .player-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; padding-right: 10px; flex: 1; }
         .player-title { font-size: 13px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .player-status { font-size: 10px; color: #10b981; font-weight: 500; display: flex; align-items: center; gap: 4px; }
-        .player-controls { display: flex; align-items: center; gap: 10px; }
-        .player-btn { background: var(--primary); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; transition: 0.2s; }
         .player-close { background: none; border: none; color: var(--text-sub); font-size: 16px; cursor: pointer; }
+        
+        /* YouTube Video Konteyneri */
+        .player-frame-box { width: 100%; height: 180px; border-radius: 10px; overflow: hidden; background: #000; display: none; }
+        .player-frame-box iframe { width: 100%; height: 100%; border: none; }
 
         /* Modal Pəncərələr */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: flex-end; z-index: 100; backdrop-filter: blur(5px); }
@@ -144,31 +147,17 @@
 
         <div class="card-footer-links">
             <span onclick="playCurrentSound(); openGoogleSearch()"><i class="fa-brands fa-google" style="color: #4385f5;"></i> Google</span>
-            <span onclick="playCurrentSound(); openModal('Tarixçə')"><i class="fa-solid fa-clock-rotate-left"></i> Tarixçə</span>
+            <span onclick="playCurrentSound(); openDownloadsModal()"><i class="fa-solid fa-clock-rotate-left"></i> Yüklənənlər</span>
         </div>
     </div>
 
     <!-- Stats Grid -->
     <div class="stats-grid">
-        <div class="stat-card" onclick="playCurrentSound(); openModal('Tarixçə')">
+        <div class="stat-card" onclick="playCurrentSound(); openDownloadsModal()">
             <div class="stat-icon-box" style="color: #3b82f6;"><i class="fa-solid fa-clock-rotate-left"></i></div>
             <div class="stat-info">
                 <span>Tarixçə</span>
-                <p>0 qeyd</p>
-            </div>
-        </div>
-        <div class="stat-card" onclick="playCurrentSound(); openModal('Gözləmələr')">
-            <div class="stat-icon-box" style="color: #f59e0b;"><i class="fa-solid fa-hourglass-half"></i></div>
-            <div class="stat-info">
-                <span>Gözləmələr</span>
-                <p>0 qeyd</p>
-            </div>
-        </div>
-        <div class="stat-card" onclick="playCurrentSound(); openModal('Sonra İzlə')">
-            <div class="stat-icon-box" style="color: #ec4899;"><i class="fa-solid fa-clock"></i></div>
-            <div class="stat-info">
-                <span>Sonra İzlə</span>
-                <p>0 qeyd</p>
+                <p id="historyCount">0 qeyd</p>
             </div>
         </div>
         <div class="stat-card" onclick="playCurrentSound(); openDownloadsModal()">
@@ -198,15 +187,17 @@
     </div>
 </div>
 
-<!-- Sabit Ekran Pleyeri -->
+<!-- Sabit Ekran Pleyeri (YouTube dəstəkli) -->
 <div class="floating-player" id="floatingPlayer">
-    <div class="player-info">
-        <span class="player-title" id="playerTitleText">Mahnı adı</span>
-        <span class="player-status"><i class="fa-solid fa-circle-dot fa-beat" style="color: #10b981;"></i> Oxunur...</span>
-    </div>
-    <div class="player-controls">
-        <button class="player-btn" id="playerToggleBtn" onclick="togglePlayState()"><i class="fa-solid fa-pause" id="playPauseIcon"></i></button>
+    <div class="player-top-row">
+        <div class="player-info">
+            <span class="player-title" id="playerTitleText">Mahnı adı</span>
+            <span class="player-status"><i class="fa-solid fa-circle-dot fa-beat" style="color: #10b981;"></i> Real Oxunur...</span>
+        </div>
         <button class="player-close" onclick="closePlayer()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="player-frame-box" id="playerFrameBox">
+        <iframe id="youtubeIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 </div>
 
@@ -227,8 +218,6 @@
                 <div class="option-chip" onclick="setTheme('rose', '#e11d48', '#fb7185')">Rose</div>
                 <div class="option-chip" onclick="setTheme('cyan', '#0284c7', '#38bdf8')">Mavi</div>
                 <div class="option-chip" onclick="setTheme('purple', '#9333ea', '#c084fc')">Bənövşəyi</div>
-                <div class="option-chip" onclick="setTheme('sunset', '#ea580c', '#fb923c')">Gün batımı</div>
-                <div class="option-chip" onclick="setTheme('teal', '#0d9488', '#2dd4bf')">Teal</div>
             </div>
         </div>
 
@@ -239,31 +228,14 @@
                 <div class="option-chip" onclick="setFont('Poppins', this)">Poppins</div>
                 <div class="option-chip" onclick="setFont('Inter', this)">Inter</div>
                 <div class="option-chip" onclick="setFont('Cairo', this)">Cairo</div>
-                <div class="option-chip" onclick="setFont('Roboto', this)">Roboto</div>
-                <div class="option-chip" onclick="setFont('Montserrat', this)">Montserrat</div>
-                <div class="option-chip" onclick="setFont('Open Sans', this)">Open Sans</div>
-                <div class="option-chip" onclick="setFont('Lato', this)">Lato</div>
             </div>
         </div>
 
         <div class="setting-group">
-            <label>Proqram İkonu Tərzi</label>
-            <div class="theme-options">
-                <div class="option-chip active" onclick="setIconStyle('fire', '#ef4444', this)"><i class="fa-solid fa-fire"></i> Odlu</div>
-                <div class="option-chip" onclick="setIconStyle('headphones', '#10b981', this)"><i class="fa-solid fa-headphones"></i> Qulaqlıq</div>
-                <div class="option-chip" onclick="setIconStyle('bolt', '#f59e0b', this)"><i class="fa-solid fa-bolt"></i> Şimşək</div>
-                <div class="option-chip" onclick="setIconStyle('rocket', '#ec4899', this)"><i class="fa-solid fa-rocket"></i> Raket</div>
-            </div>
-        </div>
-
-        <div class="setting-group">
-            <label>Müxtəlif Səs Effektləri</label>
+            <label>Səs Effektləri</label>
             <div class="theme-options">
                 <div class="option-chip active" onclick="setSoundType('beep', this)">Bip Səsi</div>
-                <div class="option-chip" onclick="setSoundType('click', this)">Toxunuş</div>
-                <div class="option-chip" onclick="setSoundType('chime', this)">Zınqırov</div>
-                <div class="option-chip" onclick="setSoundType('coin', this)">Qəpik Səsi</div>
-                <div class="option-chip" onclick="setSoundType('off', this)">Səssiz (Deaktiv)</div>
+                <div class="option-chip" onclick="setSoundType('off', this)">Deaktiv</div>
             </div>
         </div>
     </div>
@@ -273,7 +245,7 @@
 <div class="modal-overlay" id="downloadsModal">
     <div class="modal-card">
         <div class="modal-header">
-            <span>Yüklənən Fayllar (Offline)</span>
+            <span>Yüklənən Fayllar & Tarixçə</span>
             <i class="fa-solid fa-xmark close-modal" onclick="playCurrentSound(); closeDownloadsModal()"></i>
         </div>
         <div class="downloads-list" id="downloadsListContainer"></div>
@@ -301,11 +273,7 @@
 
 <script>
     let currentSound = 'beep';
-    let isPlaying = false;
-    let downloadedItems = JSON.parse(localStorage.getItem('luna_downloads')) || [
-        { title: "Önizləmə Mahnı 1", date: "08.06.2026" },
-        { title: "Önizləmə Video 2", date: "08.06.2026" }
-    ];
+    let downloadedItems = JSON.parse(localStorage.getItem('luna_downloads')) || [];
 
     updateDownloadCount();
 
@@ -317,42 +285,39 @@
             const gain = ctx.createGain();
             osc.connect(gain);
             gain.connect(ctx.destination);
-            
-            if(currentSound === 'beep') {
-                osc.frequency.setValueAtTime(600, ctx.currentTime);
-                gain.gain.setValueAtTime(0.05, ctx.currentTime);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.05);
-            } else if(currentSound === 'click') {
-                osc.frequency.setValueAtTime(300, ctx.currentTime);
-                gain.gain.setValueAtTime(0.03, ctx.currentTime);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.03);
-            } else if(currentSound === 'chime') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(880, ctx.currentTime);
-                gain.gain.setValueAtTime(0.06, ctx.currentTime);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.1);
-            } else if(currentSound === 'coin') {
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(987.77, ctx.currentTime);
-                osc.frequency.setValueAtTime(1318.51, ctx.currentTime + 0.08);
-                gain.gain.setValueAtTime(0.04, ctx.currentTime);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.2);
-            }
+            osc.frequency.setValueAtTime(600, ctx.currentTime);
+            gain.gain.setValueAtTime(0.05, ctx.currentTime);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.05);
         } catch(e) {}
     }
 
+    // YouTube Video ID-sini əldə etmək və ya axtarış üçün formalaşdırmaq
+    function getYouTubeEmbedUrl(inputVal) {
+        let videoId = '';
+        if (inputVal.includes('youtu.be/')) {
+            videoId = inputVal.split('youtu.be/')[1]?.split('?')[0];
+        } else if (inputVal.includes('watch?v=')) {
+            videoId = inputVal.split('watch?v=')[1]?.split('&')[0];
+        }
+
+        if (videoId) {
+            return { type: 'video', url: `https://www.youtube.com/embed/${videoId}?autoplay=1` };
+        } else {
+            // Əgər sadəcə mahnı adı yazılıbsa, YouTube-da musiqi axtarışı üçün iframe və ya axtarış açırıq
+            let query = encodeURIComponent(inputVal);
+            return { type: 'search', url: `https://www.youtube.com/embed?listType=search&list=${query}&autoplay=1` };
+        }
+    }
+
     function playMedia() {
-        const val = document.getElementById('mediaUrlInput').value;
+        const val = document.getElementById('mediaUrlInput').value.trim();
         if(!val) return;
         startPlayer(val);
     }
 
     function downloadAndPlayMedia() {
-        const val = document.getElementById('mediaUrlInput').value;
+        const val = document.getElementById('mediaUrlInput').value.trim();
         if(!val) return;
         
         const now = new Date().toLocaleDateString('az-AZ');
@@ -361,42 +326,33 @@
         updateDownloadCount();
 
         const status = document.getElementById('downloadStatus');
-        status.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color: #10b981;"></i> Yükləndi və oxunmağa başlandı!`;
+        status.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color: #10b981;"></i> Offline yükləndi və pleyerdə açıldı!`;
         status.style.display = 'block';
         document.getElementById('mediaUrlInput').value = '';
         setTimeout(() => { status.style.display = 'none'; }, 3000);
 
-        // Birbaşa ekranda pleyeri işə sal
         startPlayer(val);
     }
 
     function startPlayer(title) {
         document.getElementById('playerTitleText').innerText = title;
+        const mediaData = getYouTubeEmbedUrl(title);
+        
+        const iframe = document.getElementById('youtubeIframe');
+        iframe.src = mediaData.url;
+        
+        document.getElementById('playerFrameBox').style.display = 'block';
         document.getElementById('floatingPlayer').style.display = 'flex';
-        isPlaying = true;
-        document.getElementById('playPauseIcon').className = 'fa-solid fa-pause';
-    }
-
-    function togglePlayState() {
-        isPlaying = !isPlaying;
-        const icon = document.getElementById('playPauseIcon');
-        const statusText = document.querySelector('.player-status');
-        if(isPlaying) {
-            icon.className = 'fa-solid fa-pause';
-            statusText.innerHTML = `<i class="fa-solid fa-circle-dot fa-beat" style="color: #10b981;"></i> Oxunur...`;
-        } else {
-            icon.className = 'fa-solid fa-play';
-            statusText.innerHTML = `<i class="fa-solid fa-circle" style="color: #f59e0b;"></i> Dayandırıldı`;
-        }
     }
 
     function closePlayer() {
         document.getElementById('floatingPlayer').style.display = 'none';
-        isPlaying = false;
+        document.getElementById('youtubeIframe').src = ''; // Dayandırmaq üçün iframe-i təmizləyirik
     }
 
     function updateDownloadCount() {
         document.getElementById('downloadCount').innerText = downloadedItems.length + ' fayl';
+        document.getElementById('historyCount').innerText = downloadedItems.length + ' qeyd';
     }
 
     function openDownloadsModal() {
@@ -404,12 +360,12 @@
         container.innerHTML = '';
 
         if(downloadedItems.length === 0) {
-            container.innerHTML = `<div class="empty-downloads">Hələ heç nə yüklənməyib.</div>`;
+            container.innerHTML = `<div class="empty-downloads">Hələ heç nə yoxdur.</div>`;
         } else {
             downloadedItems.forEach((item, index) => {
                 container.innerHTML += `
                     <div class="download-item">
-                        <div class="download-info" onclick="playCurrentSound(); closeDownloadsModal(); startPlayer('${item.scriptSafeTitle || item.title.replace(/'/g, "\\'")}')">
+                        <div class="download-info" onclick="playCurrentSound(); closeDownloadsModal(); startPlayer('${item.title.replace(/'/g, "\\'")}')">
                             <span class="download-title">${item.title}</span>
                             <span class="download-date">${item.date}</span>
                         </div>
@@ -449,19 +405,17 @@
         document.getElementById('settingsModal').style.display = 'none';
     }
 
-    function openModal(type) {}
-
     function openPlatform(name, color, icon) {
         document.getElementById('platformModalTitle').innerHTML = `<i class="fa-brands ${icon}" style="color: ${color};"></i> ${name} - Daxili Mərkəz`;
         document.getElementById('platformSearchInput').value = '';
         document.getElementById('platformResultsContainer').innerHTML = `
             <div class="platform-result-item">
-                <span>Tövsiyə olunan trend məzmun 1</span>
-                <button onclick="playCurrentSound(); selectPlatformItem('${name} - Trend 1')">Seç</button>
+                <span>Populyar Mahnı / Video 1</span>
+                <button onclick="playCurrentSound(); selectPlatformItem('${name} - Trend 1')">Dinlə</button>
             </div>
             <div class="platform-result-item">
-                <span>Tövsiyə olunan trend məzmun 2</span>
-                <button onclick="playCurrentSound(); selectPlatformItem('${name} - Trend 2')">Seç</button>
+                <span>Populyar Mahnı / Video 2</span>
+                <button onclick="playCurrentSound(); selectPlatformItem('${name} - Trend 2')">Dinlə</button>
             </div>
         `;
         document.getElementById('platformModal').style.display = 'flex';
@@ -474,26 +428,13 @@
     function searchPlatformContent() {
         const query = document.getElementById('platformSearchInput').value;
         if(!query) return;
-        const container = document.getElementById('platformResultsContainer');
-        container.innerHTML = `
-            <div class="platform-result-item">
-                <span>Nəticə: ${query} (1)</span>
-                <button onclick="playCurrentSound(); selectPlatformItem('${query} 1')">Seç</button>
-            </div>
-            <div class="platform-result-item">
-                <span>Nəticə: ${query} (2)</span>
-                <button onclick="playCurrentSound(); selectPlatformItem('${query} 2')">Seç</button>
-            </div>
-        `;
+        selectPlatformItem(query);
     }
 
     function selectPlatformItem(title) {
         document.getElementById('mediaUrlInput').value = title;
         closePlatformModal();
-        const status = document.getElementById('downloadStatus');
-        status.innerHTML = `<i class="fa-solid fa-check" style="color: #10b981;"></i> Seçildi: ${title}`;
-        status.style.display = 'block';
-        setTimeout(() => { status.style.display = 'none'; }, 3000);
+        startPlayer(title);
     }
 
     function setTheme(name, c1, c2) {
@@ -509,14 +450,6 @@
         element.classList.add('active');
     }
 
-    function setIconStyle(style, color, element) {
-        const logo = document.querySelector('.brand-logo');
-        logo.className = `fa-solid fa-${style} brand-logo`;
-        logo.style.color = color;
-        element.parentElement.querySelectorAll('.option-chip').forEach(el => el.classList.remove('active'));
-        element.classList.add('active');
-    }
-
     function setSoundType(type, element) {
         currentSound = type;
         element.parentElement.querySelectorAll('.option-chip').forEach(el => el.classList.remove('active'));
@@ -527,3 +460,4 @@
 
 </body>
 </html>
+
