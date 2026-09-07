@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luna</title>
+    <title>Luna - Media Player & PWA</title>
+    
+    <!-- SEO və Axtarış Motoru Açıqlamaları -->
+    <meta name="description" content="Luna Media Player - Spotify, Pinterest, Instagram və digər platformalardan media linkləri daxil edərək musiqi dinləyin və yükləyin.">
+    <meta name="keywords" content="Luna, media player, pwa app, musiqi yüklə, video player, spotify downloader">
+    <meta name="author" content="Luna App">
+    
+    <!-- Sosial Şəbəkə Paylaşım Kartları (Open Graph) -->
+    <meta property="og:title" content="Luna - Media Player">
+    <meta property="og:description" content="Media linkləri idarə edin, musiqi dinləyin və yükləyin.">
+    <meta property="og:type" content="website">
+
     <link rel="manifest" href="./manifest.json">
     <style>
         * {
@@ -148,7 +159,7 @@
             font-size: 12px;
             cursor: pointer;
         }
-        /* Modal Ayarlar Pəncərəsi */
+        /* Ayarlar üçün açılan pəncərə dizaynı */
         .modal {
             display: none;
             position: fixed;
@@ -167,6 +178,7 @@
             border-radius: 16px;
             width: 90%;
             max-width: 320px;
+            border: 1px solid #27272a;
         }
         .modal-header {
             display: flex;
@@ -200,6 +212,7 @@
             padding: 8px;
             border-radius: 8px;
             outline: none;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -211,7 +224,7 @@
             <p>Media Player & Google Girişi</p>
         </div>
         <div class="top-icons">
-            <button class="icon-btn" title="Axtarış" onclick="alert('Axtarış bölməsi aktivdir')">🔍</button>
+            <button class="icon-btn" title="Axtarış">🔍</button>
             <button class="icon-btn" title="Ayarlar" onclick="openSettings()">⚙️</button>
             <button class="icon-btn" title="Yenilə" onclick="location.reload()">🔄</button>
         </div>
@@ -220,11 +233,11 @@
     <div class="top-card">
         <div class="input-group">
             <input type="text" placeholder="Spotify / Media linki yapışdırın...">
-            <button onclick="alert('Link qəbul olundu!')">Aç</button>
+            <button>Aç</button>
         </div>
         <div class="action-row">
-            <button class="action-sub-btn" onclick="alert('Google Girişinə keçid edilir...')">🌐 Google-a Get</button>
-            <button class="action-sub-btn" onclick="alert('Yeni qovluq yaradıldı')">📁 New Folder</button>
+            <button class="action-sub-btn">🌐 Google-a Get</button>
+            <button class="action-sub-btn">📁 New Folder</button>
         </div>
     </div>
 
@@ -233,7 +246,7 @@
             <span class="status-title">🎵 Musiqi & Video Pleyeri</span>
             <div class="status-right">
                 <span onclick="location.reload()" style="cursor:pointer">🔄 Yenilə</span>
-                <span onclick="alert('Yüklənir...')" style="cursor:pointer">📥 Yüklə</span>
+                <span style="cursor:pointer">📥 Yüklə</span>
                 <span style="color: #22c55e; font-weight: 600;">Hazır</span>
             </div>
         </div>
@@ -242,15 +255,15 @@
 
     <div class="platforms-title">Dəstəklənən Platformalar</div>
     <div class="platforms-grid">
-        <button class="platform-btn" onclick="alert('Spotify seçildi')"><span style="color: #22c55e;">🎧</span> Spotify</button>
-        <button class="platform-btn" onclick="alert('Pinterest seçildi')"><span style="color: #ef4444;">📌</span> Pinterest</button>
-        <button class="platform-btn" onclick="alert('Facebook seçildi')"><span style="color: #3b82f6;">💙</span> Facebook</button>
-        <button class="platform-btn" onclick="alert('Instagram seçildi')"><span style="color: #ec4899;">📷</span> Instagram</button>
-        <button class="platform-btn" onclick="alert('Threads seçildi')"><span style="color: #60a5fa;">🧵</span> Threads</button>
-        <button class="platform-btn" onclick="alert('Twitter seçildi')"><span style="color: #f3f4f6;">✖️</span> Twitter (X)</button>
+        <button class="platform-btn"><span style="color: #22c55e;">🎧</span> Spotify</button>
+        <button class="platform-btn"><span style="color: #ef4444;">📌</span> Pinterest</button>
+        <button class="platform-btn"><span style="color: #3b82f6;">💙</span> Facebook</button>
+        <button class="platform-btn"><span style="color: #ec4899;">📷</span> Instagram</button>
+        <button class="platform-btn"><span style="color: #60a5fa;">🧵</span> Threads</button>
+        <button class="platform-btn"><span style="color: #f3f4f6;">✖️</span> Twitter (X)</button>
     </div>
 
-    <!-- Ayarlar Modalı (Temalar və Fontlar üçün) -->
+    <!-- Ayarlar Modalı -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
