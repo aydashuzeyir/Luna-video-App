@@ -3,547 +3,552 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luna - Ultimate Media Hub</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700&family=Orbitron:wght@500;700&family=Cinzel:wght@600;700&family=Caveat:wght@600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Luna - Media & Sound Center</title>
     <style>
         :root {
             --bg-color: #0b0f19;
-            --bg-image: none;
-            --surface: rgba(30, 30, 47, 0.75);
-            --surface-hover: rgba(42, 42, 64, 0.85);
-            --primary: #6366f1;
-            --primary-gradient: linear-gradient(135deg, #6366f1, #a855f7);
-            --text-main: #ffffff;
-            --text-sub: #94a3b8;
-            --border: rgba(255, 255, 255, 0.12);
-            --radius: 20px;
-            --font-family: 'Plus Jakarta Sans', sans-serif;
-            --backdrop-blur: blur(12px);
+            --card-bg: #131a2e;
+            --card-border: #1e293b;
+            --text-color: #ffffff;
+            --text-muted: #8b9bb4;
+            --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            --primary-color: #6366f1;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            background-color: var(--bg-color); 
-            background-image: var(--bg-image);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: var(--text-main); 
-            min-height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            padding: 16px 16px 50px 16px; 
-            overflow-y: auto; 
-            transition: background 0.4s, color 0.3s; 
+        [data-theme="light"] {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --card-border: #cbd5e1;
+            --text-color: #0f172a;
+            --text-muted: #64748b;
+            --accent-gradient: linear-gradient(135deg, #4f46e5, #9333ea, #db2777);
+            --primary-color: #4f46e5;
         }
 
-        .app-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 14px; z-index: 2; }
-
-        header { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
-        .brand-box { display: flex; align-items: center; gap: 12px; }
-        
-        .app-icon-preview { 
-            width: 42px; height: 42px; 
-            border-radius: 12px; 
-            background: var(--primary-gradient); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: white; 
-            font-size: 18px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: 0.3s;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background 0.3s, color 0.3s;
         }
 
-        .brand-info h1 { font-size: 18px; font-weight: 700; line-height: 1.1; }
-        .brand-info span { font-size: 11px; color: var(--text-sub); }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+        }
 
-        .header-actions { display: flex; gap: 8px; }
-        .top-icon-btn { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); color: var(--text-main); font-size: 15px; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
-        .top-icon-btn:active { transform: scale(0.9); }
+        .phone-container {
+            width: 100%;
+            max-width: 440px;
+        }
 
-        .search-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .input-group { display: flex; align-items: center; gap: 10px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; }
-        .input-group input { flex: 1; background: none; border: none; outline: none; color: var(--text-main); font-size: 14px; }
-        .input-group input::placeholder { color: var(--text-sub); }
+        /* Top Bar */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-        .btn-row { display: flex; gap: 10px; }
-        .action-btn { flex: 1; padding: 11px; border-radius: 12px; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; transition: 0.2s; }
-        .action-btn.primary { background: var(--primary-gradient); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
-        .action-btn.outline { background: var(--surface-hover); backdrop-filter: var(--backdrop-blur); color: var(--text-main); border: 1px solid var(--border); }
-        .action-btn:active { transform: scale(0.96); }
+        .brand-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-        /* Yüklənmə statusu barı */
-        .loading-bar-container { display: none; flex-direction: column; gap: 4px; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); }
-        .loading-info { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); }
-        .progress-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
-        .progress-fill { width: 0%; height: 100%; background: var(--primary-gradient); transition: width 0.3s; }
+        .brand-logo {
+            width: 45px;
+            height: 45px;
+            background: var(--accent-gradient);
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
 
-        /* Mini Player Kartı */
-        .mini-player-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: none; flex-direction: column; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-        .player-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--primary); }
-        .video-wrapper { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; position: relative; }
-        .video-wrapper iframe { width: 100%; height: 100%; border: none; }
+        .brand-title h2 {
+            font-size: 18px;
+            font-weight: 700;
+        }
 
-        .card-footer-links { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 500; color: var(--text-sub); padding: 0 2px; }
-        .card-footer-links span { cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .brand-title p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
 
-        /* YouTube Endirmə və İzləmə Bölməsi */
-        .downloader-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .downloader-title { font-size: 13px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-        .download-options-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .dl-option-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 12px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: 0.2s; }
-        .dl-option-btn:active { transform: scale(0.95); background: var(--primary); border-color: transparent; }
+        .settings-icon-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: var(--text-color);
+            font-size: 16px;
+        }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .stat-card { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .stat-icon-box { width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: center; font-size: 15px; }
-        .stat-info span { font-size: 10px; font-weight: 600; color: var(--text-sub); text-transform: uppercase; }
-        .stat-info p { font-size: 13px; font-weight: 700; color: var(--text-main); }
+        /* Main Search Card */
+        .search-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
 
-        .section-header { font-size: 11px; font-weight: 700; color: var(--text-sub); letter-spacing: 0.5px; margin-top: 2px; padding: 0 4px; }
-        
-        .platforms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding-bottom: 20px; }
-        .platform-btn { background: var(--surface); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border); border-radius: 16px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-main); cursor: pointer; font-size: 12px; font-weight: 500; transition: 0.2s; }
-        .platform-btn:active { transform: scale(0.95); background: var(--surface-hover); }
+        .search-input-box {
+            background: var(--bg-color);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
 
-        /* Modallar */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: none; justify-content: center; align-items: flex-end; z-index: 100; backdrop-filter: blur(8px); }
-        .modal-card { background: #181b2e; width: 100%; max-width: 420px; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 20px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; border-top: 1px solid var(--border); animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        
-        .modal-header { display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 700; color: #fff; }
-        .close-modal { cursor: pointer; font-size: 18px; color: #94a3b8; padding: 4px; }
+        .search-input-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 14px;
+            width: 100%;
+            outline: none;
+        }
 
-        .setting-group { display: flex; flex-direction: column; gap: 8px; }
-        .setting-group label { font-size: 12px; font-weight: 600; color: #94a3b8; }
-        
-        .app-icons-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .app-icon-option { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: 0.2s; }
-        .app-icon-option.active { border-color: var(--primary); background: rgba(255,255,255,0.1); transform: scale(1.05); }
-        .app-icon-option i { font-size: 20px; }
-        .app-icon-option span { font-size: 10px; color: #94a3b8; font-weight: 500; }
+        .action-buttons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
 
-        .theme-options { display: flex; gap: 8px; flex-wrap: wrap; }
-        .option-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 10px; font-size: 12px; color: #fff; cursor: pointer; font-weight: 500; }
-        .option-chip.active { background: var(--primary); border-color: transparent; font-weight: 700; color: #fff; }
+        .main-action-btn {
+            padding: 12px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            text-align: center;
+        }
 
-        .photo-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .photo-chip { height: 60px; border-radius: 10px; border: 2px solid transparent; cursor: pointer; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 4px; font-size: 10px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
-        .photo-chip.active { border-color: var(--primary); transform: scale(1.03); }
+        .btn-purple {
+            background: var(--accent-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+        }
 
-        .downloads-list { display: flex; flex-direction: column; gap: 8px; }
-        .download-item { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); padding: 10px 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
-        .download-item:active { background: rgba(255,255,255,0.1); }
-        .download-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; padding-right: 10px; flex: 1; }
-        .download-title { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .download-date { font-size: 10px; color: #94a3b8; }
-        .delete-download { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 14px; padding: 4px; }
-        .empty-downloads { text-align: center; color: #94a3b8; font-size: 13px; padding: 20px 0; }
+        .btn-dark {
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--card-border);
+        }
+
+        .sub-links-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 0 4px;
+        }
+
+        .sub-links-row span {
+            cursor: pointer;
+        }
+        .sub-links-row span:hover {
+            color: var(--text-color);
+        }
+
+        /* YouTube Media Endirmə Mərkəzi */
+        .section-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .section-header {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-choices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .choice-btn {
+            background: var(--bg-color);
+            border: 1px solid var(--card-border);
+            color: var(--text-color);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Small Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .tool-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .tool-icon {
+            font-size: 20px;
+        }
+
+        .tool-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .tool-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Social Platforms */
+        .social-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .social-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 24px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .close-x {
+            position: absolute;
+            top: 14px; right: 18px;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-muted);
+        }
+
+        /* AI Floating Icon */
+        .ai-floating {
+            position: fixed;
+            bottom: 24px; right: 24px;
+            background: var(--primary-color);
+            color: white;
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <header>
-        <div class="brand-box">
-            <div class="app-icon-preview" id="mainAppIcon"><i class="fa-solid fa-headphones-simple" id="appIconSymbol"></i></div>
+    <div class="phone-container">
+        <!-- Top Header -->
+        <header class="top-header">
             <div class="brand-info">
-                <h1>Luna</h1>
-                <span>Media & Sound Center</span>
+                <div class="brand-logo">🎧</div>
+                <div class="brand-title">
+                    <h2>Luna</h2>
+                    <p>Media & Sound Center</p>
+                </div>
+            </div>
+            <div class="settings-icon-btn" onclick="openSettings()">⚙️</div>
+        </header>
+
+        <!-- Main Search Card -->
+        <div class="search-card">
+            <div class="search-input-box">
+                <span>🔴</span>
+                <input type="text" id="mediaUrlInput" placeholder="Mahnı adı və ya YouTube linki...">
+            </div>
+            <div class="action-buttons-grid">
+                <button class="main-action-btn btn-purple" onclick="playMiniPlayer()">
+                    <span>▶️ Mini Pleyerdə Aç</span>
+                </button>
+                <button class="main-action-btn btn-dark" onclick="saveMelodyToFolder()">
+                    <span>📥 Yüklə & Yaddaş</span>
+                </button>
+            </div>
+            <div class="sub-links-row">
+                <span onclick="window.open('https://www.google.com', '_blank')">🌐 Google Axtarış</span>
+                <span onclick="openOfflineFolder()">📂 Tarixçə & Qovluq (<span id="offlineCount">0</span>)</span>
             </div>
         </div>
-        <div class="header-actions">
-            <button class="top-icon-btn" onclick="playClickSound(); openSettings()"><i class="fa-solid fa-sliders"></i></button>
-        </div>
-    </header>
 
-    <div class="search-card">
-        <div class="input-group">
-            <i class="fa-brands fa-youtube" style="color: #ef4444; font-size: 18px;"></i>
-            <input type="text" id="mediaUrlInput" placeholder="Mahnı adı və ya YouTube linki...">
-        </div>
-        
-        <!-- Yüklənmə İndikatoru Barı -->
-        <div class="loading-bar-container" id="loadingBarContainer">
-            <div class="loading-info">
-                <span id="loadingStatusText">Yüklənir...</span>
-                <span id="loadingPercent">0%</span>
+        <!-- YouTube Media Endirmə Mərkəzi -->
+        <div class="section-box">
+            <div class="section-header">
+                <span>📥</span> YouTube Media Endirmə Mərkəzi
             </div>
-            <div class="progress-track">
-                <div class="progress-fill" id="progressFill"></div>
+            <div class="download-choices">
+                <button class="choice-btn" onclick="downloadFormat('MP3')">🎵 MP3 (Mahnı)</button>
+                <button class="choice-btn" onclick="downloadFormat('MP4')">🎬 MP4 (Video)</button>
             </div>
         </div>
 
-        <div class="btn-row">
-            <button class="action-btn primary" onclick="playClickSound(); playInMiniPlayer()">
-                <i class="fa-solid fa-play"></i> Mini Pleyerdə Aç
-            </button>
-            <button class="action-btn outline" onclick="playClickSound(); simulateDownload()">
-                <i class="fa-solid fa-cloud-arrow-down" style="color: var(--primary);"></i> Yüklə & Yaddaş
-            </button>
+        <!-- Small Tools Grid -->
+        <div class="tools-grid">
+            <div class="tool-box" onclick="openOfflineFolder()">
+                <div class="tool-icon">📂</div>
+                <div class="tool-info">
+                    <h4>Offline Qovluq</h4>
+                    <p>Pleyerdə internetsiz dinlə</p>
+                </div>
+            </div>
+            <div class="tool-box" onclick="openSettings()">
+                <div class="tool-icon">🎨</div>
+                <div class="tool-info">
+                    <h4>Stili Dəyiş</h4>
+                    <p>İkon & Rənglər</p>
+                </div>
+            </div>
         </div>
 
-        <div class="card-footer-links">
-            <span onclick="playClickSound(); openGoogle()"><i class="fa-brands fa-google" style="color: #4285f4;"></i> Google Axtarış</span>
-            <span onclick="playClickSound(); openHistoryModal()"><i class="fa-solid fa-clock-rotate-left"></i> Tarixçə (<span id="historyNum">0</span>)</span>
+        <!-- Social Platforms -->
+        <div class="social-title">Sosial Platformalar & Musiqi</div>
+        <div class="social-grid">
+            <div class="social-btn" onclick="alert('YouTube açılır')">▶️</div>
+            <div class="social-btn" onclick="alert('Instagram açılır')">📸</div>
+            <div class="social-btn" onclick="alert('Threads açılır')">💬</div>
         </div>
     </div>
 
-    <!-- YouTube Mahnı Endirmə və İzləmə Bölməsi -->
-    <div class="downloader-card">
-        <div class="downloader-title"><i class="fa-solid fa-download" style="color: #ef4444;"></i> YouTube Media Endirmə Mərkəzi</div>
-        <div class="download-options-row">
-            <button class="dl-option-btn" onclick="playClickSound(); downloadMediaType('mp3')"><i class="fa-solid fa-music" style="color: #22c55e;"></i> MP3 (Mahnı)</button>
-            <button class="dl-option-btn" onclick="playClickSound(); downloadMediaType('mp4')"><i class="fa-solid fa-video" style="color: #3b82f6;"></i> MP4 (Video)</button>
-        </div>
-    </div>
-
-    <!-- Mini Player Kartı -->
-    <div class="mini-player-card" id="miniPlayerCard">
-        <div class="player-header">
-            <span><i class="fa-solid fa-compact-disc fa-spin"></i> Mini Player</span>
-            <i class="fa-solid fa-xmark" style="cursor: pointer; font-size: 16px;" onclick="closeMiniPlayer()"></i>
-        </div>
-        <div class="video-wrapper" id="videoContainer">
-            <!-- Video bura yüklənəcək -->
-        </div>
-    </div>
-
-    <div class="stats-grid">
-        <div class="stat-card" onclick="playClickSound(); openHistoryModal()">
-            <div class="stat-icon-box" style="color: #38bdf8;"><i class="fa-solid fa-clock-rotate-left"></i></div>
-            <div class="stat-info">
-                <span>Tarixçə</span>
-                <p id="historyCountText">0 qeyd</p>
-            </div>
-        </div>
-        <div class="stat-card" onclick="playClickSound(); openSettings()">
-            <div class="stat-icon-box" style="color: #a855f7;"><i class="fa-solid fa-icons"></i></div>
-            <div class="stat-info">
-                <span>İkon & Rənglər</span>
-                <p>Stili Dəyiş</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-header">SOSİAL PLATFORMALAR & MUSİQİ</div>
-
-    <div class="platforms-grid">
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('YouTube')"><i class="fa-brands fa-youtube" style="font-size: 20px; color: #ef4444;"></i><span>YouTube</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Instagram')"><i class="fa-brands fa-instagram" style="font-size: 20px; color: #ec4899;"></i><span>Instagram</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Threads')"><i class="fa-brands fa-threads" style="font-size: 20px; color: #cbd5e1;"></i><span>Threads</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Yandex')"><i class="fa-solid fa-music" style="font-size: 20px; color: #ffcc00;"></i><span>Yandex Müzik</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('TikTok')"><i class="fa-brands fa-tiktok" style="font-size: 20px; color: #ffffff;"></i><span>TikTok</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Spotify')"><i class="fa-brands fa-spotify" style="font-size: 20px; color: #22c55e;"></i><span>Spotify</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Facebook')"><i class="fa-brands fa-facebook" style="font-size: 20px; color: #3b82f6;"></i><span>Facebook</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Twitter')"><i class="fa-brands fa-x-twitter" style="font-size: 20px; color: #ffffff;"></i><span>Twitter (X)</span></div>
-        <div class="platform-btn" onclick="playClickSound(); quickPlatform('Pinterest')"><i class="fa-brands fa-pinterest" style="font-size: 20px; color: #ef4444;"></i><span>Pinterest</span></div>
-    </div>
-</div>
-
-<!-- Tarixçə Modalı -->
-<div class="modal-overlay" id="historyModal">
-    <div class="modal-card">
-        <div class="modal-header">
-            <span>Yaddaş və Tarixçə</span>
-            <i class="fa-solid fa-xmark close-modal" onclick="playClickSound(); closeHistoryModal()"></i>
-        </div>
-        <div class="downloads-list" id="historyListContainer"></div>
-    </div>
-</div>
-
-<!-- Tənzimləmələr Modalı -->
-<div class="modal-overlay" id="settingsModal">
-    <div class="modal-card">
-        <div class="modal-header">
-            <span>Bol Seçim Paneli</span>
-            <i class="fa-solid fa-xmark close-modal" onclick="playClickSound(); closeSettings()"></i>
-        </div>
-        
-        <!-- İkonlar -->
-        <div class="setting-group">
-            <label>Luna Proqram İkonu</label>
-            <div class="app-icons-grid">
-                <div class="app-icon-option active" onclick="setAppIcon('fa-headphones-simple', '#6366f1', '#a855f7', this)"><i class="fa-solid fa-headphones-simple" style="color: #6366f1;"></i><span>Audio</span></div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-bolt', '#eab308', '#f59e0b', this)"><i class="fa-solid fa-bolt" style="color: #eab308;"></i><span>Neon</span></div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-fire', '#ef4444', '#f97316', this)"><i class="fa-solid fa-fire" style="color: #ef4444;"></i><span>Fire</span></div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-heart', '#ec4899', '#f43f5e', this)"><i class="fa-solid fa-heart" style="color: #ec4899;"></i><span>Love</span></div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-compact-disc', '#06b6d4', '#3b82f6', this)"><i class="fa-solid fa-compact-disc" style="color: #06b6d4;"></i><span>Disk</span></div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-star', '#a855f7', '#6366f1', this)"><i class="fa-solid fa-star" style="color: #a855f7;"></i><span>Star</span></div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-gamepad', '#22c55e', '#10b981', this)"><i class="fa-solid fa-gamepad" style="color: #22c55e;"></i><span>Game</span></div>
-                <div class="app-icon-option" onclick="setAppIcon('fa-moon', '#94a3b8', '#475569', this)"><i class="fa-solid fa-moon" style="color: #cbd5e1;"></i><span>Moon</span></div>
-            </div>
-        </div>
-
-        <!-- Rəng Seçimləri -->
-        <div class="setting-group">
-            <label>Zəngin Rəng Palitraları</label>
-            <div class="theme-options">
-                <div class="option-chip active" onclick="setTheme('#6366f1', '#a855f7', '#0b0f19', this)">Indigo Göy</div>
-                <div class="option-chip" onclick="setTheme('#ec4899', '#f43f5e', '#180e14', this)">Çəhrayı Sevgi</div>
-                <div class="option-chip" onclick="setTheme('#06b6d4', '#3b82f6', '#08141c', this)">Kiber Mavi</div>
-                <div class="option-chip" onclick="setTheme('#22c55e', '#10b981', '#0b160f', this)">Matris Yaşıl</div>
-                <div class="option-chip" onclick="setTheme('#eab308', '#f59e0b', '#17140a', this)">Qızılı Lüks</div>
-                <div class="option-chip" onclick="setTheme('#f97316', '#ef4444', '#1a0e0a', this)">Gün Batımı</div>
-                <div class="option-chip" onclick="setTheme('#8b5cf6', '#ec4899', '#120b1c', this)">Bənövşəyi Neon</div>
-                <div class="option-chip" onclick="setTheme('#14b8a6', '#06b6d4', '#061717', this)">Firuzəyi Dəniz</div>
-                <div class="option-chip" onclick="setTheme('#ffffff', '#94a3b8', '#000000', this)">Klassik Qara & Ağ</div>
-            </div>
-        </div>
-
-        <!-- Font Seçimləri -->
-        <div class="setting-group">
-            <label>Font Stili (Yazı Növləri)</label>
-            <div class="theme-options">
-                <div class="option-chip active" onclick="setFont('Plus Jakarta Sans', this)">Jakarta (Normal)</div>
-                <div class="option-chip" onclick="setFont('Poppins', this)">Poppins</div>
-                <div class="option-chip" onclick="setFont('Inter', this)">Inter</div>
-                <div class="option-chip" onclick="setFont('Cairo', this)">Cairo</div>
-                <div class="option-chip" onclick="setFont('Orbitron', this)">Orbitron (Sci-Fi)</div>
-                <div class="option-chip" onclick="setFont('Cinzel', this)">Cinzel (Klassik)</div>
-                <div class="option-chip" onclick="setFont('Caveat', this)">Caveat (Əlyazı)</div>
-            </div>
-        </div>
-
-        <!-- Səs Effektləri -->
-        <div class="setting-group">
-            <label>Səs Effektləri</label>
-            <div class="theme-options">
-                <div class="option-chip active" onclick="setSoundType('bip', this)">Bip (İncə)</div>
-                <div class="option-chip" onclick="setSoundType('pop', this)">Pop (Dərin)</div>
-                <div class="option-chip" onclick="setSoundType('laser', this)">Laser (Futuristik)</div>
-                <div class="option-chip" onclick="setSoundType('bell', this)">Zəng Səsi</div>
-                <div class="option-chip" onclick="setSoundType('off', this)">Tamamilə Səssiz</div>
-            </div>
-        </div>
-
-        <!-- Fon Fotoları -->
-        <div class="setting-group">
-            <label>Möhtəşəm Fon Fotoları</label>
-            <div class="photo-options">
-                <div class="photo-chip active" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('none', this)">Normal</div>
-                <div class="photo-chip" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('url(\'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1000&auto=format&fit=crop\')', this)">Kosmos</div>
-                <div class="photo-chip" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('url(\'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop\')', this)">Okean</div>
-                <div class="photo-chip" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('url(\'https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?q=80&w=1000&auto=format&fit=crop\')', this)">Meşə</div>
-                <div class="photo-chip" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('url(\'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=1000&auto=format&fit=crop\')', this)">Abstrakt</div>
-                <div class="photo-chip" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=300&auto=format&fit=crop');" onclick="setPhoto('url(\'https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=1000&auto=format&fit=crop\')', this)">Yağış</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    let soundType = 'bip';
-    let historyItems = JSON.parse(localStorage.getItem('luna_history')) || [];
-    updateHistoryUI();
-
-    function playClickSound() {
-        if(soundType === 'off') return;
-        try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
+    <!-- Offline Pleyer Qovluğu Modalı -->
+    <div id="offlineModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-x" onclick="closeOfflineFolder()">&times;</span>
+            <h3 style="margin-bottom: 12px; font-size: 16px;">📂 Melodiya & Pleyer Qovluğu</h3>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 14px;">Bura yığılan melodiyalar internet olmasa belə pleyerdə oxunur.</p>
             
-            let freq = 650;
-            let duration = 0.05;
-            let type = 'sine';
+            <!-- Pleyer Paneli -->
+            <div style="background: #000; border-radius: 12px; height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 14px; border: 1px solid var(--card-border); padding: 10px; text-align: center;">
+                <span id="nowPlayingText" style="font-size: 12px; color: #fff; font-weight: 600; margin-bottom: 8px;">Pleyer hazırdır</span>
+                <audio id="audioPlayer" controls style="width: 100%; height: 32px; display: none;"></audio>
+            </div>
 
-            if(soundType === 'pop') { freq = 300; duration = 0.08; type = 'triangle'; }
-            else if(soundType === 'laser') { freq = 900; duration = 0.06; type = 'sawtooth'; osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + duration); }
-            else if(soundType === 'bell') { freq = 1200; duration = 0.1; type = 'sine'; }
+            <!-- Qovluqdakı Siyahı -->
+            <div id="offlineList" style="max-height: 110px; overflow-y: auto; background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 12px; padding: 8px; font-size: 12px;">
+                <p style="color: var(--text-muted); text-align: center; padding: 10px;">Qovluq hələ ki boşdur.</p>
+            </div>
+        </div>
+    </div>
 
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, ctx.currentTime);
-            gain.gain.setValueAtTime(0.04, ctx.currentTime);
-            osc.start();
-            osc.stop(ctx.currentTime + duration);
-        } catch(e) {}
-    }
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-x" onclick="closeSettings()">&times;</span>
+            <h3 style="margin-bottom: 16px;">Tənzimləmələr</h3>
+            <button onclick="toggleTheme()" style="width:100%; padding:10px; background:var(--bg-color); color:var(--text-color); border:1px solid var(--card-border); border-radius: 10px; font-weight:600; cursor:pointer; margin-bottom: 15px;">🌓 Tema Dəyiş (Açıq/Tünd)</button>
+            
+            <label style="font-size: 13px; color: var(--text-muted);">Şrift (Font) seçimi:</label>
+            <select id="fontSelect" onchange="changeFont(this.value)" style="width:100%; padding:10px; margin-top:6px; background:var(--bg-color); color:var(--text-color); border:1px solid var(--card-border); border-radius: 10px;">
+                <option value="Segoe UI">Segoe UI (Default)</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Georgia">Georgia</option>
+            </select>
+        </div>
+    </div>
 
-    function extractVideoID(url) {
-        let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-        let match = url.match(regExp);
-        return (match && match[2].length === 11) ? match[2] : null;
-    }
+    <!-- AI Floating Trigger -->
+    <div class="ai-floating" onclick="openAI()">🤖</div>
 
-    function playInMiniPlayer() {
-        const val = document.getElementById('mediaUrlInput').value.trim();
-        if(!val) return;
+    <!-- AI Modal -->
+    <div id="aiModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-x" onclick="closeAI()">&times;</span>
+            <h3 style="margin-bottom: 10px;">Luna AI Köməkçi</h3>
+            <div id="chatHistory" style="height: 140px; background: var(--bg-color); margin: 10px 0; padding: 10px; border-radius: 10px; font-size: 13px; overflow-y:auto; border: 1px solid var(--card-border); line-height: 1.4;">
+                <b>AI:</b> Salam! Mən Luna süni intellektiyəm. Sənə necə kömək edə bilərəm?
+            </div>
+            <input type="text" id="userInput" placeholder="Sualını yaz..." style="width: 100%; padding: 10px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--card-border); border-radius: 10px; font-size: 14px; margin-bottom: 10px;">
+            <button onclick="sendAIExt()" style="width: 100%; padding: 10px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Göndər</button>
+        </div>
+    </div>
 
-        let videoId = extractVideoID(val);
-        const container = document.getElementById('videoContainer');
-        const playerCard = document.getElementById('miniPlayerCard');
+    <script>
+        let melodyStorage = [];
 
-        if(videoId) {
-            container.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-        } else {
-            container.innerHTML = `<iframe src="https://www.youtube.com/results?search_query=${encodeURIComponent(val)}" allow="autoplay"></iframe>`;
+        function saveMelodyToFolder() {
+            const val = document.getElementById('mediaUrlInput').value.trim();
+            const melodyName = val !== "" ? val : "Seçilmiş Melodiya " + (melodyStorage.length + 1);
+            
+            melodyStorage.push(melodyName);
+            document.getElementById('offlineCount').innerText = melodyStorage.length;
+            document.getElementById('mediaUrlInput').value = "";
+            
+            updateMelodyListUI();
+            alert("Melodiya uğurla qovluq pleyerinə əlavə olundu!");
         }
 
-        playerCard.style.display = 'flex';
-        playerCard.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function closeMiniPlayer() {
-        document.getElementById('miniPlayerCard').style.display = 'none';
-        document.getElementById('videoContainer').innerHTML = '';
-    }
-
-    function simulateDownload() {
-        const val = document.getElementById('mediaUrlInput').value.trim();
-        if(!val) return;
-        runDownloadProcess(val, 'Yaddaş');
-    }
-
-    function downloadMediaType(type) {
-        const val = document.getElementById('mediaUrlInput').value.trim();
-        if(!val) {
-            alert("Zəhmət olmasa yuxarıdakı xanaya mahnı adı və ya YouTube linki daxil edin!");
-            return;
+        function downloadFormat(format) {
+            const val = document.getElementById('mediaUrlInput').value.trim();
+            const melodyName = (val !== "" ? val : "YouTube Melodiya") + " [" + format + "]";
+            
+            melodyStorage.push(melodyName);
+            document.getElementById('offlineCount').innerText = melodyStorage.length;
+            document.getElementById('mediaUrlInput').value = "";
+            
+            updateMelodyListUI();
+            alert(format + " formatında melodiya qovluğa endirildi!");
         }
-        runDownloadProcess(val, type.toUpperCase());
-    }
 
-    function runDownloadProcess(titleText, formatLabel) {
-        const barContainer = document.getElementById('loadingBarContainer');
-        const progressFill = document.getElementById('progressFill');
-        const percentText = document.getElementById('loadingPercent');
-        const statusText = document.getElementById('loadingStatusText');
-
-        barContainer.style.display = 'flex';
-        progressFill.style.width = '0%';
-        percentText.innerText = '0%';
-        statusText.innerText = `${formatLabel} formatında endirilir...`;
-
-        let progress = 0;
-        let interval = setInterval(() => {
-            progress += 20;
-            if(progress > 100) progress = 100;
-            progressFill.style.width = progress + '%';
-            percentText.innerText = progress + '%';
-
-            if(progress === 100) {
-                clearInterval(interval);
-                statusText.innerText = `${formatLabel} uğurla endirildi və yaddaşa yazıldı!`;
-                
-                const now = new Date().toLocaleDateString('az-AZ') + ' ' + new Date().toLocaleTimeString('az-AZ', {hour: '2-digit', minute:'2-digit'});
-                historyItems.unshift({ title: `[${formatLabel}] ${titleText}`, date: now });
-                localStorage.setItem('luna_history', JSON.stringify(historyItems));
-                updateHistoryUI();
-
-                setTimeout(() => {
-                    barContainer.style.display = 'none';
-                    document.getElementById('mediaUrlInput').value = '';
-                }, 1500);
+        function updateMelodyListUI() {
+            const container = document.getElementById('offlineList');
+            if(melodyStorage.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 10px;">Qovluq hələ ki boşdur.</p>';
+                return;
             }
-        }, 200);
-    }
-
-    function updateHistoryUI() {
-        document.getElementById('historyNum').innerText = historyItems.length;
-        document.getElementById('historyCountText').innerText = historyItems.length + ' qeyd';
-    }
-
-    function openHistoryModal() {
-        const container = document.getElementById('historyListContainer');
-        container.innerHTML = '';
-        if(historyItems.length === 0) {
-            container.innerHTML = `<div class="empty-downloads">Tarixçə hələ ki boşdur.</div>`;
-        } else {
-            historyItems.forEach((item, index) => {
-                container.innerHTML += `
-                    <div class="download-item" onclick="playClickSound(); closeHistoryModal(); document.getElementById('mediaUrlInput').value = '${item.title.replace(/'/g, "\\'")}'; playInMiniPlayer();">
-                        <div class="download-info">
-                            <span class="download-title">${item.title}</span>
-                            <span class="download-date">${item.date}</span>
-                        </div>
-                        <button class="delete-download" onclick="event.stopPropagation(); playClickSound(); deleteHistoryItem(${index})"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                `;
+            
+            let html = "";
+            melodyStorage.forEach((item, index) => {
+                html += `<div onclick="playMelody(${index})" style="padding: 6px 8px; margin-bottom: 4px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                    <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 240px;">🎵 ${index + 1}. ${item}</span>
+                    <span style="font-size: 10px; color: #10b981; font-weight: bold;">Oxut</span>
+                </div>`;
             });
+            container.innerHTML = html;
         }
-        document.getElementById('historyModal').style.display = 'flex';
-    }
 
-    function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
+        function playMelody(index) {
+            const melody = melodyStorage[index];
+            document.getElementById('nowPlayingText').innerText = "Oxunur: " + melody;
+            const audio = document.getElementById('audioPlayer');
+            audio.style.display = "block";
+            audio.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+            audio.play();
+        }
 
-    function deleteHistoryItem(index) {
-        historyItems.splice(index, 1);
-        localStorage.setItem('luna_history', JSON.stringify(historyItems));
-        updateHistoryUI();
-        openHistoryModal();
-    }
+        function openOfflineFolder() { document.getElementById('offlineModal').style.display = 'flex'; }
+        function closeOfflineFolder() { document.getElementById('offlineModal').style.display = 'none'; }
 
-    function quickPlatform(platform) {
-        let url = 'https://www.youtube.com';
+        function playMiniPlayer() {
+            const val = document.getElementById('mediaUrlInput').value;
+            openOfflineFolder();
+            if(val) {
+                document.getElementById('nowPlayingText').innerText = "Mini Pleyer: " + val;
+            }
+        }
 
-        if(platform === 'YouTube') url = 'https://www.youtube.com';
-        else if(platform === 'Instagram') url = 'https://www.instagram.com';
-        else if(platform === 'Threads') url = 'https://www.threads.net';
-        else if(platform === 'Yandex') url = 'https://music.yandex.ru';
-        else if(platform === 'TikTok') url = 'https://www.tiktok.com';
-        else if(platform === 'Spotify') url = 'https://open.spotify.com';
-        else if(platform === 'Facebook') url = 'https://www.facebook.com';
-        else if(platform === 'Twitter') url = 'https://twitter.com';
-        else if(platform === 'Pinterest') url = 'https://www.pinterest.com';
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.getAttribute('data-theme') === 'light') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', 'light');
+            }
+        }
 
-        window.open(url, '_blank');
-    }
+        function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
+        function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
+        function changeFont(fontName) { document.body.style.fontFamily = fontName; }
 
-    function openGoogle() {
-        const val = document.getElementById('mediaUrlInput').value;
-        window.open(val ? `https://www.google.com/search?q=${encodeURIComponent(val)}` : 'https://www.google.com', '_blank');
-    }
+        function openAI() { document.getElementById('aiModal').style.display = 'flex'; }
+        function closeAI() { document.getElementById('aiModal').style.display = 'none'; }
 
-    function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
-    function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
+        function sendAIExt() {
+            const input = document.getElementById('userInput');
+            const history = document.getElementById('chatHistory');
+            if(input.value.trim() === "") return;
 
-    function setAppIcon(iconClass, c1, c2, el) {
-        document.getElementById('appIconSymbol').className = `fa-solid ${iconClass}`;
-        document.getElementById('mainAppIcon').style.background = `linear-gradient(135deg, ${c1}, ${c2})`;
-        
-        el.parentElement.querySelectorAll('.app-icon-option').forEach(e => e.classList.remove('active'));
-        el.classList.add('active');
-        playClickSound();
-    }
+            history.innerHTML += `<br><br><b>Sən:</b> ${input.value}`;
+            let userText = input.value.toLowerCase();
+            input.value = "";
 
-    function setTheme(c1, c2, bg, el) {
-        document.documentElement.style.setProperty('--primary', c1);
-        document.documentElement.style.setProperty('--primary-gradient', `linear-gradient(135deg, ${c1}, ${c2})`);
-        document.documentElement.style.setProperty('--bg-color', bg);
-        
-        el.parentElement.querySelectorAll('.option-chip').forEach(e => e.classList.remove('active'));
-        el.classList.add('active');
-        playClickSound();
-    }
-
-    function setFont(fontName, el) {
-        document.documentElement.style.setProperty('--font-family', `'${fontName}', sans-serif`);
-        el.parentElement.querySelectorAll('.option-chip').forEach(e => e.classList.remove('active'));
-        el.classList.add('active');
-        playClickSound();
-    }
-
-    function setPhoto(bgImg, el) {
-        document.documentElement.style.setProperty('--bg-image', bgImg);
-        el.parentElement.querySelectorAll('.photo-chip').forEach(e => e.classList.remove('active'));
-        el.classList.add('active');
-        playClickSound();
-    }
-
-    function setSoundType(type, el) {
-        soundType = type;
-        el.parentElement.querySelectorAll('.option-chip').forEach(e => e.classList.remove('active'));
-        el.classList.add('active');
-        playClickSound();
-    }
-</script>
-
+            setTimeout(() => {
+                let reply = "Melodiya qovluqda qorunur.";
+                if(userText.includes("yüklə") || userText.includes("qovluq")) {
+                    reply = "Yüklədiyin melodiyalar avtomatik olaraq pleyer qovluğunda toplanır.";
+                }
+                history.innerHTML += `<br><br><b>AI:</b> ${reply}`;
+                history.scrollTop = history.scrollHeight;
+            }, 500);
+        }
+    </script>
 </body>
 </html>
 
