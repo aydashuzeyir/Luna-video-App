@@ -373,16 +373,19 @@
         <div class="search-card">
             <div class="search-input-box">
                 <span id="searchInputIcon">🔴</span>
-                <input type="text" id="mediaUrlInput" placeholder="Kino adı və ya video linki...">
+                <input type="text" id="mediaUrlInput" placeholder="Kino adı və ya internet linki...">
             </div>
             <div class="action-buttons-grid">
                 <button class="main-action-btn btn-purple" onclick="playMiniPlayer()">
                     <span>▶️ Kinonu Aç</span>
                 </button>
-                <button class="main-action-btn btn-dark" onclick="downloadMovieToOffline()">
-                    <span>📥 Yüklə (İnternetsiz)</span>
+                <button class="main-action-btn btn-dark" onclick="triggerFileSelect()">
+                    <span>📁 Telefondan Seç</span>
                 </button>
             </div>
+            <!-- Gizli Fayl Seçici (İnternetsiz tam yerli fayl oxutmaq üçün) -->
+            <input type="file" id="localVideoFile" accept="video/*" style="display: none;" onchange="loadLocalVideo(this)">
+
             <div class="sub-links-row">
                 <span onclick="window.open('https://www.google.com', '_blank')">🌐 Google Axtarış</span>
                 <span onclick="openOfflineFolder()">📂 Yüklənənlər (<span id="offlineCount">0</span>)</span>
@@ -392,10 +395,10 @@
         <!-- Media Endirmə Mərkəzi -->
         <div class="section-box">
             <div class="section-header">
-                <span id="downloadSectionIcon">📥</span> Kino & Video Endirmə Mərkəzi
+                <span id="downloadSectionIcon">📥</span> İnternetsiz Media Mərkəzi
             </div>
             <div class="download-choices">
-                <button class="choice-btn" onclick="downloadMovieToOffline()">🎬 Kino Yüklə</button>
+                <button class="choice-btn" onclick="triggerFileSelect()">🎬 Telefon Memory</button>
                 <button class="choice-btn" onclick="saveMediaToFolder('MP3')">🎵 MP3 Mahnı</button>
             </div>
         </div>
@@ -438,23 +441,27 @@
         <div class="modal-box">
             <span class="close-x" onclick="closeOfflineFolder()">&times;</span>
             <h3 style="margin-bottom: 10px; font-size: 16px;">📂 İnternetsiz Kino & Media Pleyer</h3>
-            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Yüklənmiş kinolar tam səsli şəkildə işləyir.</p>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Tam ekran, sürükləmə və internet tələb etməyən rejim.</p>
             
             <!-- Video / Kino Pleyer Ekranı -->
             <div style="background: #000; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--card-border); padding: 8px; text-align: center;">
                 <span id="nowPlayingText" style="font-size: 11px; color: #fff; font-weight: 600; display: block; margin-bottom: 6px;">Pleyer hazırdır</span>
-                <video id="videoPlayer" controls playsinline style="width: 100%; max-height: 160px; border-radius: 8px; display: none;"></video>
+                <div id="youtubeContainer" style="display: none; margin-bottom: 6px;">
+                    <iframe id="youtubeIframe" width="100%" height="160" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 8px;"></iframe>
+                </div>
+                <!-- Yerli və ya internet videoları üçün tam dəstəkli pleyer -->
+                <video id="videoPlayer" controls playsinline controlslist="nodownload" style="width: 100%; max-height: 180px; border-radius: 8px; display: none;"></video>
                 <audio id="audioPlayer" controls style="width: 100%; height: 30px; display: none;"></audio>
             </div>
 
             <!-- Yüklənmiş Faylların Siyahısı -->
             <div id="offlineList" style="max-height: 110px; overflow-y: auto; background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 12px; padding: 6px; font-size: 12px;">
-                <p style="color: var(--text-muted); text-align: center; padding: 10px;">Hələ ki yüklənmiş kino yoxdur.</p>
+                <p style="color: var(--text-muted); text-align: center; padding: 10px;">Hələ ki əlavə edilmiş fayl yoxdur.</p>
             </div>
         </div>
     </div>
 
-    <!-- Settings Modal (Bol Ayarlar, İkonlar, Temalar və Fontlar) -->
+    <!-- Settings Modal -->
     <div id="settingsModal" class="modal-overlay">
         <div class="modal-box">
             <span class="close-x" onclick="closeSettings()">&times;</span>
@@ -503,7 +510,7 @@
             <span class="close-x" onclick="closeAI()">&times;</span>
             <h3 style="margin-bottom: 10px;">Luna AI Köməkçi</h3>
             <div id="chatHistory" style="height: 140px; background: var(--bg-color); margin: 10px 0; padding: 10px; border-radius: 10px; font-size: 13px; overflow-y:auto; border: 1px solid var(--card-border); line-height: 1.4;">
-                <b>AI:</b> Salam! İstədiyin bütün ayarlar və səsli offline pleyer hazırdır.
+                <b>AI:</b> Salam! İnternetsiz tam yerli video fayllarını seçib izləmək üçün "Telefondan Seç" düyməsini istifadə edə bilərsən.
             </div>
             <input type="text" id="userInput" placeholder="Sualını yaz..." style="width: 100%; padding: 10px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--card-border); border-radius: 10px; font-size: 14px; margin-bottom: 10px;">
             <button onclick="sendAIExt()" style="width: 100%; padding: 10px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Göndər</button>
@@ -513,45 +520,77 @@
     <script>
         let mediaStorage = [];
 
+        function triggerFileSelect() {
+            document.getElementById('localVideoFile').click();
+        }
+
+        function loadLocalVideo(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const fileUrl = URL.createObjectURL(file);
+                
+                mediaStorage.push({ 
+                    name: file.name, 
+                    type: 'MP4', 
+                    url: fileUrl 
+                });
+                
+                document.getElementById('offlineCount').innerText = mediaStorage.length;
+                updateMediaListUI();
+                openOfflineFolder();
+                playStoredMedia(mediaStorage.length - 1);
+            }
+        }
+
         function downloadMovieToOffline() {
             const inputVal = document.getElementById('mediaUrlInput').value.trim();
-            const movieName = inputVal !== "" ? inputVal : "Seçilmiş Kino " + (mediaStorage.length + 1);
-            let sampleMovieUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+            if(!inputVal) {
+                alert("Zəhmət olmasa link daxil edin və ya 'Telefondan Seç' düyməsini istifadə edin.");
+                return;
+            }
 
-            mediaStorage.push({ name: movieName, type: 'MP4', url: sampleMovieUrl });
+            const movieName = inputVal;
+            let finalUrl = "";
+            let isYt = false;
+
+            if (movieName.includes("youtu.be") || movieName.includes("youtube.com")) {
+                isYt = true;
+                let videoId = "";
+                if (movieName.includes("youtu.be/")) {
+                    videoId = movieName.split("youtu.be/")[1].split("?")[0];
+                } else if (movieName.includes("watch?v=")) {
+                    videoId = movieName.split("watch?v=")[1].split("&")[0];
+                }
+                finalUrl = "https://www.youtube.com/embed/" + videoId;
+            } else {
+                finalUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+            }
+
+            mediaStorage.push({ name: movieName, type: isYt ? 'YOUTUBE' : 'MP4', url: finalUrl });
             document.getElementById('offlineCount').innerText = mediaStorage.length;
             document.getElementById('mediaUrlInput').value = "";
             
             updateMediaListUI();
-            alert("Kino səslə birlikdə internetsiz izləmək üçün yaddaşa yazıldı!");
+            alert("Kino siyahıya əlavə olundu!");
         }
 
         function saveMediaToFolder(type) {
-            const inputVal = document.getElementById('mediaUrlInput').value.trim();
-            const mediaName = (inputVal !== "" ? inputVal : "Media Fayl") + " (" + type + ")";
-            let sampleUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-
-            mediaStorage.push({ name: mediaName, type: type, url: sampleUrl });
-            document.getElementById('offlineCount').innerText = mediaStorage.length;
-            document.getElementById('mediaUrlInput').value = "";
-            
-            updateMediaListUI();
-            alert("Mahnı qovluğa əlavə olundu!");
+            triggerFileSelect();
         }
 
         function updateMediaListUI() {
             const container = document.getElementById('offlineList');
             if(mediaStorage.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 10px;">Hələ ki yüklənmiş kino yoxdur.</p>';
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 10px;">Hələ ki əlavə edilmiş fayl yoxdur.</p>';
                 return;
             }
             
             let html = "";
             mediaStorage.forEach((item, index) => {
-                let icon = item.type === 'MP4' ? '🎬' : '🎵';
+                let icon = item.type === 'MP4' ? '🎬' : '▶️';
                 html += `<div onclick="playStoredMedia(${index})" style="padding: 6px 8px; margin-bottom: 4px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
                     <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 230px;">${icon} ${index + 1}. ${item.name}</span>
-                    <span style="font-size: 10px; color: #10b981; font-weight: bold;">Səsli Bax / Dinlə</span>
+                    <span style="font-size: 10px; color: #10b981; font-weight: bold;">İzlə</span>
                 </div>`;
             });
             container.innerHTML = html;
@@ -559,24 +598,28 @@
 
         function playStoredMedia(index) {
             const item = mediaStorage[index];
-            document.getElementById('nowPlayingText').innerText = "Oxunur (Səsli): " + item.name;
+            document.getElementById('nowPlayingText').innerText = "Oxunur: " + item.name;
             
             const audio = document.getElementById('audioPlayer');
             const video = document.getElementById('videoPlayer');
+            const ytContainer = document.getElementById('youtubeContainer');
+            const ytIframe = document.getElementById('youtubeIframe');
 
-            if(item.type === 'MP4') {
-                audio.style.display = "none";
-                audio.pause();
-                video.style.display = "block";
-                video.muted = false; // Səsin aktiv olması
-                video.src = item.url;
-                video.play().catch(e => console.log("Avtomatik oxutma xətası: ", e));
+            audio.style.display = "none";
+            audio.pause();
+            video.style.display = "none";
+            video.pause();
+            ytContainer.style.display = "none";
+            ytIframe.src = "";
+
+            if(item.type === 'YOUTUBE') {
+                ytContainer.style.display = "block";
+                ytIframe.src = item.url + "?autoplay=1";
             } else {
-                video.style.display = "none";
-                video.pause();
-                audio.style.display = "block";
-                audio.src = item.url;
-                audio.play().catch(e => console.log("Avtomatik oxutma xətası: ", e));
+                video.style.display = "block";
+                video.muted = false;
+                video.src = item.url;
+                video.play().catch(e => console.log(e));
             }
         }
 
@@ -588,7 +631,7 @@
             if(mediaStorage.length > 0) {
                 playStoredMedia(0);
             } else {
-                alert("Əvvəlcə kino yükləyin!");
+                alert("Əvvəlcə 'Telefondan Seç' vasitəsilə video fayl əlavə edin!");
             }
         }
 
@@ -630,11 +673,10 @@
             input.value = "";
 
             setTimeout(() => {
-                history.innerHTML += `<br><br><b>AI:</b> Dəyişikliklər qəbul olundu, tətbiq hazırdır!`;
+                history.innerHTML += `<br><br><b>AI:</b> Hazırdır!`;
                 history.scrollTop = history.scrollHeight;
             }, 500);
         }
     </script>
 </body>
 </html>
-
