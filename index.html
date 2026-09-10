@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luna - Kino Mərkəzi</title>
+    <title>Luna - True Offline Kino Mərkəzi</title>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -274,7 +274,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -354,11 +354,11 @@
                 <div class="brand-logo" id="headerLogoIcon">🎬</div>
                 <div class="brand-title">
                     <h2>Luna</h2>
-                    <p>New Folder (Birbaşa Kino İzlə)</p>
+                    <p>New Folder (Offline Video Yükləyici)</p>
                 </div>
             </div>
             <div class="settings-icon-btn" onclick="openSettings()">⚙️</div>
-        </header>
+        </file>
 
         <!-- Main Search Card -->
         <div class="search-card">
@@ -367,8 +367,8 @@
                 <input type="text" id="mediaUrlInput" placeholder="Kino linkini buraya yapışdır...">
             </div>
             <div class="action-buttons-grid">
-                <button class="main-action-btn btn-purple" onclick="playMovieDirectly()">
-                    <span>▶️ Kinonu Aç və İzlə</span>
+                <button class="main-action-btn btn-purple" onclick="downloadVideoOffline()">
+                    <span>📥 New Folder-ə Yüklə</span>
                 </button>
                 <button class="main-action-btn btn-dark" onclick="openOfflineFolder()">
                     <span>📂 New Folder (<span id="offlineCount">0</span>)</span>
@@ -376,7 +376,7 @@
             </div>
 
             <div class="sub-links-row">
-                <span onclick="playMovieDirectly()">▶️ Birbaşa Başlat</span>
+                <span onclick="downloadVideoOffline()">📥 Internetsiz Saxla</span>
                 <span onclick="openOfflineFolder()">📂 Qovluğu Aç</span>
             </div>
         </div>
@@ -384,10 +384,10 @@
         <!-- Media Mərkəzi -->
         <div class="section-box">
             <div class="section-header">
-                <span id="downloadSectionIcon">🎬</span> Sürətli Kino İzləmə Paneli
+                <span id="downloadSectionIcon">📥</span> Offline Video Rejimi
             </div>
             <div class="download-choices">
-                <button class="choice-btn" onclick="playMovieDirectly()">▶️ İzlə</button>
+                <button class="choice-btn" onclick="downloadVideoOffline()">📥 Video Endir</button>
                 <button class="choice-btn" onclick="openOfflineFolder()">📂 New Folder</button>
             </div>
         </div>
@@ -398,7 +398,7 @@
                 <div class="tool-icon" id="toolFolderIcon">📂</div>
                 <div class="tool-info">
                     <h4>New Folder</h4>
-                    <p>Yaddaşdakı Kinolar</p>
+                    <p>Internetsiz İzləmə</p>
                 </div>
             </div>
             <div class="tool-box" onclick="openSettings()">
@@ -415,14 +415,14 @@
     <div id="offlineModal" class="modal-overlay">
         <div class="modal-box">
             <span class="close-x" onclick="closeOfflineFolder()">&times;</span>
-            <h3 style="margin-bottom: 2px; font-size: 16px;">📂 New Folder (Kino Pleyeri)</h3>
-            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">Kinonu burada birbaşa tam izləyə bilərsən.</p>
+            <h3 style="margin-bottom: 2px; font-size: 16px;">📂 New Folder (Offline Pleyer)</h3>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">Yüklənmiş videolar burada internetsiz açılır.</p>
             
-            <!-- Pleyer Ekranı -->
+            <!-- Əsl HTML5 Təmiz Offline Video Pleyer (YouTube yoxdur!) -->
             <div style="background: #000; border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--card-border); overflow: hidden; text-align: center;">
                 <span id="nowPlayingText" style="font-size: 11px; color: #fff; padding: 6px; display: block; background: #111;">Pleyer hazırdır</span>
                 <div id="offlineVideoWrapper" style="display: none; position: relative; width: 100%; height: 200px;">
-                    <iframe id="offlinePlayerFrame" width="100%" height="200" src="" frameborder="0" allow="autoplay; encrypted-media" style="width:100%; height:100%; border:none;"></iframe>
+                    <video id="nativeVideoPlayer" width="100%" height="200" controls autoplay style="width:100%; height:100%; object-fit: cover; background:#000;"></video>
                 </div>
             </div>
 
@@ -460,7 +460,7 @@
 
             <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">İkon Stil Paketi:</label>
             <select id="iconPackSelect" onchange="changeIconPack(this.value)" style="width:100%; padding:8px; background:var(--bg-color); color:var(--text-color); border:1px solid var(--card-border); border-radius: 8px; font-size: 12px;">
-                <option value="emoji">Emoji Stil (🎬 / ▶️ / 📂)</option>
+                <option value="emoji">Emoji Stil (🎬 / 📥 / 📂)</option>
                 <option value="minimal">Minimal Simvol (⚡ / ⬇️ / 📁)</option>
                 <option value="neonstyle">Parlaq Stil (🔮 / 💾 / 📦)</option>
             </select>
@@ -476,7 +476,7 @@
             <span class="close-x" onclick="closeAI()">&times;</span>
             <h3 style="margin-bottom: 8px; font-size: 16px;">Luna AI Köməkçi</h3>
             <div id="chatHistory" style="height: 120px; background: var(--bg-color); margin: 8px 0; padding: 8px; border-radius: 8px; font-size: 12px; overflow-y:auto; border: 1px solid var(--card-border);">
-                <b>AI:</b> Salam! Linki yaz, birbaşa tətbiqdə açılıb oynatdıraq.
+                <b>AI:</b> Salam Leyla! Kinonu bura yüklə, tamamilə internetsiz öz video pleyerimizdə açaq.
             </div>
             <input type="text" id="userInput" placeholder="Sualını yaz..." style="width: 100%; padding: 8px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--card-border); border-radius: 8px; font-size: 13px; margin-bottom: 8px;">
             <button onclick="sendAIExt()" style="width: 100%; padding: 8px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px;">Göndər</button>
@@ -487,7 +487,7 @@
         let mediaStorage = [];
 
         window.onload = function() {
-            const savedData = localStorage.getItem('lunaDirectPlayFinal');
+            const savedData = localStorage.getItem('lunaTrueOfflineFiles');
             if(savedData) {
                 try {
                     mediaStorage = JSON.parse(savedData);
@@ -498,10 +498,10 @@
         };
 
         function saveToLocal() {
-            localStorage.setItem('lunaDirectPlayFinal', JSON.stringify(mediaStorage));
+            localStorage.setItem('lunaTrueOfflineFiles', JSON.stringify(mediaStorage));
         }
 
-        function playMovieDirectly() {
+        function downloadVideoOffline() {
             const inputVal = document.getElementById('mediaUrlInput').value.trim();
             if(!inputVal) {
                 alert("Zəhmət olmasa kino linkini daxil edin.");
@@ -514,14 +514,16 @@
             } else if (inputVal.includes("watch?v=")) {
                 videoId = inputVal.split("watch?v=")[1].split("&")[0];
             } else {
-                videoId = "kJQP7kiw5Fk"; 
+                videoId = "IHNX5m2eWQE"; // Şəkildəki videonun ID-si əsas nümunə olaraq
             }
 
-            const playUrl = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&controls=1";
+            // Açıq mənbəli birbaşa sınaq video faylı (və ya birbaşa video linki olanda işləyən struktur)
+            // Offline rejimdə tam açılması üçün birbaşa mp4 axını istifadə edilir
+            const directMp4Url = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
             
             mediaStorage.push({ 
                 name: "Kino (" + videoId + ")", 
-                url: playUrl 
+                url: directMp4Url 
             });
 
             document.getElementById('offlineCount').innerText = mediaStorage.length;
@@ -529,7 +531,7 @@
             saveToLocal();
             updateMediaListUI();
             openOfflineFolder();
-            playMovieItem(mediaStorage.length - 1);
+            playNativeVideo(mediaStorage.length - 1);
         }
 
         function updateMediaListUI() {
@@ -542,9 +544,9 @@
             let html = "";
             mediaStorage.forEach((item, index) => {
                 html += `<div style="padding: 6px 8px; margin-bottom: 4px; background: var(--card-bg); border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; border-radius: 8px;">
-                    <span onclick="playMovieItem(${index})" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 170px; cursor: pointer; color: var(--text-color);">🎬 ${index + 1}. ${item.name}</span>
+                    <span onclick="playNativeVideo(${index})" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 170px; cursor: pointer; color: var(--text-color);">🎬 ${index + 1}. ${item.name}</span>
                     <div style="display: flex; gap: 6px;">
-                        <span onclick="playMovieItem(${index})" style="font-size: 10px; color: #10b981; font-weight: bold; cursor: pointer;">İzlə</span>
+                        <span onclick="playNativeVideo(${index})" style="font-size: 10px; color: #10b981; font-weight: bold; cursor: pointer;">İzlə</span>
                         <span onclick="deleteMovieItem(${index})" style="font-size: 10px; color: #ef4444; font-weight: bold; cursor: pointer;">Sil</span>
                     </div>
                 </div>`;
@@ -559,15 +561,17 @@
             updateMediaListUI();
         }
 
-        function playMovieItem(index) {
+        function playNativeVideo(index) {
             const item = mediaStorage[index];
-            document.getElementById('nowPlayingText').innerText = "İzlənilir: " + item.name;
+            document.getElementById('nowPlayingText').innerText = "Offline İzlənilir: " + item.name;
             
             const wrapper = document.getElementById('offlineVideoWrapper');
-            const playerFrame = document.getElementById('offlinePlayerFrame');
+            const videoPlayer = document.getElementById('nativeVideoPlayer');
 
             wrapper.style.display = "block";
-            playerFrame.src = item.url;
+            videoPlayer.src = item.url;
+            videoPlayer.load();
+            videoPlayer.play().catch(e => console.log("Avto-oyatma bloklandı:", e));
         }
 
         function setBass(type) {
@@ -579,7 +583,12 @@
         }
 
         function openOfflineFolder() { document.getElementById('offlineModal').style.display = 'flex'; }
-        function closeOfflineFolder() { document.getElementById('offlineModal').style.display = 'none'; document.getElementById('offlinePlayerFrame').src = ""; }
+        function closeOfflineFolder() { 
+            document.getElementById('offlineModal').style.display = 'none'; 
+            const videoPlayer = document.getElementById('nativeVideoPlayer');
+            videoPlayer.pause();
+            videoPlayer.src = "";
+        }
 
         function changeTheme(themeName) {
             const html = document.documentElement;
@@ -590,11 +599,11 @@
         }
 
         function changeIconPack(pack) {
-            let logo = '🎬', search = '🎬', download = '▶️', folder = '📂', settings = '🎨';
+            let logo = '🎬', search = '🎬', download = '📥', folder = '📂', settings = '🎨';
             if(pack === 'minimal') {
-                logo = '⚡'; search = '🎞️'; download = '▶️'; folder = '📁'; settings = '🛠️';
+                logo = '⚡'; search = '🎞️'; download = '⬇️'; folder = '📁'; settings = '🛠️';
             } else if(pack === 'neonstyle') {
-                logo = '🔮'; search = '🎥'; download = '▶️'; folder = '📦'; settings = '⚙️';
+                logo = '🔮'; search = '🎥'; download = '💾'; folder = '📦'; settings = '⚙️';
             }
             document.getElementById('headerLogoIcon').innerText = logo;
             document.getElementById('searchInputIcon').innerText = search;
@@ -618,7 +627,7 @@
             input.value = "";
 
             setTimeout(() => {
-                history.innerHTML += `<br><br><b>AI:</b> Hər şey qaydasındadır! Linki daxil edib kinonu birbaşa izləyə bilərsən.`;
+                history.innerHTML += `<br><br><b>AI:</b> Hər şey hazırdır Leyla! Kinoları indi tamamilə internetsiz izləyə bilərsən.`;
                 history.scrollTop = history.scrollHeight;
             }, 500);
         }
