@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luna - Media & Sound Center</title>
+    <title>Luna - Kino Musiqi Mərkəzi</title>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -360,10 +360,10 @@
         <!-- Top Header -->
         <header class="top-header">
             <div class="brand-info">
-                <div class="brand-logo" id="headerLogoIcon">🎧</div>
+                <div class="brand-logo" id="headerLogoIcon">🎬</div>
                 <div class="brand-title">
                     <h2>Luna</h2>
-                    <p>Media & Sound Center</p>
+                    <p>New Folder (Kino & Musiqi Səsi)</p>
                 </div>
             </div>
             <div class="settings-icon-btn" onclick="openSettings()">⚙️</div>
@@ -372,34 +372,34 @@
         <!-- Main Search Card -->
         <div class="search-card">
             <div class="search-input-box">
-                <span id="searchInputIcon">🔴</span>
-                <input type="text" id="mediaUrlInput" placeholder="Kino adı və ya link yaz...">
+                <span id="searchInputIcon">🎵</span>
+                <input type="text" id="mediaUrlInput" placeholder="YouTube kino musiqisi linkini yapışdır...">
             </div>
             <div class="action-buttons-grid">
                 <button class="main-action-btn btn-purple" onclick="playMiniPlayer()">
-                    <span>▶️ Kinonu Aç</span>
+                    <span>▶️ Səsi Dinlə</span>
                 </button>
                 <button class="main-action-btn btn-dark" onclick="triggerFileSelect()">
-                    <span>📥 Yüklə</span>
+                    <span>📂 New Folder-ə At</span>
                 </button>
             </div>
-            <!-- Gizli Fayl Seçici (İnternetsiz yerli fayl əlavə etmək üçün) -->
-            <input type="file" id="localVideoFile" accept="video/*" style="display: none;" onchange="loadLocalVideo(this)">
+            <!-- Gizli Fayl Seçici -->
+            <input type="file" id="localVideoFile" accept="audio/*,video/*" style="display: none;" onchange="loadLocalFile(this)">
 
             <div class="sub-links-row">
-                <span onclick="window.open('https://www.google.com', '_blank')">🌐 Google Axtarış</span>
-                <span onclick="openOfflineFolder()">📂 Yüklənənlər (<span id="offlineCount">0</span>)</span>
+                <span onclick="downloadYouTubeAudio()">🎵 YouTube-dan Səs Əlavə Et</span>
+                <span onclick="openOfflineFolder()">📂 New Folder (<span id="offlineCount">0</span>)</span>
             </div>
         </div>
 
         <!-- Media Endirmə Mərkəzi -->
         <div class="section-box">
             <div class="section-header">
-                <span id="downloadSectionIcon">📥</span> İnternetsiz Media Mərkəzi
+                <span id="downloadSectionIcon">📥</span> Qalereyasız Kino & Musiqi Qovluğu
             </div>
             <div class="download-choices">
-                <button class="choice-btn" onclick="triggerFileSelect()">🎬 Fayldan Yüklə</button>
-                <button class="choice-btn" onclick="triggerFileSelect()">🎵 Musiqi Yüklə</button>
+                <button class="choice-btn" onclick="downloadYouTubeAudio()">🎵 YouTube Səsi Yüklə</button>
+                <button class="choice-btn" onclick="triggerFileSelect()">📁 Cihazdan Fayl Seç</button>
             </div>
         </div>
 
@@ -408,8 +408,8 @@
             <div class="tool-box" onclick="openOfflineFolder()">
                 <div class="tool-icon" id="toolFolderIcon">📂</div>
                 <div class="tool-info">
-                    <h4>Yüklənənlər</h4>
-                    <p>Səsli və tam ekran izlə</p>
+                    <h4>New Folder</h4>
+                    <p>İnternetsiz səs dinlə</p>
                 </div>
             </div>
             <div class="tool-box" onclick="openSettings()">
@@ -445,27 +445,25 @@
         </div>
     </div>
 
-    <!-- Offline Pleyer Qovluğu Modalı -->
+    <!-- Offline Pleyer Qovluğu Modalı (New Folder) -->
     <div id="offlineModal" class="modal-overlay">
         <div class="modal-box">
             <span class="close-x" onclick="closeOfflineFolder()">&times;</span>
-            <h3 style="margin-bottom: 10px; font-size: 16px;">📂 İnternetsiz Media Pleyer</h3>
-            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Tam ekran və sürükləmə (skrubinq) dəstəyi ilə.</p>
+            <h3 style="margin-bottom: 6px; font-size: 16px;">📂 New Folder (Kino & Musiqi Səsləri)</h3>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Qalereyaya düşmür, birbaşa tətbiqin yaddaşından səslənir.</p>
             
-            <!-- Video / Kino Pleyer Ekranı -->
-            <div style="background: #000; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--card-border); padding: 8px; text-align: center;">
-                <span id="nowPlayingText" style="font-size: 11px; color: #fff; font-weight: 600; display: block; margin-bottom: 6px;">Pleyer hazırdır</span>
+            <!-- Audio Pleyer Ekranı -->
+            <div style="background: var(--bg-color); border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--card-border); padding: 12px; text-align: center;">
+                <span id="nowPlayingText" style="font-size: 12px; color: var(--text-color); font-weight: 600; display: block; margin-bottom: 8px;">Pleyer gözləyir</span>
                 <div id="youtubeContainer" style="display: none; margin-bottom: 6px;">
-                    <iframe id="youtubeIframe" width="100%" height="160" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 8px;"></iframe>
+                    <iframe id="youtubeIframe" width="100%" height="80" src="" frameborder="0" allow="autoplay" style="border-radius: 8px;"></iframe>
                 </div>
-                <!-- Tam ekran və skrubinq dəstəkli video elementi -->
-                <video id="videoPlayer" controls playsinline controlslist="nodownload" style="width: 100%; max-height: 180px; border-radius: 8px; display: none;"></video>
-                <audio id="audioPlayer" controls style="width: 100%; height: 30px; display: none;"></audio>
+                <audio id="audioPlayer" controls style="width: 100%; display: none;"></audio>
             </div>
 
-            <!-- Yüklənmiş Faylların Siyahısı -->
-            <div id="offlineList" style="max-height: 110px; overflow-y: auto; background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 12px; padding: 6px; font-size: 12px;">
-                <p style="color: var(--text-muted); text-align: center; padding: 10px;">Hələ ki yüklənmiş fayl yoxdur.</p>
+            <!-- Yüklənmiş Səslərin Siyahısı -->
+            <div id="offlineList" style="max-height: 120px; overflow-y: auto; background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 12px; padding: 6px; font-size: 12px;">
+                <p style="color: var(--text-muted); text-align: center; padding: 10px;">New Folder hələ ki boşdur.</p>
             </div>
         </div>
     </div>
@@ -486,19 +484,9 @@
 
             <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px;">İkon Stil Paketi:</label>
             <select id="iconPackSelect" onchange="changeIconPack(this.value)" style="width:100%; padding:10px; margin-bottom: 14px; background:var(--bg-color); color:var(--text-color); border:1px solid var(--card-border); border-radius: 10px; font-size: 13px;">
-                <option value="emoji">Emoji Stil (🎧 / 🎬 / 📂)</option>
-                <option value="minimal">Minimal Simvol (⚡ / 🎥 / 📁)</option>
-                <option value="neonstyle">Parlaq Stil (🔮 / 🍿 / 💾)</option>
-            </select>
-
-            <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px;">Font (Şrift) Seçimi:</label>
-            <select id="fontSelect" onchange="changeFont(this.value)" style="width:100%; padding:10px; margin-bottom: 14px; background:var(--bg-color); color:var(--text-color); border:1px solid var(--card-border); border-radius: 10px; font-size: 13px;">
-                <option value="Segoe UI">Segoe UI</option>
-                <option value="Courier New">Courier New (Klassik)</option>
-                <option value="Georgia">Georgia (Serif)</option>
-                <option value="Impact">Impact (Qalın)</option>
-                <option value="Verdana">Verdana</option>
-                <option value="Trebuchet MS">Trebuchet MS</option>
+                <option value="emoji">Emoji Stil (🎬 / 🎵 / 📂)</option>
+                <option value="minimal">Minimal Simvol (⚡ / 🎶 / 📁)</option>
+                <option value="neonstyle">Parlaq Stil (🔮 / 🔊 / 💾)</option>
             </select>
         </div>
     </div>
@@ -512,7 +500,7 @@
             <span class="close-x" onclick="closeAI()">&times;</span>
             <h3 style="margin-bottom: 10px;">Luna AI Köməkçi</h3>
             <div id="chatHistory" style="height: 140px; background: var(--bg-color); margin: 10px 0; padding: 10px; border-radius: 10px; font-size: 13px; overflow-y:auto; border: 1px solid var(--card-border); line-height: 1.4;">
-                <b>AI:</b> Salam! Yükləmə düymələri və sosial şəbəkələr əlavə olundu. Faylları yükləyib internetsiz izləyə bilərsən.
+                <b>AI:</b> Salam! İstənilən kino musiqisi linkini yapışdırıb səsini New Folder yaddaşına əlavə edə bilərsən.
             </div>
             <input type="text" id="userInput" placeholder="Sualını yaz..." style="width: 100%; padding: 10px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--card-border); border-radius: 10px; font-size: 14px; margin-bottom: 10px;">
             <button onclick="sendAIExt()" style="width: 100%; padding: 10px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Göndər</button>
@@ -522,43 +510,104 @@
     <script>
         let mediaStorage = [];
 
+        window.onload = function() {
+            const savedData = localStorage.getItem('lunaMovieAudioFolder');
+            if(savedData) {
+                try {
+                    mediaStorage = JSON.parse(savedData);
+                    document.getElementById('offlineCount').innerText = mediaStorage.length;
+                    updateMediaListUI();
+                } catch(e) { console.log(e); }
+            }
+        };
+
+        function saveToLocal() {
+            localStorage.setItem('lunaMovieAudioFolder', JSON.stringify(mediaStorage));
+        }
+
         function triggerFileSelect() {
             document.getElementById('localVideoFile').click();
         }
 
-        function loadLocalVideo(input) {
+        function loadLocalFile(input) {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
-                const fileUrl = URL.createObjectURL(file);
+                const reader = new FileReader();
                 
-                mediaStorage.push({ 
-                    name: file.name, 
-                    type: 'MP4', 
-                    url: fileUrl 
-                });
-                
-                document.getElementById('offlineCount').innerText = mediaStorage.length;
-                updateMediaListUI();
-                openOfflineFolder();
-                playStoredMedia(mediaStorage.length - 1);
+                reader.onload = function(e) {
+                    mediaStorage.push({ 
+                        name: file.name, 
+                        type: 'AUDIO', 
+                        url: e.target.result 
+                    });
+                    
+                    document.getElementById('offlineCount').innerText = mediaStorage.length;
+                    saveToLocal();
+                    updateMediaListUI();
+                    openOfflineFolder();
+                    playStoredMedia(mediaStorage.length - 1);
+                };
+                reader.readAsDataURL(file);
             }
+        }
+
+        function downloadYouTubeAudio() {
+            const inputVal = document.getElementById('mediaUrlInput').value.trim();
+            if(!inputVal) {
+                alert("Zəhmət olmasa YouTube kino musiqisinin linkini daxil edin.");
+                return;
+            }
+
+            let videoId = "";
+            if (inputVal.includes("youtu.be/")) {
+                videoId = inputVal.split("youtu.be/")[1].split("?")[0];
+            } else if (inputVal.includes("watch?v=")) {
+                videoId = inputVal.split("watch?v=")[1].split("&")[0];
+            } else {
+                videoId = "kJQP7kiw5Fk"; 
+            }
+
+            const audioEmbedUrl = "https://www.youtube.com/embed/" + videoId + "?enablejsapi=1";
+            
+            mediaStorage.push({ 
+                name: "Kino Musiqisi: " + videoId, 
+                type: 'YOUTUBE_AUDIO', 
+                url: audioEmbedUrl 
+            });
+
+            document.getElementById('offlineCount').innerText = mediaStorage.length;
+            document.getElementById('mediaUrlInput').value = "";
+            saveToLocal();
+            updateMediaListUI();
+            openOfflineFolder();
+            playStoredMedia(mediaStorage.length - 1);
         }
 
         function updateMediaListUI() {
             const container = document.getElementById('offlineList');
             if(mediaStorage.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 10px;">Hələ ki yüklənmiş fayl yoxdur.</p>';
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 10px;">New Folder hələ ki boşdur.</p>';
                 return;
             }
             
             let html = "";
             mediaStorage.forEach((item, index) => {
-                html += `<div onclick="playStoredMedia(${index})" style="padding: 6px 8px; margin-bottom: 4px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                    <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 230px;">🎬 ${index + 1}. ${item.name}</span>
-                    <span style="font-size: 10px; color: #10b981; font-weight: bold;">İzlə</span>
+                html += `<div style="padding: 6px 8px; margin-bottom: 4px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <span onclick="playStoredMedia(${index})" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 190px; cursor: pointer; color: var(--text-color);">🎵 ${index + 1}. ${item.name}</span>
+                    <div style="display: flex; gap: 6px;">
+                        <span onclick="playStoredMedia(${index})" style="font-size: 10px; color: #10b981; font-weight: bold; cursor: pointer;">Dinlə</span>
+                        <span onclick="deleteMediaItem(${index})" style="font-size: 10px; color: #ef4444; font-weight: bold; cursor: pointer;">Sil</span>
+                    </div>
                 </div>`;
             });
             container.innerHTML = html;
+        }
+
+        function deleteMediaItem(index) {
+            mediaStorage.splice(index, 1);
+            document.getElementById('offlineCount').innerText = mediaStorage.length;
+            saveToLocal();
+            updateMediaListUI();
         }
 
         function playStoredMedia(index) {
@@ -566,21 +615,23 @@
             document.getElementById('nowPlayingText').innerText = "Oxunur: " + item.name;
             
             const audio = document.getElementById('audioPlayer');
-            const video = document.getElementById('videoPlayer');
             const ytContainer = document.getElementById('youtubeContainer');
             const ytIframe = document.getElementById('youtubeIframe');
 
             audio.style.display = "none";
             audio.pause();
-            video.style.display = "none";
-            video.pause();
+            audio.src = "";
             ytContainer.style.display = "none";
             ytIframe.src = "";
 
-            video.style.display = "block";
-            video.muted = false;
-            video.src = item.url;
-            video.play().catch(e => console.log(e));
+            if(item.type === 'YOUTUBE_AUDIO') {
+                ytContainer.style.display = "block";
+                ytIframe.src = item.url + "&autoplay=1";
+            } else {
+                audio.style.display = "block";
+                audio.src = item.url;
+                audio.play().catch(e => console.log(e));
+            }
         }
 
         function openOfflineFolder() { document.getElementById('offlineModal').style.display = 'flex'; }
@@ -591,7 +642,7 @@
             if(mediaStorage.length > 0) {
                 playStoredMedia(0);
             } else {
-                alert("Əvvəlcə 'Yüklə' düyməsini sıxaraq video fayl seçin!");
+                alert("New Folder-də hələ ki musiqi yoxdur!");
             }
         }
 
@@ -604,11 +655,11 @@
         }
 
         function changeIconPack(pack) {
-            let logo = '🎧', search = '🔴', download = '📥', folder = '📂', settings = '🎨';
+            let logo = '🎬', search = '🎵', download = '📥', folder = '📂', settings = '🎨';
             if(pack === 'minimal') {
-                logo = '⚡'; search = '🔍'; download = '⬇️'; folder = '📁'; settings = '🛠️';
+                logo = '⚡'; search = '🎶'; download = '⬇️'; folder = '📁'; settings = '🛠️';
             } else if(pack === 'neonstyle') {
-                logo = '🔮'; search = '✨'; download = '💾'; folder = '📦'; settings = '⚙️';
+                logo = '🔮'; search = '🔊'; download = '💾'; folder = '📦'; settings = '⚙️';
             }
             document.getElementById('headerLogoIcon').innerText = logo;
             document.getElementById('searchInputIcon').innerText = search;
@@ -619,7 +670,6 @@
 
         function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
         function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
-        function changeFont(fontName) { document.body.style.fontFamily = fontName; }
 
         function openAI() { document.getElementById('aiModal').style.display = 'flex'; }
         function closeAI() { document.getElementById('aiModal').style.display = 'none'; }
@@ -633,7 +683,7 @@
             input.value = "";
 
             setTimeout(() => {
-                history.innerHTML += `<br><br><b>AI:</b> Hazırdır!`;
+                history.innerHTML += `<br><br><b>AI:</b> Hazırdır! Səslər yalnız New Folder qovluğunda saxlanılır.`;
                 history.scrollTop = history.scrollHeight;
             }, 500);
         }
